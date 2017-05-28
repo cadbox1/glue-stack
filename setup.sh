@@ -1,4 +1,4 @@
-MAINDB=hammer
+DATABASENAME=hammer
 
 which -s brew
 if [[ $? != 0 ]] ; then
@@ -11,4 +11,10 @@ fi
 
 brew install mysql
 mysql.server restart
-mysql -uroot -e "CREATE DATABASE ${MAINDB} /*\!40100 DEFAULT CHARACTER SET utf8 */;"
+mysql -uroot -e "CREATE DATABASE ${DATABASENAME} /*\!40100 DEFAULT CHARACTER SET utf8 */;"
+
+brew install maven
+
+brew install node
+
+brew install yarn
