@@ -5,12 +5,8 @@ import com.api.domain.entity.Task;
 import com.api.domain.entity.TaskGroup;
 import com.api.domain.entity.User;
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -24,11 +20,6 @@ import javax.persistence.Table;
 @Table(name="task_permission")
 public class TaskPermission extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
-	private Integer id;
 
 	private Integer childEntity;
 
@@ -59,14 +50,6 @@ public class TaskPermission extends BaseEntity implements Serializable {
 	private User user;
 
 	public TaskPermission() {
-	}
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Integer getChildEntity() {

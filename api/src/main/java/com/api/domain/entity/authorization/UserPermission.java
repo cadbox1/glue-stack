@@ -24,11 +24,6 @@ import javax.persistence.Table;
 public class UserPermission extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
-	private Integer id;
-
 	private Integer childEntity;
 
 	private Boolean executePermission;
@@ -58,14 +53,6 @@ public class UserPermission extends BaseEntity implements Serializable {
 	private UserGroup userGroup;
 
 	public UserPermission() {
-	}
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Integer getChildEntity() {
