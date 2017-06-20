@@ -3,6 +3,9 @@ package com.api.controller;
 import com.api.service.BaseService;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.Serializable;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +23,7 @@ public class BaseController<T, ID extends Serializable> {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public T create(@RequestBody T entity) {
+	public T create(@RequestBody @Valid T entity) {
 		return baseService.create(entity);
 	}
 

@@ -1,4 +1,6 @@
 import { action, observable } from "mobx";
+import currentUserStore from "../common/currentUserStore";
+import { history } from "../common/history";
 import axios from "axios";
 
 import Organisation from "./Organisation";
@@ -10,7 +12,14 @@ class OrganisationStore {
 
 	save(organisation) {
 		if (organisation.id == null) {
-			axios.post("organisations", organisation.toJS());
+			return axios
+				.post("organisations", organisation.toJS())
+				.then(result =>
+					currentUserStore.authenticate(
+						organisation.user.email,
+						organisation.user.password
+					)
+				);
 		}
 	}
 }

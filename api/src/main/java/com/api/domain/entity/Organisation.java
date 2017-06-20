@@ -7,40 +7,43 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
 
 /**
  * The persistent class for the organisation database table.
  * 
  */
 @Entity
-@Table(name="organisation")
+@Table(name = "organisation")
 public class Organisation extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(nullable=false, length=255)
+	@Column(nullable = false, length = 255)
 	private String name;
 
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Integer statusID;
 
 	//bi-directional many-to-one association to Task
-	@OneToMany(mappedBy="organisation")
+	@OneToMany(mappedBy = "organisation")
 	private List<Task> tasks = new ArrayList<>();
 
 	//bi-directional many-to-one association to TaskSchedule
-	@OneToMany(mappedBy="organisation")
+	@OneToMany(mappedBy = "organisation")
 	private List<TaskSchedule> taskSchedules = new ArrayList<>();
 
 	//bi-directional many-to-one association to User
+	@Valid
 	@Cascade(CascadeType.ALL)
-	@OneToMany(mappedBy="organisation")
+	@OneToMany(mappedBy = "organisation")
 	private List<User> users = new ArrayList<>();
 
 	//bi-directional many-to-one association to UserGroup
-	@OneToMany(mappedBy="organisation")
+	@OneToMany(mappedBy = "organisation")
 	private List<UserGroup> userGroups = new ArrayList<>();
 
 	public Organisation() {

@@ -18,7 +18,7 @@ class Organisation {
 	}
 
 	save() {
-		OrganisationStore.save(this);
+		return OrganisationStore.save(this);
 	}
 
 	toJS() {

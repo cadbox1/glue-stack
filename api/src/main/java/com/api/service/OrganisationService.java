@@ -6,6 +6,7 @@ import com.api.domain.entity.authorization.TaskPermission;
 import com.api.domain.entity.authorization.UserPermission;
 import com.api.domain.other.Permission;
 import com.api.repository.OrganisationRepository;
+import com.api.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

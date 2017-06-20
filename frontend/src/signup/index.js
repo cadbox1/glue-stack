@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import {
 	Card,
 	CardActions,
@@ -30,7 +30,12 @@ import OrganisationStore from "../store/OrganisationStore";
 
 	handleSubmit = evt => {
 		evt.preventDefault();
-		this.organisation.save();
+		this.organisation.save().then(
+			() => this.props.history.push("/"),
+			error => {
+				debugger;
+			}
+		);
 	};
 
 	render() {
@@ -97,4 +102,4 @@ import OrganisationStore from "../store/OrganisationStore";
 	}
 }
 
-export default Signup;
+export default withRouter(Signup);

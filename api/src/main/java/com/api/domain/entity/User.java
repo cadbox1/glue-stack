@@ -1,5 +1,6 @@
 package com.api.domain.entity;
 
+import com.api.config.UniqueEmailConstraint;
 import com.api.domain.entity.authorization.TaskGroupPermission;
 import com.api.domain.entity.authorization.TaskPermission;
 import com.api.domain.entity.authorization.UserGroupPermission;
@@ -18,78 +19,77 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 /**
  * The persistent class for the user database table.
  * 
  */
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User extends BaseEntity implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	@Column(nullable=false, length=255)
+	@UniqueEmailConstraint
+	@Column(nullable = false, unique = true, length = 255)
 	private String email;
 
-	@Column(nullable=false, length=255)
+	@NotBlank
+	@Column(nullable = false, length = 255)
 	private String firstName;
 
-	@Column(nullable=false, length=255)
+	@Column(nullable = false, length = 255)
 	private String lastName;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@Column(nullable=false, length=60)
+	@NotBlank
+	@Column(nullable = false, length = 60)
 	private String password;
 
 	//bi-directional many-to-one association to Organisation
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="organisationId", nullable=false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "organisationId", nullable = false)
 	private Organisation organisation;
 
 	//bi-directional many-to-many association to UserGroup
 	@ManyToMany
-	@JoinTable(
-			name="user_userGroup"
-			, joinColumns={
-			@JoinColumn(name="userId", nullable=false)
-	}
-			, inverseJoinColumns={
-			@JoinColumn(name="userGroupId", nullable=false)
-	}
-	)
+	@JoinTable(name = "user_userGroup", joinColumns = {
+			@JoinColumn(name = "userId", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "userGroupId", nullable = false) })
 	private List<UserGroup> userGroups = new ArrayList<>();
 
 	//bi-directional many-to-one association to TaskSchedule
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy = "user")
 	private List<TaskSchedule> taskSchedules = new ArrayList<>();
 
 	//bi-directional many-to-one association to TaskPermission
 	@Cascade(CascadeType.ALL)
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy = "user")
 	private List<TaskPermission> taskPermissions = new ArrayList<>();
 
 	//bi-directional many-to-one association to TaskGroup_permission
 	@Cascade(CascadeType.ALL)
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy = "user")
 	private List<TaskGroupPermission> taskGroupPermissions = new ArrayList<>();
 
 	//bi-directional many-to-one association to UserPermission
 	@Cascade(CascadeType.ALL)
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy = "user")
 	private List<UserPermission> userPermissions = new ArrayList<>();
 
 	//bi-directional many-to-one association to UserGroup_permission
 	@Cascade(CascadeType.ALL)
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy = "user")
 	private List<UserGroupPermission> userGroupPermissions = new ArrayList<>();
 
 	//bi-directional many-to-one association to UserPermission
-	@OneToMany(mappedBy="targetUser")
+	@OneToMany(mappedBy = "targetUser")
 	private List<UserPermission> userPermissionsTargettingThisUser = new ArrayList<>();
 
 	public User() {
@@ -274,7 +274,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
 
 		return userPermissions2;
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
