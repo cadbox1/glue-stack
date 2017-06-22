@@ -32,6 +32,12 @@ class CurrentUserStore {
 		}
 		return JSON.parse(credentialsJSON);
 	}
+
+	@action.bound signOut() {
+		this.user = null;
+		setCredentials();
+		localStorage.removeItem(credentialsKey);
+	}
 }
 
 const currentUserStore = new CurrentUserStore();

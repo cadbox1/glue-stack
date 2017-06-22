@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Drawer, List, ListItem, Divider, Avatar } from "material-ui";
 import store from "./store";
+
+import currentUserStore from "../common/currentUserStore";
 
 const overlaySidebar = false;
 
 @observer class Sidebar extends Component {
+	signOut = () => {
+		currentUserStore.signOut();
+		this.props.history.push("/login");
+	};
+
 	render() {
 		return (
 			<div style={{ width: store.showSidebar ? "256px" : "0px" }}>
@@ -22,7 +29,11 @@ const overlaySidebar = false;
 							primaryTogglesNestedList={true}
 							nestedItems={[
 								<ListItem key={1} primaryText="My Profile" />,
-								<ListItem key={2} primaryText="Sign out" />,
+								<ListItem
+									key={2}
+									primaryText="Sign out"
+									onClick={this.signOut}
+								/>,
 							]}
 						/>
 						<Divider />
@@ -36,4 +47,4 @@ const overlaySidebar = false;
 	}
 }
 
-export default Sidebar;
+export default withRouter(Sidebar);

@@ -16,3 +16,7 @@
 * should i have component focused mobx stores or domain focused stores
 * VSCode is great for java and javascript development
     * needs a java debugger though
+    * tests?
+* minimise modal use 
+    * be consistent with edit component and mobile UI
+    * dated

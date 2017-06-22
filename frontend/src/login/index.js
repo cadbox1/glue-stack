@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import {
 	Card,
 	CardActions,
@@ -26,7 +26,9 @@ class Login extends Component {
 	handleSubmit = evt => {
 		evt.preventDefault();
 		const { email, password } = this.state;
-		currentUser.authenticate(email, password);
+		currentUser
+			.authenticate(email, password)
+			.then(() => this.props.history.push("/"));
 	};
 
 	render() {
@@ -68,4 +70,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default withRouter(Login);
