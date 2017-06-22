@@ -11,7 +11,7 @@ import {
 import RaisedButton from "material-ui/RaisedButton";
 import { Paper, TextField } from "material-ui";
 
-import currentUser from "../common/currentUserStore";
+import currentUser from "common/currentUserStore";
 
 class Login extends Component {
 	constructor(props) {
