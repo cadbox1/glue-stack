@@ -1,24 +1,37 @@
 import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import Sidebar from "../sidebar";
-import Todo from "../todo";
+import { observer } from "mobx-react";
+import Sidebar from "sidebar";
+import Todo from "todo";
+import Login from "login";
+import currentUserStore from "common/currentUserStore";
 
-const Main = () => {
-	const authenticated = true;
-	if (!authenticated) {
-		return <Redirect to="/login" />;
+@observer class Main extends Component {
+	componentDidMount() {
+		currentUserStore.authenticate();
 	}
-	return (
-		<div style={{ display: "flex" }}>
-			<Sidebar />
-			<div style={{ flex: 1 }}>
-				<Switch>
-					<Route path="/todo" component={Todo} />
-					<Route exactly path="/" render={() => <Redirect to="/todo" />} />
-				</Switch>
-			</div>
-		</div>
-	);
-};
+
+	render() {
+		const user = currentUserStore.user;
+		if (!user) {
+			return <Login />;
+		}
+		return user.case({
+			pending: () => <div>Loading...</div>,
+			rejected: error => <Login />,
+			fulfilled: result => (
+				<div style={{ display: "flex" }}>
+					<Sidebar />
+					<div style={{ flex: 1 }}>
+						<Switch>
+							<Route path="/todo" component={Todo} />
+							<Route exactly path="/" render={() => <Redirect to="/todo" />} />
+						</Switch>
+					</div>
+				</div>
+			),
+		});
+	}
+}
 
 export default Main;

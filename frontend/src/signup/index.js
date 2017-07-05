@@ -47,7 +47,7 @@ import OrganisationStore from "../store/OrganisationStore";
 					<Card>
 						<CardTitle
 							title="Signup"
-							subtitle={<Link to="/login">or Login Here</Link>}
+							subtitle={<Link to="/">or Login Here</Link>}
 						/>
 						<form onSubmit={this.handleSubmit}>
 							<CardText>

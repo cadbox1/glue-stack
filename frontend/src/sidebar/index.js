@@ -11,7 +11,6 @@ const overlaySidebar = false;
 @observer class Sidebar extends Component {
 	signOut = () => {
 		currentUserStore.signOut();
-		this.props.history.push("/login");
 	};
 
 	render() {

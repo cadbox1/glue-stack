@@ -1,21 +1,31 @@
 import { action, observable } from "mobx";
+import { fromPromise } from "mobx-utils";
 import axios from "axios";
 import { setCredentials } from "./axiosConfig";
 
 const credentialsKey = "credentials";
 
 class CurrentUserStore {
-	@observable user;
+	@observable user = null;
 
 	@action.bound authenticate(username, password) {
-		return axios
-			.get("authenticate", { auth: { username, password } })
-			.then(result => {
-				this.user = result;
-				setCredentials(username, password);
-				this.saveCredentials(username, password);
-				return result;
-			});
+		if (username == null) {
+			const credentials = this.getCredentials();
+			if (!credentials) {
+				return;
+			}
+			username = credentials.username;
+			password = credentials.password;
+		}
+		this.user = fromPromise(
+			axios
+				.get("authenticate", { auth: { username, password } })
+				.then(result => {
+					setCredentials(username, password);
+					this.saveCredentials(username, password);
+					return result;
+				})
+		);
 	}
 
 	saveCredentials(username, password) {

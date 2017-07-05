@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,11 +25,9 @@ public class TaskScheduleController extends BaseController<TaskSchedule, Integer
 	private TaskScheduleService taskScheduleService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Page<TaskSchedule> findAll(
-			Principal principal,
-			@QuerydslPredicate Predicate predicate,
+	public Page<TaskSchedule> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
 			Pageable pageRequest) {
-		User principalUser = (User) principal;
+		User principalUser = (User) authentication.getPrincipal();
 		return taskScheduleService.findAll(principalUser, predicate, pageRequest);
 	}
 

@@ -26,9 +26,7 @@ class Login extends Component {
 	handleSubmit = evt => {
 		evt.preventDefault();
 		const { email, password } = this.state;
-		currentUser
-			.authenticate(email, password)
-			.then(() => this.props.history.push("/"));
+		currentUser.authenticate(email, password);
 	};
 
 	render() {
