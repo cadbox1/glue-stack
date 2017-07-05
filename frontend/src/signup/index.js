@@ -43,60 +43,62 @@ import OrganisationStore from "../store/OrganisationStore";
 		const { user } = organisation;
 		return (
 			<div className="d-flex align-items-md-center justify-content-center h-100">
-				<Card style={{ maxWidth: "500px" }}>
-					<CardTitle
-						title="Signup"
-						subtitle={<Link to="/login">or Login Here</Link>}
-					/>
-					<form onSubmit={this.handleSubmit}>
-						<CardText>
-							<TextField
-								name="name"
-								value={organisation.name}
-								onChange={this.handleOrganisationInput}
-								floatingLabelText="Organisation *"
-								floatingLabelFixed
-								required
-							/>
-							<TextField
-								name="firstName"
-								value={user.firstName}
-								onChange={this.handleUserInput}
-								floatingLabelText="First Name *"
-								floatingLabelFixed
-								required
-							/>
-							<TextField
-								name="lastName"
-								value={user.lastName}
-								onChange={this.handleUserInput}
-								floatingLabelText="Last Name *"
-								floatingLabelFixed
-								required
-							/>
-							<TextField
-								name="email"
-								value={user.email}
-								onChange={this.handleUserInput}
-								floatingLabelText="Email *"
-								floatingLabelFixed
-								required
-							/>
-							<TextField
-								name="password"
-								value={user.password}
-								onChange={this.handleUserInput}
-								floatingLabelText="Password *"
-								floatingLabelFixed
-								type="password"
-								required
-							/>
-							<CardActions>
-								<RaisedButton label="Signup" primary={true} type="submit" />
-							</CardActions>
-						</CardText>
-					</form>
-				</Card>
+				<div style={{ maxHeight: "100%", maxWidth: "450px" }}>
+					<Card>
+						<CardTitle
+							title="Signup"
+							subtitle={<Link to="/login">or Login Here</Link>}
+						/>
+						<form onSubmit={this.handleSubmit}>
+							<CardText>
+								<TextField
+									name="name"
+									value={organisation.name}
+									onChange={this.handleOrganisationInput}
+									floatingLabelText="Organisation *"
+									floatingLabelFixed
+									required
+								/>
+								<TextField
+									name="firstName"
+									value={user.firstName}
+									onChange={this.handleUserInput}
+									floatingLabelText="First Name *"
+									floatingLabelFixed
+									required
+								/>
+								<TextField
+									name="lastName"
+									value={user.lastName}
+									onChange={this.handleUserInput}
+									floatingLabelText="Last Name *"
+									floatingLabelFixed
+									required
+								/>
+								<TextField
+									name="email"
+									value={user.email}
+									onChange={this.handleUserInput}
+									floatingLabelText="Email *"
+									floatingLabelFixed
+									required
+								/>
+								<TextField
+									name="password"
+									value={user.password}
+									onChange={this.handleUserInput}
+									floatingLabelText="Password *"
+									floatingLabelFixed
+									type="password"
+									required
+								/>
+								<CardActions>
+									<RaisedButton label="Signup" primary={true} type="submit" />
+								</CardActions>
+							</CardText>
+						</form>
+					</Card>
+				</div>
 			</div>
 		);
 	}
