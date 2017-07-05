@@ -10,10 +10,12 @@ import {
 } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
 import { Paper, TextField } from "material-ui";
+import { observer } from "mobx-react";
+import { PENDING } from "mobx-utils";
+import currentUserStore from "common/currentUserStore";
+import RefreshIndicator from "material-ui/RefreshIndicator";
 
-import currentUser from "common/currentUserStore";
-
-class Login extends Component {
+@observer class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { email: "", password: "" };
@@ -26,13 +28,17 @@ class Login extends Component {
 	handleSubmit = evt => {
 		evt.preventDefault();
 		const { email, password } = this.state;
-		currentUser.authenticate(email, password);
+		currentUserStore.authenticate(email, password);
 	};
 
 	render() {
 		const { email, password } = this.state;
+		const user = currentUserStore.user;
 		return (
-			<div className="d-flex align-items-md-center justify-content-center h-100">
+			<div
+				className="d-flex align-items-md-center justify-content-center"
+				style={{ height: "100vh" }}
+			>
 				<div style={{ maxHeight: "100%", maxWidth: "450px" }}>
 					<Card>
 						<CardTitle
@@ -59,7 +65,20 @@ class Login extends Component {
 									required
 								/>
 								<CardActions>
-									<RaisedButton label="Login" primary={true} type="submit" />
+									<RaisedButton
+										label={
+											user && user.state === PENDING
+												? <RefreshIndicator
+														left={0}
+														top={0}
+														size={20}
+														status="loading"
+													/>
+												: "Login"
+										}
+										primary={true}
+										type="submit"
+									/>
 								</CardActions>
 							</CardText>
 						</form>

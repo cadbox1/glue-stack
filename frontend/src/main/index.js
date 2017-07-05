@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { observer } from "mobx-react";
+import { FULFILLED } from "mobx-utils";
 import Sidebar from "sidebar";
 import Todo from "todo";
 import Login from "login";
@@ -13,12 +14,10 @@ import currentUserStore from "common/currentUserStore";
 
 	render() {
 		const user = currentUserStore.user;
-		if (!user) {
+		if (!user || user.state !== FULFILLED) {
 			return <Login />;
 		}
 		return user.case({
-			pending: () => <div>Loading...</div>,
-			rejected: error => <Login />,
 			fulfilled: result => (
 				<div style={{ display: "flex" }}>
 					<Sidebar />
