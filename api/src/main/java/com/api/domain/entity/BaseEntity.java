@@ -33,12 +33,10 @@ public abstract class BaseEntity {
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
 	protected Date createdDate;
 
 	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
 	protected Date modifiedDate;
 
 	public Integer getId() {

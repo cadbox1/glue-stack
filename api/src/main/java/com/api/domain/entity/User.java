@@ -37,6 +37,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@UniqueEmailConstraint
+	@NotBlank
 	@Column(nullable = false, unique = true, length = 255)
 	private String email;
 
