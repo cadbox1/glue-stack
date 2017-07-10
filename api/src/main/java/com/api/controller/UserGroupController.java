@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,20 +27,16 @@ public class UserGroupController extends BaseController<UserGroupBase, Integer> 
 	private UserGroupService userGroupService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Page<UserGroup> findAll(
-			Principal principal,
-			@QuerydslPredicate Predicate predicate,
+	public Page<UserGroup> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
 			Pageable pageRequest) {
-		User principalUser = (User) principal;
+		User principalUser = (User) authentication.getPrincipal();
 		return userGroupService.findAll(principalUser, UserGroup.class, predicate, pageRequest);
 	}
 
 	@RequestMapping(params = "view=fancy", method = RequestMethod.GET)
-	public Page<UserGroupAggregate> findAllFancy(
-			Principal principal,
-			@QuerydslPredicate Predicate predicate,
+	public Page<UserGroupAggregate> findAllFancy(Authentication authentication, @QuerydslPredicate Predicate predicate,
 			Pageable pageRequest) {
-		User principalUser = (User) principal;
+		User principalUser = (User) authentication.getPrincipal();
 		return userGroupService.findAll(principalUser, UserGroupAggregate.class, predicate, pageRequest);
 	}
 }

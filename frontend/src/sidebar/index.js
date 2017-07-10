@@ -8,7 +8,8 @@ import currentUserStore from "../common/currentUserStore";
 
 const overlaySidebar = false;
 
-@observer class Sidebar extends Component {
+@observer
+class Sidebar extends Component {
 	signOut = () => {
 		currentUserStore.signOut();
 	};
@@ -38,6 +39,9 @@ const overlaySidebar = false;
 						<Divider />
 						<Link to="/todo">
 							<ListItem primaryText="Todo" />
+						</Link>
+						<Link to="/tasks">
+							<ListItem primaryText="Tasks" />
 						</Link>
 					</List>
 				</Drawer>

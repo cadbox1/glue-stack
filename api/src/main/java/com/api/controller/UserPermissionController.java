@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,11 +25,9 @@ public class UserPermissionController extends BaseController<UserPermission, Int
 	private UserPermissionService userPermissionService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Page<UserPermission> findAll(
-			Principal principal,
-			@QuerydslPredicate Predicate predicate,
+	public Page<UserPermission> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
 			Pageable pageRequest) {
-		User principalUser = (User) principal;
+		User principalUser = (User) authentication.getPrincipal();
 		return userPermissionService.findAll(principalUser, predicate, pageRequest);
 	}
 

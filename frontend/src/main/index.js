@@ -5,9 +5,11 @@ import { FULFILLED } from "mobx-utils";
 import Sidebar from "sidebar";
 import Todo from "todo";
 import Login from "login";
+import Task from "task";
 import currentUserStore from "common/currentUserStore";
 
-@observer class Main extends Component {
+@observer
+class Main extends Component {
 	componentDidMount() {
 		currentUserStore.authenticate();
 	}
@@ -18,17 +20,17 @@ import currentUserStore from "common/currentUserStore";
 			return <Login />;
 		}
 		return user.case({
-			fulfilled: result => (
+			fulfilled: result =>
 				<div style={{ display: "flex" }}>
 					<Sidebar />
 					<div style={{ flex: 1 }}>
 						<Switch>
 							<Route path="/todo" component={Todo} />
+							<Route path="/tasks" component={Task} />
 							<Route exactly path="/" render={() => <Redirect to="/todo" />} />
 						</Switch>
 					</div>
-				</div>
-			),
+				</div>,
 		});
 	}
 }
