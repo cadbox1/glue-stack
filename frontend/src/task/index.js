@@ -10,7 +10,7 @@ import Item from "./item";
 
 const Task = ({ match }) =>
 	<div className="row no-gutters">
-		<div className="col">
+		<div className="col h-100vh">
 			<AppBar
 				title="Tasks"
 				onLeftIconButtonTouchTap={SidebarStore.toggle}
@@ -26,7 +26,7 @@ const Task = ({ match }) =>
 		</div>
 		<Route
 			path={`${match.path}/:id`}
-			render={props => <Item {...props} className="col" />}
+			render={props => <Item {...props} className="col h-100vh" />}
 		/>
 	</div>;
 

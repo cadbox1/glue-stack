@@ -1,6 +1,8 @@
 package com.api.service;
 
 import com.api.repository.BaseRepository;
+import com.api.domain.entity.BaseOrganisedEntity;
+import com.api.domain.entity.BaseOrganisedEntityInterface;
 import com.api.domain.entity.User;
 import com.api.domain.other.Permission;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.web.context.WebApplicationContext;
 
-
 abstract public class BaseService<T, ID extends Serializable> {
 
 	private ObjectMapper objectMapper;
@@ -27,8 +28,8 @@ abstract public class BaseService<T, ID extends Serializable> {
 	public void init(WebApplicationContext appContext, ObjectMapper objectMapper) {
 		this.objectMapper = objectMapper;
 		this.repositories = new Repositories(appContext);
-		this.defaultEntityClass = (Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
+		this.defaultEntityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
+				.getActualTypeArguments()[0];
 	}
 
 	private <E extends T, F extends BaseRepository<E, ID>> F getRepository(Class<E> entityClass) {
@@ -39,10 +40,7 @@ abstract public class BaseService<T, ID extends Serializable> {
 		return getRepository(this.defaultEntityClass);
 	}
 
-	public <E extends T> Page<E> findAll(
-			User principalUser,
-			Class<E> entityClass,
-			Predicate predicate,
+	public <E extends T> Page<E> findAll(User principalUser, Class<E> entityClass, Predicate predicate,
 			Pageable pageRequest) {
 		BooleanBuilder builder = new BooleanBuilder(predicate);
 		builder.and(getPermissionPredicate(principalUser, Permission.READ));
@@ -54,26 +52,35 @@ abstract public class BaseService<T, ID extends Serializable> {
 		return findAll(principalUser, defaultEntityClass, predicate, pageRequest);
 	}
 
-	public T findOne(ID id) {
+	public T findOne(User principalUser, ID id) {
 		return getDefaultRepository().findOne(id);
 	}
 
-	public T create(T entity) {
+	public T create(User principalUser, T entity) {
+		return save(principalUser, entity);
+	}
+
+	public T update(User principalUser, T entity) {
+		return save(principalUser, entity);
+	}
+
+	public T save(User principalUser, T entity) {
+		if (entity instanceof BaseOrganisedEntity) {
+			BaseOrganisedEntity casted = (BaseOrganisedEntity) entity;
+			casted.setOrganisation(principalUser.getOrganisation());
+			entity = (T) casted;
+		}
 		return getDefaultRepository().save(entity);
 	}
 
-	public T update(T entity) {
-		return getDefaultRepository().save(entity);
-	}
-
-	public Iterable<T> save(Iterable<T> entities) {
+	public Iterable<T> save(User principalUser, Iterable<T> entities) {
 		return getDefaultRepository().save(entities);
 	}
 
-	public T patch(ID id, JsonNode patchedFields) throws IOException {
+	public T patch(User principalUser, ID id, JsonNode patchedFields) throws IOException {
 		T entity = getDefaultRepository().findOne(id);
 		T updatedEntity = objectMapper.readerForUpdating(entity).readValue(patchedFields);
-		return update(updatedEntity);
+		return update(principalUser, updatedEntity);
 	}
 
 	abstract public Predicate getPermissionPredicate(User principalUser, Permission permission);

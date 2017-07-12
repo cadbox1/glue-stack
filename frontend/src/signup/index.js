@@ -10,11 +10,13 @@ import {
 	CardText,
 } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
-import { Paper, TextField } from "material-ui";
+import { Paper } from "material-ui";
+import TextField from "common/TextField";
 
 import OrganisationStore from "../store/OrganisationStore";
 
-@observer class Signup extends Component {
+@observer
+class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.organisation = OrganisationStore.create();
@@ -56,7 +58,6 @@ import OrganisationStore from "../store/OrganisationStore";
 									value={organisation.name}
 									onChange={this.handleOrganisationInput}
 									floatingLabelText="Organisation *"
-									floatingLabelFixed
 									required
 								/>
 								<TextField
@@ -64,7 +65,6 @@ import OrganisationStore from "../store/OrganisationStore";
 									value={user.firstName}
 									onChange={this.handleUserInput}
 									floatingLabelText="First Name *"
-									floatingLabelFixed
 									required
 								/>
 								<TextField
@@ -72,7 +72,6 @@ import OrganisationStore from "../store/OrganisationStore";
 									value={user.lastName}
 									onChange={this.handleUserInput}
 									floatingLabelText="Last Name *"
-									floatingLabelFixed
 									required
 								/>
 								<TextField
@@ -80,7 +79,6 @@ import OrganisationStore from "../store/OrganisationStore";
 									value={user.email}
 									onChange={this.handleUserInput}
 									floatingLabelText="Email *"
-									floatingLabelFixed
 									required
 								/>
 								<TextField
@@ -88,7 +86,6 @@ import OrganisationStore from "../store/OrganisationStore";
 									value={user.password}
 									onChange={this.handleUserInput}
 									floatingLabelText="Password *"
-									floatingLabelFixed
 									type="password"
 									required
 								/>

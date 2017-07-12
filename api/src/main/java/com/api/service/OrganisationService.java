@@ -30,11 +30,11 @@ public class OrganisationService extends BaseService<Organisation, Integer> {
 	}
 
 	@Override
-	public Organisation create(Organisation organisation) {
+	public Organisation create(User user, Organisation organisation) {
 
 		organisation.setStatusID(1);
 
-		User user = organisation.getUsers().get(0);
+		user = organisation.getUsers().get(0);
 
 		user.setOrganisation(organisation);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));

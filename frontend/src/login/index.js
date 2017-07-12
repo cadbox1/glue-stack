@@ -9,13 +9,15 @@ import {
 	CardText,
 } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
-import { Paper, TextField } from "material-ui";
+import { Paper } from "material-ui";
 import { observer } from "mobx-react";
 import { PENDING } from "mobx-utils";
 import currentUserStore from "common/currentUserStore";
+import TextField from "common/TextField";
 import RefreshIndicator from "material-ui/RefreshIndicator";
 
-@observer class Login extends Component {
+@observer
+class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { email: "", password: "" };
@@ -49,7 +51,6 @@ import RefreshIndicator from "material-ui/RefreshIndicator";
 							<CardText>
 								<TextField
 									floatingLabelText="Email *"
-									floatingLabelFixed
 									name="email"
 									value={email}
 									onChange={this.handleInput}
@@ -57,7 +58,6 @@ import RefreshIndicator from "material-ui/RefreshIndicator";
 								/>
 								<TextField
 									floatingLabelText="Password *"
-									floatingLabelFixed
 									type="password"
 									name="password"
 									value={password}
