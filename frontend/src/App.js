@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import injectTapEventPlugin from "react-tap-event-plugin";
@@ -8,7 +8,7 @@ import "./App.css";
 
 injectTapEventPlugin();
 
-const App = () => (
+const App = () =>
 	<HashRouter>
 		<MuiThemeProvider>
 			<Switch>
@@ -16,7 +16,6 @@ const App = () => (
 				<Route path="/" component={Main} />
 			</Switch>
 		</MuiThemeProvider>
-	</HashRouter>
-);
+	</HashRouter>;
 
 export default App;

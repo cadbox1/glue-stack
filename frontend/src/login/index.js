@@ -1,20 +1,13 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import {
-	Card,
-	CardActions,
-	CardHeader,
-	CardMedia,
-	CardTitle,
-	CardText,
-} from "material-ui/Card";
-import RaisedButton from "material-ui/RaisedButton";
-import { Paper } from "material-ui";
+import Card, { CardActions, CardContent } from "material-ui/Card";
+import Typography from "material-ui/Typography";
+import TextField from "common/TextField";
+import { CircularProgress } from "material-ui/Progress";
+import Button from "material-ui/Button";
 import { observer } from "mobx-react";
 import { PENDING } from "mobx-utils";
 import currentUserStore from "common/currentUserStore";
-import TextField from "common/TextField";
-import RefreshIndicator from "material-ui/RefreshIndicator";
 
 @observer
 class Login extends Component {
@@ -24,7 +17,7 @@ class Login extends Component {
 	}
 
 	handleInput = evt => {
-		this.setState({ [evt.currentTarget.name]: evt.currentTarget.value });
+		this.setState({ [evt.target.name]: evt.target.value });
 	};
 
 	handleSubmit = evt => {
@@ -41,46 +34,41 @@ class Login extends Component {
 				className="d-flex align-items-md-center justify-content-center"
 				style={{ height: "100vh" }}
 			>
-				<div style={{ maxHeight: "100%", maxWidth: "450px" }}>
+				<div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
 					<Card>
-						<CardTitle
-							title="Login"
-							subtitle={<Link to="/signup">or Signup Here</Link>}
-						/>
 						<form onSubmit={this.handleSubmit}>
-							<CardText>
+							<CardContent>
+								<Typography type="headline" component="h2">
+									Login
+								</Typography>
+								<Typography type="body1">
+									<Link to="/signup">or Signup Here</Link>
+								</Typography>
 								<TextField
-									floatingLabelText="Email *"
+									label="Email"
 									name="email"
 									value={email}
 									onChange={this.handleInput}
 									required
+									marginForm
 								/>
 								<TextField
-									floatingLabelText="Password *"
+									label="Password"
 									type="password"
 									name="password"
 									value={password}
 									onChange={this.handleInput}
 									required
+									marginForm
 								/>
-								<CardActions>
-									<RaisedButton
-										label={
-											user && user.state === PENDING
-												? <RefreshIndicator
-														left={0}
-														top={0}
-														size={20}
-														status="loading"
-													/>
-												: "Login"
-										}
-										primary={true}
-										type="submit"
-									/>
-								</CardActions>
-							</CardText>
+							</CardContent>
+							<CardActions>
+								<Button raised color="primary" type="submit">
+									{user && user.state === PENDING
+										? <CircularProgress size={15} />
+										: "Login"}
+								</Button>
+							</CardActions>
 						</form>
 					</Card>
 				</div>

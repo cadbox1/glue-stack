@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
-import { Drawer, List, ListItem, Divider, Avatar } from "material-ui";
+import Drawer from "./drawer";
+import List, { ListItem, ListItemText } from "material-ui/List";
+import Divider from "material-ui/Divider";
 import store from "./store";
 
-import currentUserStore from "../common/currentUserStore";
+import currentUserStore from "common/currentUserStore";
 
 const overlaySidebar = false;
 
@@ -23,25 +25,19 @@ class Sidebar extends Component {
 					// onRequestChange={this.setShowSidebar}
 				>
 					<List>
-						<ListItem
-							primaryText="Cadell Christo"
-							leftAvatar={<Avatar src="" />}
-							primaryTogglesNestedList={true}
-							nestedItems={[
-								<ListItem key={1} primaryText="My Profile" />,
-								<ListItem
-									key={2}
-									primaryText="Sign out"
-									onClick={this.signOut}
-								/>,
-							]}
-						/>
+						<ListItem button onClick={this.signOut}>
+							<ListItemText primary="Sign Out" />
+						</ListItem>
 						<Divider />
 						<Link to="/todo">
-							<ListItem primaryText="Todo" />
+							<ListItem button>
+								<ListItemText primary="Me" />
+							</ListItem>
 						</Link>
 						<Link to="/tasks">
-							<ListItem primaryText="Tasks" />
+							<ListItem button>
+								<ListItemText primary="Tasks" />
+							</ListItem>
 						</Link>
 					</List>
 				</Drawer>

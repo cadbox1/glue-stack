@@ -1,5 +1,4 @@
-import { action, observable } from "mobx";
-import uuid from "uuid/v4";
+import { observable } from "mobx";
 
 import User from "./User";
 

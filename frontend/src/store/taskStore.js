@@ -1,11 +1,10 @@
-import { action, observable } from "mobx";
 import axios from "axios";
 
 import Task from "./task";
 
 class TaskStore {
 	create(collection) {
-		return new Task({ store: this, collection });
+		return new Task(this);
 	}
 
 	load(itemId) {

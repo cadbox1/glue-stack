@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { Link, Route } from "react-router-dom";
-import { AppBar } from "material-ui";
-import ContentAdd from "material-ui/svg-icons/content/add";
+import AppBar from "material-ui/AppBar";
+import Toolbar from "material-ui/Toolbar";
+import Typography from "material-ui/Typography";
 import IconButton from "material-ui/IconButton";
+import MenuIcon from "material-ui-icons/Menu";
+import Add from "material-ui-icons/Add";
 import SidebarStore from "sidebar/store";
-import { action, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import { fromPromise } from "mobx-utils";
 import axios from "axios";
@@ -34,17 +37,25 @@ class TaskIndex extends Component {
 					exact={!this.isLargeScreen()}
 					render={props =>
 						<div className="col h-100vh">
-							<AppBar
-								title="Tasks"
-								onLeftIconButtonTouchTap={SidebarStore.toggle}
-								iconElementRight={
+							<AppBar position="static">
+								<Toolbar>
+									<IconButton
+										onClick={SidebarStore.toggle}
+										color="contrast"
+										aria-label="Menu"
+									>
+										<MenuIcon />
+									</IconButton>
+									<Typography type="title" className="mr-auto">
+										Tasks
+									</Typography>
 									<Link to={`${match.path}/create`}>
 										<IconButton>
-											<ContentAdd />
+											<Add />
 										</IconButton>
 									</Link>
-								}
-							/>
+								</Toolbar>
+							</AppBar>
 							<List load={this.load} request={request} />
 						</div>}
 				/>

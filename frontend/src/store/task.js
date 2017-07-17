@@ -1,4 +1,4 @@
-import { action, observable, toJS } from "mobx";
+import { observable, toJS } from "mobx";
 
 class User {
 	@observable id;
@@ -6,8 +6,7 @@ class User {
 	@observable notes;
 	@observable active = true;
 
-	constructor({ store, collection }) {
-		this.collection = this.collection;
+	constructor(store) {
 		this.store = store;
 	}
 
@@ -16,10 +15,7 @@ class User {
 	}
 
 	save() {
-		this.store.save(this);
-		if (this.collection) {
-			this.collection.refresh();
-		}
+		return this.store.save(this);
 	}
 
 	toJS() {

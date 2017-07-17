@@ -1,19 +1,12 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
-import {
-	Card,
-	CardActions,
-	CardHeader,
-	CardMedia,
-	CardTitle,
-	CardText,
-} from "material-ui/Card";
-import RaisedButton from "material-ui/RaisedButton";
-import { Paper } from "material-ui";
+import Card, { CardActions, CardContent } from "material-ui/Card";
+import Typography from "material-ui/Typography";
 import TextField from "common/TextField";
+import Button from "material-ui/Button";
 
-import OrganisationStore from "../store/OrganisationStore";
+import OrganisationStore from "store/OrganisationStore";
 
 @observer
 class Signup extends Component {
@@ -23,11 +16,11 @@ class Signup extends Component {
 	}
 
 	handleOrganisationInput = evt => {
-		this.organisation[evt.currentTarget.name] = evt.currentTarget.value;
+		this.organisation[evt.target.name] = evt.target.value;
 	};
 
 	handleUserInput = evt => {
-		this.organisation.user[evt.currentTarget.name] = evt.currentTarget.value;
+		this.organisation.user[evt.target.name] = evt.target.value;
 	};
 
 	handleSubmit = evt => {
@@ -44,55 +37,67 @@ class Signup extends Component {
 		const { organisation } = this;
 		const { user } = organisation;
 		return (
-			<div className="d-flex align-items-md-center justify-content-center h-100">
-				<div style={{ maxHeight: "100%", maxWidth: "450px" }}>
+			<div
+				className="d-flex align-items-md-center justify-content-center"
+				style={{ height: "100vh" }}
+			>
+				<div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
 					<Card>
-						<CardTitle
-							title="Signup"
-							subtitle={<Link to="/">or Login Here</Link>}
-						/>
 						<form onSubmit={this.handleSubmit}>
-							<CardText>
+							<CardContent>
+								<Typography type="headline" component="h2">
+									Signup
+								</Typography>
+								<Typography type="body1">
+									<Link to="/">or Login Here</Link>
+								</Typography>
 								<TextField
 									name="name"
 									value={organisation.name}
 									onChange={this.handleOrganisationInput}
-									floatingLabelText="Organisation *"
+									label="Organisation"
 									required
+									marginForm
 								/>
 								<TextField
 									name="firstName"
 									value={user.firstName}
 									onChange={this.handleUserInput}
-									floatingLabelText="First Name *"
+									label="First Name"
 									required
+									marginForm
 								/>
 								<TextField
 									name="lastName"
 									value={user.lastName}
 									onChange={this.handleUserInput}
-									floatingLabelText="Last Name *"
+									label="Last Name"
 									required
+									marginForm
 								/>
 								<TextField
 									name="email"
 									value={user.email}
 									onChange={this.handleUserInput}
-									floatingLabelText="Email *"
+									label="Email"
 									required
+									marginForm
 								/>
 								<TextField
 									name="password"
 									value={user.password}
 									onChange={this.handleUserInput}
-									floatingLabelText="Password *"
+									label="Password"
 									type="password"
 									required
+									marginForm
 								/>
-								<CardActions>
-									<RaisedButton label="Signup" primary={true} type="submit" />
-								</CardActions>
-							</CardText>
+							</CardContent>
+							<CardActions>
+								<Button raised color="primary" type="submit">
+									Signup
+								</Button>
+							</CardActions>
 						</form>
 					</Card>
 				</div>

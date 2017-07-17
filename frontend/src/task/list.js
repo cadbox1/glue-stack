@@ -1,15 +1,10 @@
 import React, { Component } from "react";
-import { autorun } from "mobx";
 import { observer } from "mobx-react";
-import { fromPromise } from "mobx-utils";
-import axios from "axios";
-import {
-	Table,
+import Table, {
 	TableBody,
-	TableHeader,
-	TableHeaderColumn,
+	TableCell,
+	TableHead,
 	TableRow,
-	TableRowColumn,
 } from "material-ui/Table";
 
 @observer
@@ -21,25 +16,25 @@ class list extends Component {
 	table(result) {
 		return (
 			<Table>
-				<TableHeader>
+				<TableHead>
 					<TableRow>
-						<TableHeaderColumn>ID</TableHeaderColumn>
-						<TableHeaderColumn>Name</TableHeaderColumn>
-						<TableHeaderColumn>Notes</TableHeaderColumn>
+						<TableCell>ID</TableCell>
+						<TableCell>Name</TableCell>
+						<TableCell>Notes</TableCell>
 					</TableRow>
-				</TableHeader>
+				</TableHead>
 				<TableBody>
 					{result.data.content.map(row =>
 						<TableRow key={row.id}>
-							<TableRowColumn>
+							<TableCell>
 								{row.id}
-							</TableRowColumn>
-							<TableRowColumn>
+							</TableCell>
+							<TableCell>
 								{row.name}
-							</TableRowColumn>
-							<TableRowColumn>
+							</TableCell>
+							<TableCell>
 								{row.notes}
-							</TableRowColumn>
+							</TableCell>
 						</TableRow>
 					)}
 				</TableBody>

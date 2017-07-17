@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Link, Route } from "react-router-dom";
-import { AppBar } from "material-ui";
+import { Link } from "react-router-dom";
+import AppBar from "material-ui/AppBar";
 import IconButton from "material-ui/IconButton";
-import NavigationClose from "material-ui/svg-icons/navigation/close";
+import Close from "material-ui-icons/Close";
 import TextField from "common/TextField";
-import RaisedButton from "material-ui/RaisedButton";
+import Button from "material-ui/Button";
 import Paper from "material-ui/Paper";
+import Toolbar from "material-ui/Toolbar";
+import Typography from "material-ui/Typography";
 
 import TaskStore from "store/taskStore";
 
@@ -27,48 +29,54 @@ class Item extends Component {
 
 	handleSubmit = evt => {
 		evt.preventDefault();
-		this.model.save();
+		this.model.save().then(() => {
+			const { load, history } = this.props;
+			if (load) {
+				load();
+			}
+			history.push("/tasks");
+		});
 	};
 
 	handleUserInput = evt => {
-		this.model[evt.currentTarget.name] = evt.currentTarget.value;
+		this.model[evt.target.name] = evt.target.value;
 	};
 
 	render() {
 		const { className } = this.props;
 		return (
-			<Paper className={className} zDepth={1} rounded={false}>
-				<AppBar
-					showMenuIconButton={false}
-					iconElementRight={
+			<Paper className={className} elevation={1}>
+				<AppBar position="static">
+					<Toolbar>
+						<Typography type="title" className="mr-auto">
+							Create
+						</Typography>
 						<Link to={`/tasks`}>
 							<IconButton>
-								<NavigationClose />
+								<Close />
 							</IconButton>
 						</Link>
-					}
-					title="Create"
-				/>
+					</Toolbar>
+				</AppBar>
 				<form onSubmit={this.handleSubmit} className="container-fluid">
-					<div>
-						<TextField
-							name="name"
-							value={this.model.name}
-							onChange={this.handleUserInput}
-							floatingLabelText="Name *"
-							required
-						/>
-					</div>
-					<div>
-						<TextField
-							name="notes"
-							value={this.model.notes}
-							onChange={this.handleUserInput}
-							floatingLabelText="Notes *"
-							required
-						/>
-					</div>
-					<RaisedButton type="submit" label="Create" primary={true} />
+					<TextField
+						name="name"
+						value={this.model.name}
+						onChange={this.handleUserInput}
+						label="Name"
+						required
+						marginForm
+					/>
+					<TextField
+						name="notes"
+						value={this.model.notes}
+						onChange={this.handleUserInput}
+						label="Notes"
+						marginForm
+					/>
+					<Button raised className="d-block" type="submit" color="primary">
+						Create
+					</Button>
 				</form>
 			</Paper>
 		);
