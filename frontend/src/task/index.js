@@ -6,6 +6,7 @@ import Typography from "material-ui/Typography";
 import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
 import Add from "material-ui-icons/Add";
+import Refresh from "material-ui-icons/Refresh";
 import SidebarStore from "sidebar/store";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
@@ -49,6 +50,9 @@ class TaskIndex extends Component {
 									<Typography type="title" className="mr-auto">
 										Tasks
 									</Typography>
+									<IconButton onClick={this.load}>
+										<Refresh />
+									</IconButton>
 									<Link to={`${match.path}/create`}>
 										<IconButton>
 											<Add />
@@ -56,7 +60,7 @@ class TaskIndex extends Component {
 									</Link>
 								</Toolbar>
 							</AppBar>
-							<List load={this.load} request={request} />
+							<List listURL={match.path} load={this.load} request={request} />
 						</div>}
 				/>
 				<Route

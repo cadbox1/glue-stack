@@ -4,6 +4,7 @@ import TextField from "material-ui/TextField";
 const CustomTextField = props => {
 	return (
 		<TextField
+			className="d-block"
 			inputProps={
 				props.required
 					? { ...props.inputProps, required: true }

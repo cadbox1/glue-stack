@@ -2,8 +2,8 @@ import { observable, toJS } from "mobx";
 
 class User {
 	@observable id;
-	@observable name;
-	@observable notes;
+	@observable name = "";
+	@observable notes = "";
 	@observable active = true;
 
 	constructor(store) {
@@ -11,7 +11,11 @@ class User {
 	}
 
 	load() {
-		this.store.load(this.id);
+		this.store.load(this.id).then(result => {
+			const { name, notes } = result.data;
+			this.name = name;
+			this.notes = notes;
+		});
 	}
 
 	save() {

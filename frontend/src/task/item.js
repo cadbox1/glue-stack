@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { autorun } from "mobx";
+import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 import AppBar from "material-ui/AppBar";
 import IconButton from "material-ui/IconButton";
@@ -11,30 +13,33 @@ import Typography from "material-ui/Typography";
 
 import TaskStore from "store/taskStore";
 
+@observer
 class Item extends Component {
 	constructor(props) {
 		super(props);
 		this.model = TaskStore.create();
-		const id = props.match.params.id;
-		if (id !== "create") {
-			this.model.id = id;
-		}
 	}
 
 	componentDidMount() {
-		if (this.model.id) {
+		autorun(this.load);
+	}
+
+	load = () => {
+		const id = this.props.match.params.id;
+		if (id !== "create") {
+			this.model.id = id;
 			this.model.load();
 		}
-	}
+	};
 
 	handleSubmit = evt => {
 		evt.preventDefault();
-		this.model.save().then(() => {
+		this.model.save().then(result => {
 			const { load, history } = this.props;
 			if (load) {
 				load();
 			}
-			history.push("/tasks");
+			history.push(`/tasks/${result.data.id}`);
 		});
 	};
 
@@ -49,7 +54,7 @@ class Item extends Component {
 				<AppBar position="static">
 					<Toolbar>
 						<Typography type="title" className="mr-auto">
-							Create
+							{this.model.id ? this.model.name : "Create"}
 						</Typography>
 						<Link to={`/tasks`}>
 							<IconButton>
