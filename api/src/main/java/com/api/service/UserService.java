@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by cchristo on 17/03/2017.
  */
 @Service
-@Transactional
 public class UserService extends BaseService<User, Integer> {
 
 	@Autowired
@@ -32,14 +31,6 @@ public class UserService extends BaseService<User, Integer> {
 	@Override
 	public Predicate getPermissionPredicate(User principalUser, Permission permission) {
 		return null; //QUser.user.id.in(userRepository.findAllAuthorisedUserIdsForUser(principalUser.getId()));
-	}
-
-	public Page<User> findAllWithGroups(User principalUser, Predicate predicate, Pageable pageRequest) {
-		Page<User> users = super.findAll(principalUser, predicate, pageRequest);
-		for (User user : users.getContent()) {
-			Hibernate.initialize(user.getUserGroups());
-		}
-		return users;
 	}
 
 	public User save(User user) {

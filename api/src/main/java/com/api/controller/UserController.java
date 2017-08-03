@@ -29,11 +29,4 @@ public class UserController extends BaseController<User, Integer> {
 		return userService.findAll(principalUser, predicate, pageRequest);
 	}
 
-	@RequestMapping(params = "view=fancy", method = RequestMethod.GET)
-	public Page<User> findAllWithGroups(Authentication authentication, @QuerydslPredicate Predicate predicate,
-			Pageable pageRequest) {
-		User principalUser = (User) authentication.getPrincipal();
-		return userService.findAllWithGroups(principalUser, predicate, pageRequest);
-	}
-
 }

@@ -1,10 +1,9 @@
 package com.api.service;
 
-import com.api.repository.BaseRepository;
 import com.api.domain.entity.BaseOrganisedEntity;
-import com.api.domain.entity.BaseOrganisedEntityInterface;
 import com.api.domain.entity.User;
 import com.api.domain.other.Permission;
+import com.api.repository.BaseRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;

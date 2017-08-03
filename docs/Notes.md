@@ -20,3 +20,5 @@
 * minimise modal use 
     * be consistent with edit component and mobile UI
     * dated
+* cupcakes - build mvps
+* react-refetch is good, its api looks off-putting at first with andThen but its not a major api
