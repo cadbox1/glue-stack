@@ -12,12 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by cchristo on 17/03/2017.
@@ -28,12 +25,17 @@ public class UserService extends BaseService<User, Integer> {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Override
 	public Predicate getPermissionPredicate(User principalUser, Permission permission) {
 		return null; //QUser.user.id.in(userRepository.findAllAuthorisedUserIdsForUser(principalUser.getId()));
 	}
 
-	public User save(User user) {
+	@Override
+	public User save(User principalUser, User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		List<User> users = new ArrayList<>();
 		users.add(user);
 		return save(users).iterator().next();
