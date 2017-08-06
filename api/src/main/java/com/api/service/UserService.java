@@ -36,9 +36,7 @@ public class UserService extends BaseService<User, Integer> {
 	@Override
 	public User save(User principalUser, User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		List<User> users = new ArrayList<>();
-		users.add(user);
-		return save(users).iterator().next();
+		return super.save(principalUser, user);
 	}
 
 	public Iterable<User> save(Iterable<User> users) {
