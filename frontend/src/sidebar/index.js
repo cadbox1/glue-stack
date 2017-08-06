@@ -31,7 +31,7 @@ class Sidebar extends Component {
 						<Divider />
 						<Link to="/todo">
 							<ListItem button>
-								<ListItemText primary="Me" />
+								<ListItemText primary="Users" />
 							</ListItem>
 						</Link>
 						<Link to="/tasks">

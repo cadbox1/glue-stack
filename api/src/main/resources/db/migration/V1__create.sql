@@ -61,7 +61,7 @@ CREATE TABLE `task` (
   `organisationId` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   `notes` varchar(255) DEFAULT NULL,
-  `userId` int(11) unsigned NOT NULL,
+  `userId` int(11) DEFAULT NULL,
   `active` bit(1) NOT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime DEFAULT NULL,

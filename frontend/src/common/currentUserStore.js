@@ -8,7 +8,8 @@ const credentialsKey = "credentials";
 class CurrentUserStore {
 	@observable user = null;
 
-	@action.bound authenticate(username, password) {
+	@action.bound
+	authenticate(username, password) {
 		if (username == null) {
 			const credentials = this.getCredentials();
 			if (!credentials) {
@@ -43,7 +44,8 @@ class CurrentUserStore {
 		return JSON.parse(credentialsJSON);
 	}
 
-	@action.bound signOut() {
+	@action.bound
+	signOut() {
 		this.user = null;
 		setCredentials();
 		localStorage.removeItem(credentialsKey);
