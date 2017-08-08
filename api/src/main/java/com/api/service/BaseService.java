@@ -1,10 +1,9 @@
 package com.api.service;
 
-import com.api.repository.BaseRepository;
 import com.api.domain.entity.BaseOrganisedEntity;
-import com.api.domain.entity.BaseOrganisedEntityInterface;
 import com.api.domain.entity.User;
 import com.api.domain.other.Permission;
+import com.api.repository.BaseRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
@@ -12,12 +11,15 @@ import com.querydsl.core.types.Predicate;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.Repositories;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+@Transactional
 abstract public class BaseService<T, ID extends Serializable> {
 
 	private ObjectMapper objectMapper;

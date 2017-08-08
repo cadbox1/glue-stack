@@ -20,3 +20,8 @@
 * minimise modal use 
     * be consistent with edit component and mobile UI
     * dated
+* cupcakes - build mvps
+* react-refetch is good, its api looks off-putting at first with andThen but its not a major api
+    * api is really ugly
+* Baeldung is the best java resource by far.
+* users need a notes field

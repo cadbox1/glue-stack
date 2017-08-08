@@ -1,5 +1,5 @@
-# Big Hammer Stack
-This is the best stack I know how to write. As I learn new things i will update it.
+# Glue Stack
+My stack glued together with lots of well-written libraries demonstrating how to put them all together. I plan on improving it as I learn new concepts and tools.
 
 ## Goals
 * A fast, documented way to get a long term solution

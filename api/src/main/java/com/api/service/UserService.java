@@ -12,10 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,29 +21,23 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by cchristo on 17/03/2017.
  */
 @Service
-@Transactional
 public class UserService extends BaseService<User, Integer> {
 
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Override
 	public Predicate getPermissionPredicate(User principalUser, Permission permission) {
-		return null; //QUser.user.id.in(userRepository.findAllAuthorisedUserIdsForUser(principalUser.getId()));
+		return QUser.user.organisation.id.eq(principalUser.getOrganisation().getId());
 	}
 
-	public Page<User> findAllWithGroups(User principalUser, Predicate predicate, Pageable pageRequest) {
-		Page<User> users = super.findAll(principalUser, predicate, pageRequest);
-		for (User user : users.getContent()) {
-			Hibernate.initialize(user.getUserGroups());
-		}
-		return users;
-	}
-
-	public User save(User user) {
-		List<User> users = new ArrayList<>();
-		users.add(user);
-		return save(users).iterator().next();
+	@Override
+	public User save(User principalUser, User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		return super.save(principalUser, user);
 	}
 
 	public Iterable<User> save(Iterable<User> users) {

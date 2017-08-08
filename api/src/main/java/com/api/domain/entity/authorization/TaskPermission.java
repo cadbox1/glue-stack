@@ -1,8 +1,8 @@
 package com.api.domain.entity.authorization;
 
 import com.api.domain.entity.BaseEntity;
+import com.api.domain.entity.Tag;
 import com.api.domain.entity.Task;
-import com.api.domain.entity.TaskGroup;
 import com.api.domain.entity.User;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -11,17 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
-/**
- * The persistent class for the task_permission database table.
- * 
- */
 @Entity
-@Table(name="task_permission")
-public class TaskPermission extends BaseEntity implements Serializable {
+@Table(name="taskPermission")
+public class TaskPermission extends BaseEntity {
 	private static final long serialVersionUID = 1L;
-
-	private Integer childEntity;
 
 	private Boolean executePermission;
 
@@ -36,13 +29,8 @@ public class TaskPermission extends BaseEntity implements Serializable {
 
 	//bi-directional many-to-one association to TaskGroup
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="userGroupId")
-	private TaskGroup taskGroup1;
-
-	//bi-directional many-to-one association to TaskGroup
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="targetTaskGroupId")
-	private TaskGroup taskGroup2;
+	@JoinColumn(name="targetTagId")
+	private Tag tag;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -50,14 +38,6 @@ public class TaskPermission extends BaseEntity implements Serializable {
 	private User user;
 
 	public TaskPermission() {
-	}
-
-	public Integer getChildEntity() {
-		return this.childEntity;
-	}
-
-	public void setChildEntity(Integer childEntity) {
-		this.childEntity = childEntity;
 	}
 
 	public Boolean getExecute() {
@@ -92,20 +72,36 @@ public class TaskPermission extends BaseEntity implements Serializable {
 		this.task = task;
 	}
 
-	public TaskGroup getTaskGroup1() {
-		return this.taskGroup1;
+	public Boolean getExecutePermission() {
+		return executePermission;
 	}
 
-	public void setTaskGroup1(TaskGroup taskGroup1) {
-		this.taskGroup1 = taskGroup1;
+	public void setExecutePermission(Boolean executePermission) {
+		this.executePermission = executePermission;
 	}
 
-	public TaskGroup getTaskGroup2() {
-		return this.taskGroup2;
+	public Boolean getReadPermission() {
+		return readPermission;
 	}
 
-	public void setTaskGroup2(TaskGroup taskGroup2) {
-		this.taskGroup2 = taskGroup2;
+	public void setReadPermission(Boolean readPermission) {
+		this.readPermission = readPermission;
+	}
+
+	public Boolean getWritePermission() {
+		return writePermission;
+	}
+
+	public void setWritePermission(Boolean writePermission) {
+		this.writePermission = writePermission;
+	}
+
+	public Tag getTag() {
+		return tag;
+	}
+
+	public void setTag(Tag tag) {
+		this.tag = tag;
 	}
 
 	public User getUser() {

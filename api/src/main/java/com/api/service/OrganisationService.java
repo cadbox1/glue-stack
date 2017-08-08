@@ -3,10 +3,8 @@ package com.api.service;
 import com.api.domain.entity.Organisation;
 import com.api.domain.entity.User;
 import com.api.domain.entity.authorization.TaskPermission;
-import com.api.domain.entity.authorization.UserPermission;
 import com.api.domain.other.Permission;
 import com.api.repository.OrganisationRepository;
-import com.api.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,12 +27,11 @@ public class OrganisationService extends BaseService<Organisation, Integer> {
 		return null;
 	}
 
-	@Override
-	public Organisation create(User user, Organisation organisation) {
+	public Organisation create(Organisation organisation) {
 
 		organisation.setStatusID(1);
 
-		user = organisation.getUsers().get(0);
+		User user = organisation.getUsers().get(0);
 
 		user.setOrganisation(organisation);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -44,12 +41,6 @@ public class OrganisationService extends BaseService<Organisation, Integer> {
 		taskPermission.setWrite(true);
 		taskPermission.setExecute(true);
 		user.addTaskPermission(taskPermission);
-
-		UserPermission userPermission = new UserPermission();
-		userPermission.setRead(true);
-		userPermission.setWrite(true);
-		userPermission.setExecute(true);
-		user.addUserPermissions(userPermission);
 
 		return organisationRepository.save(organisation);
 	}

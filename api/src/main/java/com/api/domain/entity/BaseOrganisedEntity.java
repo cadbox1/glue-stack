@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class BaseOrganisedEntity extends BaseEntity implements BaseOrganisedEntityInterface {
+public abstract class BaseOrganisedEntity extends BaseEntity {
     //bi-directional many-to-one association to Organisation
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisationId", nullable = false)

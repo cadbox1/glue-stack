@@ -1,10 +1,9 @@
 package com.api.controller;
 
+import com.api.domain.entity.Tag;
 import com.api.domain.entity.User;
-import com.api.domain.entity.authorization.UserPermission;
-import com.api.service.UserPermissionService;
+import com.api.service.TagService;
 import com.querydsl.core.types.Predicate;
-import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by cchristo on 17/03/2017.
  */
 @RestController
-@RequestMapping("api/userPermissions")
-public class UserPermissionController extends BaseController<UserPermission, Integer> {
+@RequestMapping("api/taskGroups")
+public class TagController extends BaseController<Tag, Integer> {
 
 	@Autowired
-	private UserPermissionService userPermissionService;
+	private TagService tagService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Page<UserPermission> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
-			Pageable pageRequest) {
+	public Page<Tag> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
+							 Pageable pageRequest) {
 		User principalUser = (User) authentication.getPrincipal();
-		return userPermissionService.findAll(principalUser, predicate, pageRequest);
+		return tagService.findAll(principalUser, predicate, pageRequest);
 	}
 
 }

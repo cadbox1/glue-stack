@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { observer } from "mobx-react";
 import { FULFILLED } from "mobx-utils";
 import Sidebar from "sidebar";
-import Todo from "todo";
+import User from "user";
 import Login from "login";
 import Task from "task";
 import currentUserStore from "common/currentUserStore";
@@ -25,9 +25,9 @@ class Main extends Component {
 					<Sidebar />
 					<div style={{ flex: 1 }}>
 						<Switch>
-							<Route path="/todo" component={Todo} />
+							<Route path="/users" component={User} />
 							<Route path="/tasks" component={Task} />
-							<Route exactly path="/" render={() => <Redirect to="/todo" />} />
+							<Route exactly path="/" render={() => <Redirect to="/users" />} />
 						</Switch>
 					</div>
 				</div>,

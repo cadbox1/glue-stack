@@ -1,4 +1,4 @@
-DATABASENAME=hammer
+DATABASENAME=Glue
 
 which -s brew
 if [[ $? != 0 ]] ; then
