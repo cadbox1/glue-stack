@@ -31,9 +31,19 @@ class list extends Component {
 						{findAll.rejected &&
 							<TableRow>
 								<TableCell colSpan="3">
-									<p>
-										{findAll.reason}
-									</p>
+									{findAll.reason
+										? <div>
+												<p>
+													{findAll.reason.error}
+												</p>
+												<p>
+													{findAll.reason.exception}
+												</p>
+												<p>
+													{findAll.reason.message}
+												</p>
+											</div>
+										: <p>Error</p>}
 								</TableCell>
 							</TableRow>}
 						{findAll.value &&
