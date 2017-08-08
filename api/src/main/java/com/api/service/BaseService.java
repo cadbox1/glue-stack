@@ -11,12 +11,15 @@ import com.querydsl.core.types.Predicate;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.Repositories;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+@Transactional
 abstract public class BaseService<T, ID extends Serializable> {
 
 	private ObjectMapper objectMapper;

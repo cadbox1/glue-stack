@@ -15,6 +15,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by cchristo on 17/03/2017.
@@ -30,7 +31,7 @@ public class UserService extends BaseService<User, Integer> {
 
 	@Override
 	public Predicate getPermissionPredicate(User principalUser, Permission permission) {
-		return null; //QUser.user.id.in(userRepository.findAllAuthorisedUserIdsForUser(principalUser.getId()));
+		return QUser.user.organisation.id.eq(principalUser.getOrganisation().getId());
 	}
 
 	@Override
