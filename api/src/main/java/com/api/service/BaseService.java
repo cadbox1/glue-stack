@@ -1,5 +1,6 @@
 package com.api.service;
 
+import com.api.domain.entity.BaseEntity;
 import com.api.domain.entity.BaseOrganisedEntity;
 import com.api.domain.entity.User;
 import com.api.domain.other.Permission;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,15 +23,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 @Transactional
-abstract public class BaseService<T, ID extends Serializable> {
+abstract public class BaseService<T extends BaseEntity, ID extends Serializable> {
 
+	@Autowired
+	private EntityManager entityManager;
+	@Autowired
 	private ObjectMapper objectMapper;
 	private Class<T> defaultEntityClass = null;
 	private Repositories repositories = null;
 
 	@Autowired
-	public void init(WebApplicationContext appContext, ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
+	public void init(WebApplicationContext appContext) {
 		this.repositories = new Repositories(appContext);
 		this.defaultEntityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
 				.getActualTypeArguments()[0];
@@ -66,13 +71,24 @@ abstract public class BaseService<T, ID extends Serializable> {
 		return save(principalUser, entity);
 	}
 
-	public T save(User principalUser, T entity) {
-		if (entity instanceof BaseOrganisedEntity) {
-			BaseOrganisedEntity casted = (BaseOrganisedEntity) entity;
-			casted.setOrganisation(principalUser.getOrganisation());
-			entity = (T) casted;
+	public T save(User principalUser, T newEntity) {
+		T oldEntity = null;
+		if (newEntity.getId() != null) {
+			if (this.entityManager.contains(newEntity)) {
+				entityManager.detach(newEntity);
+			}
+			oldEntity = getDefaultRepository().findOne((ID) newEntity.getId());
 		}
-		return getDefaultRepository().save(entity);
+		return save(principalUser, newEntity, oldEntity);
+	}
+
+	protected T save(User principalUser, T newEntity, T oldEntity) {
+		if (newEntity instanceof BaseOrganisedEntity) {
+			BaseOrganisedEntity casted = (BaseOrganisedEntity) newEntity;
+			casted.setOrganisation(principalUser.getOrganisation());
+			newEntity = (T) casted;
+		}
+		return getDefaultRepository().save(newEntity);
 	}
 
 	public Iterable<T> save(User principalUser, Iterable<T> entities) {

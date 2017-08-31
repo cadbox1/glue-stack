@@ -1,5 +1,6 @@
 package com.api.controller;
 
+import com.api.domain.entity.BaseEntity;
 import com.api.domain.entity.User;
 import com.api.service.BaseService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-public class BaseController<T, ID extends Serializable> {
+public class BaseController<T extends BaseEntity, ID extends Serializable> {
 
 	@Autowired
 	protected BaseService<T, ID> baseService;

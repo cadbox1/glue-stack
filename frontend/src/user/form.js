@@ -17,6 +17,7 @@ class Form extends Component {
 		super(props);
 		this.state = this.defaultState;
 		if (props.match.params.id) {
+			// eslint-disable-next-line
 			this.state.password = undefined;
 		}
 	}

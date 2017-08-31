@@ -1,3 +1,16 @@
+# ************************************************************
+# Sequel Pro SQL dump
+# Version 4541
+#
+# http://www.sequelpro.com/
+# https://github.com/sequelpro/sequelpro
+#
+# Host: localhost (MySQL 5.7.19)
+# Database: Glue
+# Generation Time: 2017-08-31 23:26:38 +0000
+# ************************************************************
+
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -61,7 +74,7 @@ CREATE TABLE `task` (
   `organisationId` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   `notes` varchar(255) DEFAULT NULL,
-  `userId` int(11) DEFAULT NULL,
+  `userId` int(11) unsigned DEFAULT NULL,
   `active` bit(1) NOT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime DEFAULT NULL,
@@ -70,6 +83,20 @@ CREATE TABLE `task` (
   KEY `userId` (`userId`),
   CONSTRAINT `task_ibfk_1` FOREIGN KEY (`organisationId`) REFERENCES `organisation` (`id`),
   CONSTRAINT `task_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table task_tag
+# ------------------------------------------------------------
+
+CREATE TABLE `task_tag` (
+  `taskId` int(11) unsigned NOT NULL,
+  `tagId` int(11) unsigned NOT NULL,
+  KEY `taskId` (`taskId`),
+  KEY `taskGroupId` (`tagId`),
+  CONSTRAINT `task_tag_ibfk_1` FOREIGN KEY (`taskId`) REFERENCES `task` (`id`),
+  CONSTRAINT `task_tag_ibfk_2` FOREIGN KEY (`tagId`) REFERENCES `tag` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -95,20 +122,6 @@ CREATE TABLE `taskPermission` (
   CONSTRAINT `taskpermission_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`),
   CONSTRAINT `taskpermission_ibfk_3` FOREIGN KEY (`targetTaskId`) REFERENCES `task` (`id`),
   CONSTRAINT `taskpermission_ibfk_4` FOREIGN KEY (`targetTagId`) REFERENCES `tag` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table task_tag
-# ------------------------------------------------------------
-
-CREATE TABLE `task_tag` (
-  `taskId` int(11) unsigned NOT NULL,
-  `tagId` int(11) unsigned NOT NULL,
-  KEY `taskId` (`taskId`),
-  KEY `taskGroupId` (`tagId`),
-  CONSTRAINT `task_tag_ibfk_1` FOREIGN KEY (`taskId`) REFERENCES `task` (`id`),
-  CONSTRAINT `task_tag_ibfk_2` FOREIGN KEY (`tagId`) REFERENCES `tag` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
