@@ -8,7 +8,7 @@ import Table, {
 } from "material-ui/Table";
 import { LinearProgress } from "material-ui/Progress";
 
-class list extends Component {
+class List extends Component {
 	render() {
 		const { findAll, listURL } = this.props;
 		return (
@@ -68,4 +68,4 @@ class list extends Component {
 		);
 	}
 }
-export default list;
+export default List;

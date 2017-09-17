@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 import Table, {
 	TableBody,
@@ -9,14 +8,9 @@ import Table, {
 } from "material-ui/Table";
 import { LinearProgress } from "material-ui/Progress";
 
-@observer
-class list extends Component {
-	componentDidMount() {
-		this.props.load();
-	}
-
+class List extends Component {
 	render() {
-		const { request, listURL } = this.props;
+		const { findAll, listURL } = this.props;
 		return (
 			<div>
 				<Table>
@@ -28,36 +22,50 @@ class list extends Component {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{request &&
-							request.case({
-								rejected: error => <div>Ooops..</div>,
-								pending: () =>
-									<TableRow>
-										<TableCell colSpan="3">
-											<LinearProgress />
-										</TableCell>
-									</TableRow>,
-								fulfilled: result =>
-									result.data.content.map(row =>
-										<TableRow key={row.id}>
-											<TableCell>
-												{row.id}
-											</TableCell>
-											<TableCell>
-												<Link to={`${listURL}/${row.id}`}>
-													{row.name}
-												</Link>
-											</TableCell>
-											<TableCell>
-												{row.notes}
-											</TableCell>
-										</TableRow>
-									),
-							})}
+						{findAll.pending &&
+							<TableRow>
+								<TableCell colSpan="3">
+									<LinearProgress />
+								</TableCell>
+							</TableRow>}
+						{findAll.rejected &&
+							<TableRow>
+								<TableCell colSpan="3">
+									{findAll.reason
+										? <div>
+												<p>
+													{findAll.reason.error}
+												</p>
+												<p>
+													{findAll.reason.exception}
+												</p>
+												<p>
+													{findAll.reason.message}
+												</p>
+											</div>
+										: <p>Error</p>}
+								</TableCell>
+							</TableRow>}
+						{findAll.value &&
+							findAll.value.data.content.map(row =>
+								<TableRow key={row.id}>
+									<TableCell>
+										{row.id}
+									</TableCell>
+									<TableCell>
+										<Link to={`${listURL}/${row.id}`}>
+											{row.name}
+										</Link>
+									</TableCell>
+									<TableCell>
+										{row.notes}
+									</TableCell>
+								</TableRow>
+							)}
 					</TableBody>
 				</Table>
 			</div>
 		);
 	}
 }
-export default list;
+export default List;

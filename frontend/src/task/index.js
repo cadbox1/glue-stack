@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Route } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
 import AppBar from "material-ui/AppBar";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
@@ -8,29 +8,19 @@ import MenuIcon from "material-ui-icons/Menu";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
 import SidebarStore from "sidebar/store";
-import { observable } from "mobx";
-import { observer } from "mobx-react";
-import { fromPromise } from "mobx-utils";
-import axios from "axios";
+import { findAll } from "api/task";
+import { connect } from "api/connector";
 
 import List from "./list";
-import Item from "./item";
+import { Create, Edit } from "./form";
 
-@observer
 class TaskIndex extends Component {
-	@observable request;
-
 	isLargeScreen = (props = this.props) => {
 		return true;
 	};
 
-	load = () => {
-		this.request = fromPromise(axios.get("tasks"));
-	};
-
 	render() {
-		const request = this.request;
-		const { match } = this.props;
+		const { match, findAll } = this.props;
 		return (
 			<div className="row no-gutters">
 				<Route
@@ -50,7 +40,7 @@ class TaskIndex extends Component {
 									<Typography type="title" className="mr-auto">
 										Tasks
 									</Typography>
-									<IconButton onClick={this.load}>
+									<IconButton onClick={findAll.promise}>
 										<Refresh />
 									</IconButton>
 									<Link to={`${match.path}/create`}>
@@ -60,21 +50,37 @@ class TaskIndex extends Component {
 									</Link>
 								</Toolbar>
 							</AppBar>
-							<List listURL={match.path} load={this.load} request={request} />
+							<List listURL={match.path} findAll={findAll} />
 						</div>}
 				/>
-				<Route
-					path={`${match.path}/:id`}
-					render={props =>
-						<Item
-							{...props}
-							className="col h-100vh"
-							load={this.isLargeScreen() ? this.load : undefined}
-						/>}
-				/>
+				<Switch>
+					<Route
+						path={`${match.path}/create`}
+						render={props =>
+							<Create
+								{...props}
+								className="col h-100vh"
+								refreshList={this.isLargeScreen() ? findAll.promise : undefined}
+							/>}
+					/>
+					<Route
+						path={`${match.path}/:id`}
+						render={props =>
+							<Edit
+								{...props}
+								className="col h-100vh"
+								refreshList={this.isLargeScreen() ? findAll.promise : undefined}
+							/>}
+					/>
+				</Switch>
 			</div>
 		);
 	}
 }
 
-export default TaskIndex;
+export default connect({
+	findAll: {
+		params: props => ({}),
+		promise: findAll,
+	},
+})(TaskIndex);

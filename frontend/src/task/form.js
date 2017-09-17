@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { autorun } from "mobx";
-import { observer } from "mobx-react";
+import { findOne, save } from "api/task";
+import { connect } from "api/connector";
 import { Link } from "react-router-dom";
 import AppBar from "material-ui/AppBar";
 import IconButton from "material-ui/IconButton";
@@ -10,51 +10,56 @@ import Button from "material-ui/Button";
 import Paper from "material-ui/Paper";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
+import { CircularProgress } from "material-ui/Progress";
 
-import TaskStore from "store/taskStore";
-
-@observer
-class Item extends Component {
+class Form extends Component {
 	constructor(props) {
 		super(props);
-		this.model = TaskStore.create();
+		this.state = this.defaultState;
 	}
+
+	defaultState = {
+		id: null,
+		name: "",
+		notes: "",
+		user: null,
+	};
 
 	componentDidMount() {
-		autorun(this.load);
-	}
-
-	load = () => {
-		const id = this.props.match.params.id;
-		if (id !== "create") {
-			this.model.id = id;
-			this.model.load();
+		if (this.props.findOne) {
+			this.props.findOne.subscribe(value => {
+				const { id, name, notes } = value.data;
+				this.setState({ id, name, notes });
+			});
 		}
-	};
+	}
 
 	handleSubmit = evt => {
 		evt.preventDefault();
-		this.model.save().then(result => {
-			const { load, history } = this.props;
-			if (load) {
-				load();
+		const { save, refreshList, history } = this.props;
+		save.promise(this.state).then(result => {
+			if (refreshList) {
+				refreshList();
 			}
-			history.push(`/tasks/${result.data.id}`);
+			if (!this.state.id) {
+				history.push(`/tasks/${result.data.id}`);
+			}
 		});
 	};
 
-	handleUserInput = evt => {
-		this.model[evt.target.name] = evt.target.value;
+	handleFormInput = evt => {
+		this.setState({ [evt.target.name]: evt.target.value });
 	};
 
 	render() {
+		const { id, name, notes } = this.state;
 		const { className } = this.props;
 		return (
 			<Paper className={className} elevation={1}>
 				<AppBar position="static">
 					<Toolbar>
 						<Typography type="title" className="mr-auto">
-							{this.model.id ? this.model.name : "Create"}
+							{id ? name : "Create"}
 						</Typography>
 						<Link to={`/tasks`}>
 							<IconButton>
@@ -66,21 +71,23 @@ class Item extends Component {
 				<form onSubmit={this.handleSubmit} className="container-fluid">
 					<TextField
 						name="name"
-						value={this.model.name}
-						onChange={this.handleUserInput}
+						value={name}
+						onChange={this.handleFormInput}
 						label="Name"
 						required
 						marginForm
 					/>
 					<TextField
 						name="notes"
-						value={this.model.notes}
-						onChange={this.handleUserInput}
+						value={notes}
+						onChange={this.handleFormInput}
 						label="Notes"
 						marginForm
 					/>
 					<Button raised className="d-block" type="submit" color="primary">
-						Create
+						{save.pending
+							? <CircularProgress size={15} />
+							: id ? "Save" : "Create"}
 					</Button>
 				</form>
 			</Paper>
@@ -88,4 +95,13 @@ class Item extends Component {
 	}
 }
 
-export default Item;
+export default Form;
+
+export const Create = connect({ save: { promise: save } })(Form);
+
+export const Edit = connect({
+	findOne: {
+		params: props => props.match.params.id,
+		promise: findOne,
+	},
+})(Create);
