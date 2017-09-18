@@ -25,13 +25,13 @@ My stack glued together with lots of well-written libraries demonstrating how to
     * SES + S3 + Cloudfront = $10
 * Database
     * MySQL (Aurora)
-* Backend
+* API
     * Java
     * Spring-Boot
     * Spring-Data-JPA
     * Hibernate
     * Spring-Security
-* Frontend
+* UI
     * React
     * React-Router-V4
     * Mobx
