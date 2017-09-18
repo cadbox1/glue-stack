@@ -1,7 +1,8 @@
 import React from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import injectTapEventPlugin from "react-tap-event-plugin";
+import { history } from "common/history";
 import Signup from "./signup";
 import Main from "./main";
 import "./App.css";
@@ -9,13 +10,13 @@ import "./App.css";
 injectTapEventPlugin();
 
 const App = () =>
-	<HashRouter>
+	<Router history={history}>
 		<MuiThemeProvider>
 			<Switch>
 				<Route path="/signup" component={Signup} />
 				<Route path="/" component={Main} />
 			</Switch>
 		</MuiThemeProvider>
-	</HashRouter>;
+	</Router>;
 
 export default App;

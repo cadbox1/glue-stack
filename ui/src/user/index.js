@@ -10,69 +10,68 @@ import Refresh from "material-ui-icons/Refresh";
 import SidebarStore from "sidebar/store";
 import { findAll } from "api/user";
 import { connect } from "api/connector";
+import { renderLevel } from "common/renderLevel";
 
 import List from "./list";
 import { Create, Edit } from "./form";
 
 class UserIndex extends Component {
-	isLargeScreen = (props = this.props) => {
-		return true;
-	};
-
 	render() {
 		const { match, findAll } = this.props;
+
 		return (
 			<div className="row no-gutters">
-				<Route
-					path={`${match.path}`}
-					exact={!this.isLargeScreen()}
-					render={props =>
-						<div className="col h-100vh">
-							<AppBar position="static">
-								<Toolbar>
-									<IconButton
-										onClick={SidebarStore.toggle}
-										color="contrast"
-										aria-label="Menu"
-									>
-										<MenuIcon />
-									</IconButton>
-									<Typography type="title" className="mr-auto">
-										Users
-									</Typography>
-									<IconButton onClick={findAll.promise}>
-										<Refresh />
-									</IconButton>
-									<Link to={`${match.path}/create`}>
-										<IconButton>
-											<Add />
+				{renderLevel(1) &&
+					<Route
+						path={`${match.path}`}
+						render={props =>
+							<div className="col h-100vh">
+								<AppBar position="static">
+									<Toolbar>
+										<IconButton
+											onClick={SidebarStore.toggle}
+											color="contrast"
+											aria-label="Menu"
+										>
+											<MenuIcon />
 										</IconButton>
-									</Link>
-								</Toolbar>
-							</AppBar>
-							<List listURL={match.path} findAll={findAll} />
-						</div>}
-				/>
-				<Switch>
-					<Route
-						path={`${match.path}/create`}
-						render={props =>
-							<Create
-								{...props}
-								className="col h-100vh"
-								refreshList={this.isLargeScreen() ? findAll.promise : undefined}
-							/>}
-					/>
-					<Route
-						path={`${match.path}/:id`}
-						render={props =>
-							<Edit
-								{...props}
-								className="col h-100vh"
-								refreshList={this.isLargeScreen() ? findAll.promise : undefined}
-							/>}
-					/>
-				</Switch>
+										<Typography type="title" className="mr-auto">
+											Users
+										</Typography>
+										<IconButton onClick={findAll.promise}>
+											<Refresh />
+										</IconButton>
+										<Link to={`${match.path}/create`}>
+											<IconButton>
+												<Add />
+											</IconButton>
+										</Link>
+									</Toolbar>
+								</AppBar>
+								<List listURL={match.path} findAll={findAll} />
+							</div>}
+					/>}
+				{renderLevel(2) &&
+					<Switch>
+						<Route
+							path={`${match.path}/create`}
+							render={props =>
+								<Create
+									{...props}
+									className="col h-100vh"
+									refreshList={renderLevel(1) ? findAll.promise : undefined}
+								/>}
+						/>
+						<Route
+							path={`${match.path}/:id`}
+							render={props =>
+								<Edit
+									{...props}
+									className="col h-100vh"
+									refreshList={renderLevel(1) ? findAll.promise : undefined}
+								/>}
+						/>
+					</Switch>}
 			</div>
 		);
 	}
