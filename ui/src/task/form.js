@@ -12,7 +12,7 @@ import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
 import { ConnectedUserList } from "user/list";
-import { renderLevel } from "common/renderLevel";
+import { RenderContextView } from "common/renderContextView";
 
 class Form extends Component {
 	constructor(props) {
@@ -59,50 +59,43 @@ class Form extends Component {
 		return (
 			<Paper className={className} elevation={1}>
 				<div className="row no-gutters">
-					{renderLevel(2) &&
-						<div className="col h-100vh">
-							<AppBar position="static">
-								<Toolbar>
-									<Typography type="title" className="mr-auto">
-										{id ? name : "Create"}
-									</Typography>
-									<Link to={`/tasks`}>
-										<IconButton>
-											<Close />
-										</IconButton>
-									</Link>
-								</Toolbar>
-							</AppBar>
-							<form onSubmit={this.handleSubmit} className="container-fluid">
-								<TextField
-									name="name"
-									value={name}
-									onChange={this.handleFormInput}
-									label="Name"
-									required
-									marginForm
-								/>
-								<TextField
-									name="notes"
-									value={notes}
-									onChange={this.handleFormInput}
-									label="Notes"
-									marginForm
-								/>
-								<Link to={`${match.url}/assign`}>Assign</Link>
-								<Button
-									raised
-									className="d-block"
-									type="submit"
-									color="primary"
-								>
-									{save.pending
-										? <CircularProgress size={15} />
-										: id ? "Save" : "Create"}
-								</Button>
-							</form>
-						</div>}
-
+					<RenderContextView className="col h-100vh">
+						<AppBar position="static">
+							<Toolbar>
+								<Typography type="title" className="mr-auto">
+									{id ? name : "Create"}
+								</Typography>
+								<Link to={`/tasks`}>
+									<IconButton>
+										<Close />
+									</IconButton>
+								</Link>
+							</Toolbar>
+						</AppBar>
+						<form onSubmit={this.handleSubmit} className="container-fluid">
+							<TextField
+								name="name"
+								value={name}
+								onChange={this.handleFormInput}
+								label="Name"
+								required
+								marginForm
+							/>
+							<TextField
+								name="notes"
+								value={notes}
+								onChange={this.handleFormInput}
+								label="Notes"
+								marginForm
+							/>
+							<Link to={`${match.url}/assign`}>Assign</Link>
+							<Button raised className="d-block" type="submit" color="primary">
+								{save.pending
+									? <CircularProgress size={15} />
+									: id ? "Save" : "Create"}
+							</Button>
+						</form>
+					</RenderContextView>
 					<Route
 						path={`${match.url}/assign`}
 						render={props =>
