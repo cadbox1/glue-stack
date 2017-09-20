@@ -7,6 +7,8 @@ import Table, {
 	TableRow,
 } from "material-ui/Table";
 import { LinearProgress } from "material-ui/Progress";
+import { findAll } from "api/user";
+import { connect } from "api/connector";
 
 class List extends Component {
 	render() {
@@ -68,4 +70,12 @@ class List extends Component {
 		);
 	}
 }
+
+export const ConnectedUserList = connect({
+	findAll: {
+		params: props => ({}),
+		promise: findAll,
+	},
+})(List);
+
 export default List;

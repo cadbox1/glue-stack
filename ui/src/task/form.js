@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { findOne, save } from "api/task";
 import { connect } from "api/connector";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import AppBar from "material-ui/AppBar";
 import IconButton from "material-ui/IconButton";
 import Close from "material-ui-icons/Close";
@@ -11,6 +11,8 @@ import Paper from "material-ui/Paper";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
+import { ConnectedUserList } from "user/list";
+import { renderLevel } from "common/renderLevel";
 
 class Form extends Component {
 	constructor(props) {
@@ -53,43 +55,74 @@ class Form extends Component {
 
 	render() {
 		const { id, name, notes } = this.state;
-		const { className } = this.props;
+		const { className, match } = this.props;
 		return (
 			<Paper className={className} elevation={1}>
-				<AppBar position="static">
-					<Toolbar>
-						<Typography type="title" className="mr-auto">
-							{id ? name : "Create"}
-						</Typography>
-						<Link to={`/tasks`}>
-							<IconButton>
-								<Close />
-							</IconButton>
-						</Link>
-					</Toolbar>
-				</AppBar>
-				<form onSubmit={this.handleSubmit} className="container-fluid">
-					<TextField
-						name="name"
-						value={name}
-						onChange={this.handleFormInput}
-						label="Name"
-						required
-						marginForm
+				<div className="row no-gutters">
+					{renderLevel(2) &&
+						<div className="col h-100vh">
+							<AppBar position="static">
+								<Toolbar>
+									<Typography type="title" className="mr-auto">
+										{id ? name : "Create"}
+									</Typography>
+									<Link to={`/tasks`}>
+										<IconButton>
+											<Close />
+										</IconButton>
+									</Link>
+								</Toolbar>
+							</AppBar>
+							<form onSubmit={this.handleSubmit} className="container-fluid">
+								<TextField
+									name="name"
+									value={name}
+									onChange={this.handleFormInput}
+									label="Name"
+									required
+									marginForm
+								/>
+								<TextField
+									name="notes"
+									value={notes}
+									onChange={this.handleFormInput}
+									label="Notes"
+									marginForm
+								/>
+								<Link to={`${match.url}/assign`}>Assign</Link>
+								<Button
+									raised
+									className="d-block"
+									type="submit"
+									color="primary"
+								>
+									{save.pending
+										? <CircularProgress size={15} />
+										: id ? "Save" : "Create"}
+								</Button>
+							</form>
+						</div>}
+
+					<Route
+						path={`${match.url}/assign`}
+						render={props =>
+							<Paper className="col h-100vh" elevation={1}>
+								<AppBar position="static">
+									<Toolbar>
+										<Typography type="title" className="mr-auto">
+											Assign
+										</Typography>
+										<Link to={match.url}>
+											<IconButton>
+												<Close />
+											</IconButton>
+										</Link>
+									</Toolbar>
+								</AppBar>
+								<ConnectedUserList {...props} />
+							</Paper>}
 					/>
-					<TextField
-						name="notes"
-						value={notes}
-						onChange={this.handleFormInput}
-						label="Notes"
-						marginForm
-					/>
-					<Button raised className="d-block" type="submit" color="primary">
-						{save.pending
-							? <CircularProgress size={15} />
-							: id ? "Save" : "Create"}
-					</Button>
-				</form>
+				</div>
 			</Paper>
 		);
 	}

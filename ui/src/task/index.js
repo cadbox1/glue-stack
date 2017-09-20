@@ -50,27 +50,26 @@ class TaskIndex extends Component {
 								<List listURL={match.path} findAll={findAll} />
 							</div>}
 					/>}
-				{renderLevel(2) &&
-					<Switch>
-						<Route
-							path={`${match.path}/create`}
-							render={props =>
-								<Create
-									{...props}
-									className="col h-100vh"
-									refreshList={renderLevel(1) ? findAll.promise : undefined}
-								/>}
-						/>
-						<Route
-							path={`${match.path}/:id`}
-							render={props =>
-								<Edit
-									{...props}
-									className="col h-100vh"
-									refreshList={renderLevel(1) ? findAll.promise : undefined}
-								/>}
-						/>
-					</Switch>}
+				<Switch>
+					<Route
+						path={`${match.path}/create`}
+						render={props =>
+							<Create
+								{...props}
+								className="col h-100vh"
+								refreshList={renderLevel(1) ? findAll.promise : undefined}
+							/>}
+					/>
+					<Route
+						path={`${match.path}/:id`}
+						render={props =>
+							<Edit
+								{...props}
+								className="col h-100vh"
+								refreshList={renderLevel(1) ? findAll.promise : undefined}
+							/>}
+					/>
+				</Switch>
 			</div>
 		);
 	}
