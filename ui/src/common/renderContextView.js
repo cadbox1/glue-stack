@@ -1,13 +1,20 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 
-let RenderContextView = ({ match, location, children, ...props }) => {
+const shouldRenderContextView = ({ match, location }) => {
 	const isLargeScreen = true;
 	const levels = (location.pathname
 		.replace(match.url, "")
 		.match(new RegExp("/", "g")) || []).length;
 	const maxLevels = isLargeScreen ? 2 : 1;
 	if (0 <= levels - maxLevels) {
+		return false;
+	}
+	return true;
+};
+
+let RenderContextView = ({ match, location, children, ...props }) => {
+	if (!shouldRenderContextView({ match, location })) {
 		return false;
 	}
 	delete props.history;
@@ -22,3 +29,4 @@ let RenderContextView = ({ match, location, children, ...props }) => {
 RenderContextView = withRouter(RenderContextView);
 
 export { RenderContextView };
+export { shouldRenderContextView };

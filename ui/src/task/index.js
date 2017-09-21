@@ -10,14 +10,17 @@ import Refresh from "material-ui-icons/Refresh";
 import SidebarStore from "sidebar/store";
 import { findAll } from "api/task";
 import { connect } from "api/connector";
-import { RenderContextView } from "common/renderContextView";
+import {
+	RenderContextView,
+	shouldRenderContextView,
+} from "common/renderContextView";
 
 import List from "./list";
 import { Create, Edit } from "./form";
 
 class TaskIndex extends Component {
 	render() {
-		const { match, findAll } = this.props;
+		const { match, location, findAll } = this.props;
 		return (
 			<div className="row no-gutters">
 				<RenderContextView className="col h-100vh">
@@ -58,7 +61,11 @@ class TaskIndex extends Component {
 							<Create
 								{...props}
 								className="col h-100vh"
-								refreshList={findAll.promise}
+								refreshList={
+									shouldRenderContextView({ match, location })
+										? findAll.promise
+										: undefined
+								}
 							/>}
 					/>
 					<Route
@@ -67,7 +74,11 @@ class TaskIndex extends Component {
 							<Edit
 								{...props}
 								className="col h-100vh"
-								refreshList={findAll.promise}
+								refreshList={
+									shouldRenderContextView({ match, location })
+										? findAll.promise
+										: undefined
+								}
 							/>}
 					/>
 				</Switch>
