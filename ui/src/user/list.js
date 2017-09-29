@@ -6,13 +6,14 @@ import Table, {
 	TableHead,
 	TableRow,
 } from "material-ui/Table";
+import Button from "material-ui/Button";
 import { LinearProgress } from "material-ui/Progress";
 import { findAll } from "api/user";
 import { connect } from "api/connector";
 
 class List extends Component {
 	render() {
-		const { findAll, listURL } = this.props;
+		const { findAll, listURL, onSelect } = this.props;
 		return (
 			<div>
 				<Table>
@@ -21,18 +22,19 @@ class List extends Component {
 							<TableCell>ID</TableCell>
 							<TableCell>Name</TableCell>
 							<TableCell>Email</TableCell>
+							{onSelect && <TableCell>Select</TableCell>}
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{findAll.pending &&
 							<TableRow>
-								<TableCell colSpan="3">
+								<TableCell colSpan={onSelect ? 4 : 3}>
 									<LinearProgress />
 								</TableCell>
 							</TableRow>}
 						{findAll.rejected &&
 							<TableRow>
-								<TableCell colSpan="3">
+								<TableCell colSpan={onSelect ? 4 : 3}>
 									{findAll.reason
 										? <div>
 												<p>
@@ -62,6 +64,15 @@ class List extends Component {
 									<TableCell>
 										{row.email}
 									</TableCell>
+									{onSelect &&
+										<TableCell>
+											<Button
+												onClick={onSelect.bind(null, row)}
+												color="primary"
+											>
+												Select
+											</Button>
+										</TableCell>}
 								</TableRow>
 							)}
 					</TableBody>

@@ -30,8 +30,8 @@ class Form extends Component {
 	componentDidMount() {
 		if (this.props.findOne) {
 			this.props.findOne.subscribe(value => {
-				const { id, name, notes } = value.data;
-				this.setState({ id, name, notes });
+				const { id, name, notes, user } = value.data;
+				this.setState({ id, name, notes, user });
 			});
 		}
 	}
@@ -39,7 +39,9 @@ class Form extends Component {
 	handleSubmit = evt => {
 		evt.preventDefault();
 		const { save, refreshList, history } = this.props;
-		save.promise(this.state).then(result => {
+		const body = { ...this.state };
+		body.user = { id: body.user.id };
+		save.promise(body).then(result => {
 			if (refreshList) {
 				refreshList();
 			}
@@ -53,8 +55,12 @@ class Form extends Component {
 		this.setState({ [evt.target.name]: evt.target.value });
 	};
 
+	handleSelectUser = user => {
+		this.setState({ user });
+	};
+
 	render() {
-		const { id, name, notes } = this.state;
+		const { id, name, notes, user } = this.state;
 		const { className, match } = this.props;
 		return (
 			<Paper className={className} elevation={1}>
@@ -88,6 +94,10 @@ class Form extends Component {
 								label="Notes"
 								marginForm
 							/>
+							{user &&
+								<p>
+									Assigned: {`${user.firstName} ${user.lastName}`.trim()}
+								</p>}
 							<Link to={`${match.url}/assign`}>Assign</Link>
 							<Button raised className="d-block" type="submit" color="primary">
 								{save.pending
@@ -112,7 +122,10 @@ class Form extends Component {
 										</Link>
 									</Toolbar>
 								</AppBar>
-								<ConnectedUserList {...props} />
+								<ConnectedUserList
+									{...props}
+									onSelect={this.handleSelectUser}
+								/>
 							</Paper>}
 					/>
 				</div>

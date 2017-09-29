@@ -68,7 +68,7 @@ class UserIndex extends Component {
 								refreshList={findAll.promise}
 							/>}
 					/>
-				</Switch>}
+				</Switch>
 			</div>
 		);
 	}
