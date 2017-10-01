@@ -5,11 +5,7 @@ import Typography from "material-ui/Typography";
 import TextField from "common/TextField";
 import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
-import { observer } from "mobx-react";
-import { PENDING } from "mobx-utils";
-import currentUserStore from "common/currentUserStore";
 
-@observer
 class Login extends Component {
 	constructor(props) {
 		super(props);
@@ -23,12 +19,13 @@ class Login extends Component {
 	handleSubmit = evt => {
 		evt.preventDefault();
 		const { email, password } = this.state;
-		currentUserStore.authenticate(email, password);
+		const { authenticate } = this.props;
+		authenticate.promise({ username: email, password });
 	};
 
 	render() {
 		const { email, password } = this.state;
-		const user = currentUserStore.user;
+		const { authenticate } = this.props;
 		return (
 			<div
 				className="d-flex align-items-md-center justify-content-center"
@@ -64,7 +61,7 @@ class Login extends Component {
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">
-									{user && user.state === PENDING
+									{authenticate.pending
 										? <CircularProgress size={15} />
 										: "Login"}
 								</Button>

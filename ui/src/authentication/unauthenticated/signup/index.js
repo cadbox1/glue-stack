@@ -1,41 +1,43 @@
 import React, { Component } from "react";
-import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 import Card, { CardActions, CardContent } from "material-ui/Card";
 import Typography from "material-ui/Typography";
 import TextField from "common/TextField";
 import Button from "material-ui/Button";
+import { save } from "api/organisation";
 
-import OrganisationStore from "store/OrganisationStore";
-
-@observer
 class Signup extends Component {
 	constructor(props) {
 		super(props);
-		this.organisation = OrganisationStore.create();
+		this.state = {
+			name: "",
+			firstName: "",
+			lastName: "",
+			email: "",
+			password: "",
+		};
 	}
 
-	handleOrganisationInput = evt => {
-		this.organisation[evt.target.name] = evt.target.value;
-	};
-
-	handleUserInput = evt => {
-		this.organisation.user[evt.target.name] = evt.target.value;
+	handleFormInput = evt => {
+		this.setState({ [evt.target.name]: evt.target.value });
 	};
 
 	handleSubmit = evt => {
 		evt.preventDefault();
-		this.organisation.save().then(
-			() => this.props.history.push("/"),
-			error => {
-				debugger;
-			}
-		);
+		const { name, firstName, lastName, email, password } = this.state;
+		const body = { name, users: [{ firstName, lastName, email, password }] };
+		save(body)
+			.then(
+				() => this.props.authenticate.promise({ username: email, password }),
+				error => {
+					debugger;
+				}
+			)
+			.then(() => this.props.history.push("/"));
 	};
 
 	render() {
-		const { organisation } = this;
-		const { user } = organisation;
+		const { name, firstName, lastName, email, password } = this.state;
 		return (
 			<div
 				className="d-flex align-items-md-center justify-content-center"
@@ -53,40 +55,40 @@ class Signup extends Component {
 								</Typography>
 								<TextField
 									name="name"
-									value={organisation.name}
-									onChange={this.handleOrganisationInput}
+									value={name}
+									onChange={this.handleFormInput}
 									label="Organisation"
 									required
 									marginForm
 								/>
 								<TextField
 									name="firstName"
-									value={user.firstName}
-									onChange={this.handleUserInput}
+									value={firstName}
+									onChange={this.handleFormInput}
 									label="First Name"
 									required
 									marginForm
 								/>
 								<TextField
 									name="lastName"
-									value={user.lastName}
-									onChange={this.handleUserInput}
+									value={lastName}
+									onChange={this.handleFormInput}
 									label="Last Name"
 									required
 									marginForm
 								/>
 								<TextField
 									name="email"
-									value={user.email}
-									onChange={this.handleUserInput}
+									value={email}
+									onChange={this.handleFormInput}
 									label="Email"
 									required
 									marginForm
 								/>
 								<TextField
 									name="password"
-									value={user.password}
-									onChange={this.handleUserInput}
+									value={password}
+									onChange={this.handleFormInput}
 									label="Password"
 									type="password"
 									required

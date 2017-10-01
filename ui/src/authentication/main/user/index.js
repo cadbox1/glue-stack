@@ -7,7 +7,6 @@ import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
-import SidebarStore from "sidebar/store";
 import { findAll } from "api/user";
 import { connect } from "api/connector";
 
@@ -16,7 +15,7 @@ import { Create, Edit } from "./form";
 
 class UserIndex extends Component {
 	render() {
-		const { match, findAll } = this.props;
+		const { match, findAll, toggleSideBar } = this.props;
 
 		return (
 			<div className="row no-gutters">
@@ -27,7 +26,7 @@ class UserIndex extends Component {
 							<AppBar position="static">
 								<Toolbar>
 									<IconButton
-										onClick={SidebarStore.toggle}
+										onClick={toggleSideBar}
 										color="contrast"
 										aria-label="Menu"
 									>

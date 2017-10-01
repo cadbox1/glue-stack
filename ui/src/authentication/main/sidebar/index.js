@@ -1,34 +1,32 @@
 import React, { Component } from "react";
-import { observer } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 import Drawer from "./drawer";
 import List, { ListItem, ListItemText } from "material-ui/List";
 import Divider from "material-ui/Divider";
-import store from "./store";
-
-import currentUserStore from "common/currentUserStore";
 
 const overlaySidebar = false;
 
-@observer
 class Sidebar extends Component {
-	signOut = () => {
-		currentUserStore.signOut();
-	};
-
 	render() {
+		const { showSideBar } = this.props;
+		const { signOut } = this.props;
 		return (
-			<div style={{ width: store.showSidebar ? "256px" : "0px" }}>
+			<div style={{ width: showSideBar ? "256px" : "0px" }}>
 				<Drawer
-					open={store.showSidebar}
+					open={showSideBar}
 					docked={!overlaySidebar}
 					// onRequestChange={this.setShowSidebar}
 				>
 					<List>
-						<ListItem button onClick={this.signOut}>
+						<ListItem button onClick={signOut}>
 							<ListItemText primary="Sign Out" />
 						</ListItem>
 						<Divider />
+						<Link to="/mytasks">
+							<ListItem button>
+								<ListItemText primary="My Tasks" />
+							</ListItem>
+						</Link>
 						<Link to="/todo">
 							<ListItem button>
 								<ListItemText primary="Users" />

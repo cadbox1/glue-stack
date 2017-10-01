@@ -11,7 +11,7 @@ import Paper from "material-ui/Paper";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
-import { ConnectedUserList } from "user/list";
+import { ConnectedUserList } from "../user/list";
 import { RenderContextView } from "common/renderContextView";
 
 class Form extends Component {
@@ -95,9 +95,13 @@ class Form extends Component {
 								marginForm
 							/>
 							{user &&
-								<p>
-									Assigned: {`${user.firstName} ${user.lastName}`.trim()}
-								</p>}
+								<TextField
+									value={`${user.firstName} ${user.lastName}`.trim()}
+									label="Assigned"
+									className=""
+									disabled
+									marginForm
+								/>}
 							<Link to={`${match.url}/assign`}>Assign</Link>
 							<Button raised className="d-block" type="submit" color="primary">
 								{save.pending

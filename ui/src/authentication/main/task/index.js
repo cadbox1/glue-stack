@@ -7,7 +7,6 @@ import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
-import SidebarStore from "sidebar/store";
 import { findAll } from "api/task";
 import { connect } from "api/connector";
 import {
@@ -20,7 +19,7 @@ import { Create, Edit } from "./form";
 
 class TaskIndex extends Component {
 	render() {
-		const { match, location, findAll } = this.props;
+		const { match, location, findAll, toggleSideBar } = this.props;
 		return (
 			<div className="row no-gutters">
 				<RenderContextView className="col h-100vh">
@@ -31,7 +30,7 @@ class TaskIndex extends Component {
 								<AppBar position="static">
 									<Toolbar>
 										<IconButton
-											onClick={SidebarStore.toggle}
+											onClick={toggleSideBar}
 											color="contrast"
 											aria-label="Menu"
 										>
