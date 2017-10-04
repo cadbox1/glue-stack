@@ -1,13 +1,13 @@
 import React from "react";
 import Drawer from "material-ui/Drawer";
-import { withStyles, createStyleSheet } from "material-ui/styles";
+import { withStyles } from "material-ui/styles";
 
-const styleSheet = createStyleSheet("OverridesClasses", {
+const styles = {
 	paper: {
 		position: "static",
 		width: "256px",
 	},
-});
+};
 
 function OverridesClasses({ classes, children, ...props }) {
 	return (
@@ -22,4 +22,4 @@ function OverridesClasses({ classes, children, ...props }) {
 	);
 }
 
-export default withStyles(styleSheet)(OverridesClasses);
+export default withStyles(styles)(OverridesClasses);

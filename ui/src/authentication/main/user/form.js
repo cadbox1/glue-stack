@@ -84,7 +84,6 @@ class Form extends Component {
 						onChange={this.handleFormInput}
 						label="First Name"
 						required
-						marginForm
 					/>
 					<TextField
 						name="lastName"
@@ -92,7 +91,6 @@ class Form extends Component {
 						onChange={this.handleFormInput}
 						label="Last Name"
 						required
-						marginForm
 					/>
 					<TextField
 						name="email"
@@ -100,25 +98,29 @@ class Form extends Component {
 						onChange={this.handleFormInput}
 						label="Email"
 						required
-						marginForm
 					/>
-					{password !== undefined
-						? <TextField
-								name="password"
-								type="password"
-								value={password}
-								onChange={this.handleFormInput}
-								label="Password"
-								required
-								marginForm
-							/>
-						: <Button type="button" onClick={this.handleResetPassword}>
-								Reset Password
-							</Button>}
+					{password !== undefined ? (
+						<TextField
+							name="password"
+							type="password"
+							value={password}
+							onChange={this.handleFormInput}
+							label="Password"
+							required
+						/>
+					) : (
+						<Button type="button" onClick={this.handleResetPassword}>
+							Reset Password
+						</Button>
+					)}
 					<Button raised className="d-block" type="submit" color="primary">
-						{save.pending
-							? <CircularProgress size={15} />
-							: id ? "Save" : "Create"}
+						{save.pending ? (
+							<CircularProgress size={15} />
+						) : id ? (
+							"Save"
+						) : (
+							"Create"
+						)}
 					</Button>
 				</form>
 			</Paper>

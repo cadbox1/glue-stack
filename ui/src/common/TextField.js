@@ -5,11 +5,14 @@ const CustomTextField = props => {
 	return (
 		<TextField
 			className={props.className || "d-block"}
-			inputProps={
-				props.required
-					? { ...props.inputProps, required: true }
-					: props.inputProps
-			}
+			margin="normal"
+			InputLabelProps={{
+				shrink: true,
+			}}
+			inputProps={{
+				...props.inputProps,
+				required: props.required,
+			}}
 			{...props}
 		/>
 	);

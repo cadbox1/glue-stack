@@ -85,34 +85,36 @@ class Form extends Component {
 								onChange={this.handleFormInput}
 								label="Name"
 								required
-								marginForm
 							/>
 							<TextField
 								name="notes"
 								value={notes}
 								onChange={this.handleFormInput}
 								label="Notes"
-								marginForm
 							/>
-							{user &&
+							{user && (
 								<TextField
 									value={`${user.firstName} ${user.lastName}`.trim()}
 									label="Assigned"
 									className=""
 									disabled
-									marginForm
-								/>}
+								/>
+							)}
 							<Link to={`${match.url}/assign`}>Assign</Link>
 							<Button raised className="d-block" type="submit" color="primary">
-								{save.pending
-									? <CircularProgress size={15} />
-									: id ? "Save" : "Create"}
+								{save.pending ? (
+									<CircularProgress size={15} />
+								) : id ? (
+									"Save"
+								) : (
+									"Create"
+								)}
 							</Button>
 						</form>
 					</RenderContextView>
 					<Route
 						path={`${match.url}/assign`}
-						render={props =>
+						render={props => (
 							<Paper className="col h-100vh" elevation={1}>
 								<AppBar position="static">
 									<Toolbar>
@@ -130,7 +132,8 @@ class Form extends Component {
 									{...props}
 									onSelect={this.handleSelectUser}
 								/>
-							</Paper>}
+							</Paper>
+						)}
 					/>
 				</div>
 			</Paper>

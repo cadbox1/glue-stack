@@ -4,28 +4,28 @@
 	"private": false,
 	"proxy": "http://localhost:8080",
 	"dependencies": {
-		"axios": "^0.16.2",
+		"axios": "0.16.2",
 		"bootstrap": "4.0.0-alpha.6",
-		"history": "^4.6.3",
-		"material-ui": "next",
-		"material-ui-icons": "1.0.0-alpha.19",
-		"react": "^15.6.1",
-		"react-dom": "^15.6.1",
-		"react-router-dom": "4.1.1",
-		"react-tap-event-plugin": "2.0.1",
-		"uuid": "^3.1.0"
+		"history": "4.7.2",
+		"material-ui": "1.0.0-beta.13",
+		"material-ui-icons": "1.0.0-beta.14",
+		"react": "16.0.0",
+		"react-dom": "16.0.0",
+		"react-router-dom": "4.2.2",
+		"react-tap-event-plugin": "3.0.2"
 	},
 	"devDependencies": {
-		"husky": "^0.14.3",
-		"lint-staged": "^4.0.1",
-		"prettier": "^1.5.2",
-		"react-scripts": "^1.0.10"
+		"husky": "0.14.3",
+		"lint-staged": "4.2.3",
+		"prettier": "1.7.4",
+		"react-scripts": "1.0.14"
 	},
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test --env=jsdom",
-		"precommit": "lint-staged"
+		"precommit": "lint-staged",
+		"update": "yarn upgrade-interactive --exact"
 	},
 	"lint-staged": {
 		"gitDir": "../",

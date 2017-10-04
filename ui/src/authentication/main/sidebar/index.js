@@ -4,8 +4,6 @@ import Drawer from "./drawer";
 import List, { ListItem, ListItemText } from "material-ui/List";
 import Divider from "material-ui/Divider";
 
-const overlaySidebar = false;
-
 class Sidebar extends Component {
 	render() {
 		const { showSideBar } = this.props;
@@ -14,7 +12,7 @@ class Sidebar extends Component {
 			<div style={{ width: showSideBar ? "256px" : "0px" }}>
 				<Drawer
 					open={showSideBar}
-					docked={!overlaySidebar}
+					type="persistent"
 					// onRequestChange={this.setShowSidebar}
 				>
 					<List>

@@ -59,7 +59,6 @@ class Signup extends Component {
 									onChange={this.handleFormInput}
 									label="Organisation"
 									required
-									marginForm
 								/>
 								<TextField
 									name="firstName"
@@ -67,7 +66,6 @@ class Signup extends Component {
 									onChange={this.handleFormInput}
 									label="First Name"
 									required
-									marginForm
 								/>
 								<TextField
 									name="lastName"
@@ -75,7 +73,6 @@ class Signup extends Component {
 									onChange={this.handleFormInput}
 									label="Last Name"
 									required
-									marginForm
 								/>
 								<TextField
 									name="email"
@@ -83,7 +80,6 @@ class Signup extends Component {
 									onChange={this.handleFormInput}
 									label="Email"
 									required
-									marginForm
 								/>
 								<TextField
 									name="password"
@@ -92,7 +88,6 @@ class Signup extends Component {
 									label="Password"
 									type="password"
 									required
-									marginForm
 								/>
 							</CardContent>
 							<CardActions>

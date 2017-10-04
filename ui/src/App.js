@@ -1,6 +1,6 @@
 import React from "react";
 import { Router } from "react-router-dom";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import { history } from "common/history";
 import { Authentication } from "./authentication";
@@ -8,11 +8,14 @@ import "./App.css";
 
 injectTapEventPlugin();
 
-const App = () =>
+const theme = createMuiTheme();
+
+const App = () => (
 	<Router history={history}>
-		<MuiThemeProvider>
+		<MuiThemeProvider theme={theme}>
 			<Authentication />
 		</MuiThemeProvider>
-	</Router>;
+	</Router>
+);
 
 export default App;

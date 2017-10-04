@@ -47,7 +47,6 @@ class Login extends Component {
 									value={email}
 									onChange={this.handleInput}
 									required
-									marginForm
 								/>
 								<TextField
 									label="Password"
@@ -56,14 +55,15 @@ class Login extends Component {
 									value={password}
 									onChange={this.handleInput}
 									required
-									marginForm
 								/>
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">
-									{authenticate.pending
-										? <CircularProgress size={15} />
-										: "Login"}
+									{authenticate.pending ? (
+										<CircularProgress size={15} />
+									) : (
+										"Login"
+									)}
 								</Button>
 							</CardActions>
 						</form>
