@@ -19,7 +19,7 @@ class Authentication extends Component {
 		if (!authenticate.fulfilled) {
 			return <Unauthenticated authenticate={authenticate} />;
 		}
-		return <Main signOut={this.signOut} />;
+		return <Main signOut={this.signOut} authenticate={authenticate} />;
 	}
 }
 

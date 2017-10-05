@@ -2,17 +2,11 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Java",
-			"jdkPath": "${env.JAVA_HOME}/bin",
 			"type": "java",
+			"name": "Debug (Launch)",
 			"request": "launch",
-			"stopOnEntry": true,
-			"cwd": "${workspaceRoot}/api/src/main/java",
-			"startupClass": "Application.java",
-			"options": [
-				"-jar",
-				"${workspaceRoot}/api/target/gs-spring-boot-0.1.0.jar"
-			]
+			"mainClass": "com.api.Application",
+			"args": ""
 		}
 	]
 }

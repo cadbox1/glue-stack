@@ -13,6 +13,7 @@ import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
 import { ConnectedUserList } from "../user/list";
 import { RenderContextView } from "common/renderContextView";
+import { TaskStatus } from "common/taskStatus";
 
 class Form extends Component {
 	constructor(props) {
@@ -40,7 +41,10 @@ class Form extends Component {
 		evt.preventDefault();
 		const { save, refreshList, history } = this.props;
 		const body = { ...this.state };
-		body.user = { id: body.user.id };
+		body.statusId = TaskStatus.TODO;
+		if (body.user) {
+			body.user = { id: body.user.id };
+		}
 		save.promise(body).then(result => {
 			if (refreshList) {
 				refreshList();

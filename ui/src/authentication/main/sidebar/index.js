@@ -25,14 +25,14 @@ class Sidebar extends Component {
 								<ListItemText primary="My Tasks" />
 							</ListItem>
 						</Link>
-						<Link to="/todo">
-							<ListItem button>
-								<ListItemText primary="Users" />
-							</ListItem>
-						</Link>
 						<Link to="/tasks">
 							<ListItem button>
 								<ListItemText primary="Tasks" />
+							</ListItem>
+						</Link>
+						<Link to="/users">
+							<ListItem button>
+								<ListItemText primary="Users" />
 							</ListItem>
 						</Link>
 					</List>

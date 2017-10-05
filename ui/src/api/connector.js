@@ -47,10 +47,14 @@ class PromiseState {
 		this.callback = callback;
 	}
 
-	promise(params = this.params) {
+	promise() {
+		const params = [].slice.call(arguments);
+		if (!params[0]) {
+			params[0] = this.params;
+		}
 		this.pending = true;
 		this.updateState();
-		this.currentPromise = this.promiseFunction(params).then(
+		this.currentPromise = this.promiseFunction.apply(this, params).then(
 			result => {
 				this.pending = false;
 				this.rejected = false;
@@ -129,24 +133,12 @@ class Users extends Component {
 				<button onClick={this.handleCreate}>
 					{create.pending ? "Creating..." : "Create"}
 				</button>
-				{create.rejected &&
-					<p>
-						Error: {create.reason}
-					</p>}
-				{findAll.rejected &&
-					<p>
-						Error: {findAll.reason}
-					</p>}
-				<p>
-					{findAll.pending && "Pending..."}
-				</p>
+				{create.rejected && <p>Error: {create.reason}</p>}
+				{findAll.rejected && <p>Error: {findAll.reason}</p>}
+				<p>{findAll.pending && "Pending..."}</p>
 				<ul>
 					{findAll.value &&
-						findAll.value.map(item =>
-							<li key={item.name}>
-								{item.name}
-							</li>
-						)}
+						findAll.value.map(item => <li key={item.name}>{item.name}</li>)}
 				</ul>
 			</div>
 		);

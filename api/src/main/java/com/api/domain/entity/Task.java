@@ -29,6 +29,9 @@ public class Task extends BaseOrganisedEntity {
 	@JoinColumn(name = "userId")
 	private User user;
 
+	@Column(nullable = false)
+	private Integer statusId;
+
 	//bi-directional many-to-many association to TaskGroup
 	@ManyToMany
 	@JoinTable(name = "task_tag", joinColumns = {
@@ -65,6 +68,14 @@ public class Task extends BaseOrganisedEntity {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Integer getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Integer statusId) {
+		this.statusId = statusId;
 	}
 
 	public List<Tag> getTags() {

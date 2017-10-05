@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Sidebar from "./sidebar";
-import User from "./user";
+import { MyTasks } from "./mytasks";
 import Task from "./task";
+import User from "./user";
 
 class Main extends Component {
 	constructor(props) {
@@ -26,16 +27,36 @@ class Main extends Component {
 				<div style={{ flex: 1 }}>
 					<Switch>
 						<Route
-							path="/users"
-							render={props =>
-								<User {...props} toggleSideBar={this.toggleSideBar} />}
+							path="/mytasks"
+							render={props => (
+								<MyTasks
+									{...props}
+									{...this.props}
+									toggleSideBar={this.toggleSideBar}
+								/>
+							)}
 						/>
 						<Route
 							path="/tasks"
-							render={props =>
-								<Task {...props} toggleSideBar={this.toggleSideBar} />}
+							render={props => (
+								<Task
+									{...props}
+									{...this.props}
+									toggleSideBar={this.toggleSideBar}
+								/>
+							)}
 						/>
-						<Route exactly path="/" render={() => <Redirect to="/users" />} />
+						<Route
+							path="/users"
+							render={props => (
+								<User
+									{...props}
+									{...this.props}
+									toggleSideBar={this.toggleSideBar}
+								/>
+							)}
+						/>
+						<Route exactly path="/" render={() => <Redirect to="/mytasks" />} />
 					</Switch>
 				</div>
 			</div>
