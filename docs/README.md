@@ -1,30 +1,17 @@
 # Glue Stack
-My stack glued together with lots of well-written libraries demonstrating how to put them all together. I plan on improving it as I learn new concepts and tools.
+A Multi-Tenant, Multi-User Todo application.
 
-## Goals
-* A fast, documented way to get a long term solution
-* A Todo App with Multi-Tenancy & Permissions
-* Features:
-    * Multi-Tenancy
-    * Fine-grained permissions
-    * Display lists of entities with aggegations
-    * Display single entities
-    * Display lists related to single entities
-    * Create entities
-    * Update entities
-    * Delete entities
+ Organisations can sign up and manage their users' tasks.
 
-## The Stack
-* Infrastructure - $170/month in Sydney
-    * RDS Aurora t2.medium $93
-        * No need for multi-AZ
-    * AWS Elastic Beanstalk
-        * Single EC2 t2.medium $47
-        * ELB $20
-    * VPC
-    * SES + S3 + Cloudfront = $10
+## Why
+* A modern Relational, Java, React example application
+* Solve a common problem
+* A small, living codebase where I can contribute and demonstrate my ideas
+* Complete documentation for professional application development that can teach beginners 
+
+## Tools
 * Database
-    * MySQL (Aurora)
+    * MySQL
 * API
     * Java
     * Spring-Boot
@@ -33,12 +20,21 @@ My stack glued together with lots of well-written libraries demonstrating how to
     * Spring-Security
 * UI
     * React
+    * Create-react-app
     * React-Router-V4
-    * Mobx
-* Application Performance Management
-    * Unknown
-    * New Relic?
+    * Material-UI
 * Version Control
-    * GitLab
-    * Git Flow
+    * Git
+    * Git Town
+* Editors
+    * vscode
+    * Sequel Pro
+* Infrastructure - $170/month in Sydney
+    * RDS Aurora t2.medium $93
+        * No need for multi-AZ
+    * AWS Elastic Beanstalk
+        * Single EC2 t2.medium $47
+        * ELB $20
+    * VPC
+    * SES + S3 + Cloudfront = $10
 
