@@ -1,7 +1,6 @@
 package com.api.domain.entity;
 
 import com.api.domain.entity.authorization.TaskPermission;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -12,32 +11,29 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 
 @Entity
-@Table(name="tag")
+@Table(name = "tag")
 public class Tag extends BaseOrganisedEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(unique = true, nullable = false)
 	private Integer id;
 
-	@Column(nullable=false, length=255)
+	@Column(nullable = false, length = 255)
 	private String name;
 
-	@Column(length=255)
+	@Column(length = 255)
 	private String notes;
 
 	//bi-directional many-to-many association to Task
-	@ManyToMany(mappedBy="tags")
+	@ManyToMany(mappedBy = "tags")
 	private List<Task> tasks;
 
 	//bi-directional many-to-one association to TaskPermission
-	@OneToMany(mappedBy="tag")
+	@OneToMany(mappedBy = "tag")
 	private List<TaskPermission> taskPermissions;
 
 	Tag() {

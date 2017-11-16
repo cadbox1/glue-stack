@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { TableCell, TableRow } from "material-ui/Table";
 import { CircularProgress } from "material-ui/Progress";
 import IconButton from "material-ui/IconButton";
@@ -24,13 +25,18 @@ class ListRow extends Component {
 	};
 
 	render() {
-		const { data, patch } = this.props;
+		const { data, listURL, patch } = this.props;
 		return (
 			<TableRow key={data.id}>
-				<TableCell>{data.name}</TableCell>
+				<TableCell>
+					<Link to={`${listURL}/${data.id}`}>{data.name}</Link>
+				</TableCell>
 				<TableCell>{data.notes}</TableCell>
 				<TableCell>
 					{data.statusId === TaskStatus.TODO ? "To Do" : "Done"}
+				</TableCell>
+				<TableCell>
+					{data.user ? `${data.user.firstName} ${data.user.lastName}` : ""}
 				</TableCell>
 				<TableCell>
 					<IconButton

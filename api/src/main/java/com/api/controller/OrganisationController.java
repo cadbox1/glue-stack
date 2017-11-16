@@ -1,9 +1,9 @@
 package com.api.controller;
 
 import com.api.domain.entity.Organisation;
-import com.api.domain.entity.User;
 import com.api.service.OrganisationService;
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +24,8 @@ public class OrganisationController extends BaseController<Organisation, Integer
 	@Override
 	@RequestMapping(method = RequestMethod.POST)
 	public Organisation create(Authentication authentication, @RequestBody @Valid Organisation entity) {
-		return organisationService.create(entity);
+		Organisation organisation = organisationService.create(entity);
+		organisation.setUsers(null);
+		return organisation;
 	}
 }

@@ -6,16 +6,13 @@ import com.api.domain.entity.User;
 import com.api.domain.other.Permission;
 import com.querydsl.core.types.Predicate;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by cchristo on 17/03/2017.

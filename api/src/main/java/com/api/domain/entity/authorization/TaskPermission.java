@@ -4,7 +4,6 @@ import com.api.domain.entity.BaseEntity;
 import com.api.domain.entity.Tag;
 import com.api.domain.entity.Task;
 import com.api.domain.entity.User;
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -12,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="taskPermission")
+@Table(name = "taskPermission")
 public class TaskPermission extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
@@ -23,18 +22,18 @@ public class TaskPermission extends BaseEntity {
 	private Boolean writePermission;
 
 	//bi-directional many-to-one association to Task
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="targetTaskId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "targetTaskId")
 	private Task task;
 
 	//bi-directional many-to-one association to TaskGroup
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="targetTagId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "targetTagId")
 	private Tag tag;
 
 	//bi-directional many-to-one association to User
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="userId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userId")
 	private User user;
 
 	public TaskPermission() {

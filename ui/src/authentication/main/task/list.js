@@ -12,7 +12,7 @@ import { ListRow } from "./listRow";
 
 class List extends Component {
 	render() {
-		const { findAll } = this.props;
+		const { findAll, listURL } = this.props;
 		return (
 			<div>
 				<Table>
@@ -21,6 +21,7 @@ class List extends Component {
 							<TableCell>Name</TableCell>
 							<TableCell>Notes</TableCell>
 							<TableCell>Status</TableCell>
+							<TableCell>Assigned</TableCell>
 							<TableCell>Actions</TableCell>
 						</TableRow>
 					</TableHead>
@@ -49,7 +50,12 @@ class List extends Component {
 						)}
 						{findAll.value &&
 							findAll.value.data.content.map(row => (
-								<ListRow key={row.id} data={row} findAll={findAll} />
+								<ListRow
+									key={row.id}
+									data={row}
+									findAll={findAll}
+									listURL={listURL}
+								/>
 							))}
 					</TableBody>
 				</Table>

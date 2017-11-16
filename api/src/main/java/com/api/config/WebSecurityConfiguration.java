@@ -17,25 +17,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-	
-	@Autowired CustomUserDetailsService customUserDetailService;
-	
+
+	@Autowired
+	CustomUserDetailsService customUserDetailService;
+
 	@Bean
-	public PasswordEncoder passwordEncoder(){
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customUserDetailService).passwordEncoder(passwordEncoder());
-    }
-	
+	}
+
 	@Override
-    protected void configure(HttpSecurity http) throws Exception {
+	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/organisations").permitAll();
 		http.authorizeRequests().antMatchers("/api/**").fullyAuthenticated();
 		http.httpBasic();
-        http.csrf().disable();
-    }
+		http.csrf().disable();
+	}
 }

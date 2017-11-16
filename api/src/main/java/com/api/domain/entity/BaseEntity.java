@@ -1,7 +1,5 @@
 package com.api.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,7 +21,6 @@ import org.hibernate.annotations.UpdateTimestamp;
  * Created by cchristo on 23/5/17.
  */
 @MappedSuperclass
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class BaseEntity implements Serializable {
 
 	@Id

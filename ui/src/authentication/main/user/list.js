@@ -6,7 +6,8 @@ import Table, {
 	TableHead,
 	TableRow,
 } from "material-ui/Table";
-import Button from "material-ui/Button";
+import IconButton from "material-ui/IconButton";
+import Add from "material-ui-icons/Add";
 import { LinearProgress } from "material-ui/Progress";
 import { findAll } from "api/user";
 import { connect } from "api/connector";
@@ -19,62 +20,52 @@ class List extends Component {
 				<Table>
 					<TableHead>
 						<TableRow>
-							<TableCell>ID</TableCell>
 							<TableCell>Name</TableCell>
 							<TableCell>Email</TableCell>
 							{onSelect && <TableCell>Select</TableCell>}
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{findAll.pending &&
+						{findAll.pending && (
 							<TableRow>
-								<TableCell colSpan={onSelect ? 4 : 3}>
+								<TableCell colSpan={onSelect ? 3 : 2}>
 									<LinearProgress />
 								</TableCell>
-							</TableRow>}
-						{findAll.rejected &&
+							</TableRow>
+						)}
+						{findAll.rejected && (
 							<TableRow>
-								<TableCell colSpan={onSelect ? 4 : 3}>
-									{findAll.reason
-										? <div>
-												<p>
-													{findAll.reason.error}
-												</p>
-												<p>
-													{findAll.reason.exception}
-												</p>
-												<p>
-													{findAll.reason.message}
-												</p>
-											</div>
-										: <p>Error</p>}
+								<TableCell colSpan={onSelect ? 3 : 2}>
+									{findAll.reason ? (
+										<div>
+											<p>{findAll.reason.error}</p>
+											<p>{findAll.reason.exception}</p>
+											<p>{findAll.reason.message}</p>
+										</div>
+									) : (
+										<p>Error</p>
+									)}
 								</TableCell>
-							</TableRow>}
+							</TableRow>
+						)}
 						{findAll.value &&
-							findAll.value.data.content.map(row =>
+							findAll.value.data.content.map(row => (
 								<TableRow key={row.id}>
-									<TableCell>
-										{row.id}
-									</TableCell>
 									<TableCell>
 										<Link to={`${listURL}/${row.id}`}>
 											{row.firstName} {row.lastName}
 										</Link>
 									</TableCell>
-									<TableCell>
-										{row.email}
-									</TableCell>
-									{onSelect &&
+									<TableCell>{row.email}</TableCell>
+									{onSelect && (
 										<TableCell>
-											<Button
-												onClick={onSelect.bind(null, row)}
-												color="primary"
-											>
-												Select
-											</Button>
-										</TableCell>}
+											<IconButton onClick={onSelect.bind(null, row)}>
+												<Add />
+											</IconButton>
+										</TableCell>
+									)}
 								</TableRow>
-							)}
+							))}
 					</TableBody>
 				</Table>
 			</div>

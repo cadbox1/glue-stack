@@ -4,7 +4,6 @@ import com.api.domain.entity.Task;
 import com.api.domain.entity.User;
 import com.api.service.TaskService;
 import com.querydsl.core.types.Predicate;
-import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

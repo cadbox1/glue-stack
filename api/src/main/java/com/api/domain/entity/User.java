@@ -3,7 +3,6 @@ package com.api.domain.entity;
 import com.api.config.UniqueEmailConstraint;
 import com.api.domain.entity.authorization.TaskPermission;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,7 @@ public class User extends BaseOrganisedEntity implements UserDetails {
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@NotBlank
-	@Column(nullable = false, length = 60, columnDefinition="CHAR(60)")
+	@Column(nullable = false, length = 60, columnDefinition = "CHAR(60)")
 	private String password;
 
 	//bi-directional many-to-one association to TaskSchedule
