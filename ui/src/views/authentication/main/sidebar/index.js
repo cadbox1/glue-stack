@@ -19,55 +19,54 @@ class Sidebar extends Component {
 		this.setState({ userMenuOpen: !this.state.userMenuOpen });
 	};
 	render() {
-		const { authenticate, showSideBar, signOut } = this.props;
+		const { authenticate, showSideBar, signOut, temporaryDock } = this.props;
 		const { userMenuOpen } = this.state;
 		const user = authenticate.value.data;
 		return (
-			<div style={{ width: showSideBar ? "256px" : "0px" }}>
-				<Drawer
-					open={showSideBar}
-					type="persistent"
-					// onRequestChange={this.setShowSidebar}
-				>
-					<List style={{ padding: 0 }}>
-						<ListItem button onClick={this.handleClick}>
-							<Avatar style={{ textTransform: "uppercase" }}>
-								{user.firstName[0]}
-							</Avatar>
-							<ListItemText primary={`${user.firstName} ${user.lastName}`} />
-							{userMenuOpen ? <ExpandLess /> : <ExpandMore />}
+			<Drawer
+				open={showSideBar}
+				type={temporaryDock ? "temporary" : "persistent"}
+				style={{ width: showSideBar ? "256px" : "0px" }}
+				onRequestClose={this.props.toggleSideBar}
+			>
+				<List style={{ padding: 0 }}>
+					<ListItem button onClick={this.handleClick}>
+						<Avatar style={{ textTransform: "uppercase" }}>
+							{user.firstName[0]}
+						</Avatar>
+						<ListItemText primary={`${user.firstName} ${user.lastName}`} />
+						{userMenuOpen ? <ExpandLess /> : <ExpandMore />}
+					</ListItem>
+					<Collapse
+						component="li"
+						in={userMenuOpen}
+						transitionDuration="auto"
+						unmountOnExit
+					>
+						<List disablePadding>
+							<ListItem button onClick={signOut}>
+								<ListItemText inset primary="Sign Out" />
+							</ListItem>
+						</List>
+					</Collapse>
+					<Divider />
+					<Link to="/me">
+						<ListItem button>
+							<ListItemText primary="Me" />
 						</ListItem>
-						<Collapse
-							component="li"
-							in={userMenuOpen}
-							transitionDuration="auto"
-							unmountOnExit
-						>
-							<List disablePadding>
-								<ListItem button onClick={signOut}>
-									<ListItemText inset primary="Sign Out" />
-								</ListItem>
-							</List>
-						</Collapse>
-						<Divider />
-						<Link to="/me">
-							<ListItem button>
-								<ListItemText primary="Me" />
-							</ListItem>
-						</Link>
-						<Link to="/tasks">
-							<ListItem button>
-								<ListItemText primary="Tasks" />
-							</ListItem>
-						</Link>
-						<Link to="/users">
-							<ListItem button>
-								<ListItemText primary="Users" />
-							</ListItem>
-						</Link>
-					</List>
-				</Drawer>
-			</div>
+					</Link>
+					<Link to="/tasks">
+						<ListItem button>
+							<ListItemText primary="Tasks" />
+						</ListItem>
+					</Link>
+					<Link to="/users">
+						<ListItem button>
+							<ListItemText primary="Users" />
+						</ListItem>
+					</Link>
+				</List>
+			</Drawer>
 		);
 	}
 }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
+import componentQueries from "react-component-queries";
 import AppBar from "material-ui/AppBar";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
@@ -10,61 +11,52 @@ import Refresh from "material-ui-icons/Refresh";
 import { CircularProgress } from "material-ui/Progress";
 import { findAll } from "api/task";
 import { connect } from "api/connector";
-import {
-	RenderContextView,
-	shouldRenderContextView,
-} from "common/renderContextView";
 
 import List from "./list";
 import { Create, Edit } from "./form";
 
 class TaskIndex extends Component {
 	render() {
-		const { match, location, findAll, toggleSideBar } = this.props;
+		const { match, findAll, toggleSideBar, singleView } = this.props;
 		return (
-			<div className="row no-gutters">
-				<RenderContextView className="col h-100vh">
-					<Route
-						path={`${match.path}`}
-						render={props => (
-							<div>
-								<AppBar position="static">
-									<Toolbar>
-										<IconButton
-											onClick={toggleSideBar}
-											color="contrast"
-											aria-label="Menu"
-										>
-											<MenuIcon />
+			<div className="row no-gutters" style={{ flexWrap: "nowrap" }}>
+				<Route
+					path={`${match.path}`}
+					exact={singleView}
+					render={props => (
+						<div className="col h-100vh">
+							<AppBar position="static">
+								<Toolbar>
+									<IconButton
+										onClick={toggleSideBar}
+										color="contrast"
+										aria-label="Menu"
+									>
+										<MenuIcon />
+									</IconButton>
+									<Typography type="title" color="inherit" className="mr-auto">
+										Tasks
+									</Typography>
+									<IconButton onClick={findAll.call} color="contrast">
+										{findAll.pending ? (
+											<span>
+												<CircularProgress color="inherit" size={14} />
+											</span>
+										) : (
+											<Refresh />
+										)}
+									</IconButton>
+									<Link to={`${match.path}/create`}>
+										<IconButton color="contrast">
+											<Add />
 										</IconButton>
-										<Typography
-											type="title"
-											color="inherit"
-											className="mr-auto"
-										>
-											Tasks
-										</Typography>
-										<IconButton onClick={findAll.call} color="contrast">
-											{findAll.pending ? (
-												<span>
-													<CircularProgress color="inherit" size={14} />
-												</span>
-											) : (
-												<Refresh />
-											)}
-										</IconButton>
-										<Link to={`${match.path}/create`}>
-											<IconButton color="contrast">
-												<Add />
-											</IconButton>
-										</Link>
-									</Toolbar>
-								</AppBar>
-								<List listURL={match.path} findAll={findAll} />
-							</div>
-						)}
-					/>
-				</RenderContextView>
+									</Link>
+								</Toolbar>
+							</AppBar>
+							<List listURL={match.path} findAll={findAll} />
+						</div>
+					)}
+				/>
 				<Switch>
 					<Route
 						path={`${match.path}/create`}
@@ -72,11 +64,7 @@ class TaskIndex extends Component {
 							<Create
 								{...props}
 								className="col h-100vh"
-								refreshList={
-									shouldRenderContextView({ match, location })
-										? findAll.call
-										: undefined
-								}
+								refreshList={singleView ? undefined : findAll.call}
 							/>
 						)}
 					/>
@@ -86,11 +74,7 @@ class TaskIndex extends Component {
 							<Edit
 								{...props}
 								className="col h-100vh"
-								refreshList={
-									shouldRenderContextView({ match, location })
-										? findAll.call
-										: undefined
-								}
+								refreshList={singleView ? undefined : findAll.call}
 							/>
 						)}
 					/>
@@ -100,9 +84,18 @@ class TaskIndex extends Component {
 	}
 }
 
-export default connect({
-	findAll: {
-		params: props => ({}),
-		promise: findAll,
-	},
-})(TaskIndex);
+export default componentQueries({
+	queries: [
+		({ width }) => ({
+			singleView: width < 1000,
+		}),
+	],
+	config: { pure: false },
+})(
+	connect({
+		findAll: {
+			params: props => ({}),
+			promise: findAll,
+		},
+	})(TaskIndex)
+);

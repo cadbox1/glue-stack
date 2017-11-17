@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { findOne, save } from "api/task";
 import { connect } from "api/connector";
-import { Link, Route } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
 import AppBar from "material-ui/AppBar";
 import IconButton from "material-ui/IconButton";
 import Close from "material-ui-icons/Close";
@@ -12,7 +12,6 @@ import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
 import { ConnectedUserList } from "../user/list";
-import { RenderContextView } from "common/renderContextView";
 import { TaskStatus } from "common/taskStatus";
 
 class Form extends Component {
@@ -61,6 +60,7 @@ class Form extends Component {
 
 	handleSelectUser = user => {
 		this.setState({ user });
+		this.props.history.goBack();
 	};
 
 	render() {
@@ -68,57 +68,11 @@ class Form extends Component {
 		const { className, match } = this.props;
 		return (
 			<Paper className={className} elevation={1}>
-				<div className="row no-gutters">
-					<RenderContextView className="col h-100vh">
-						<AppBar position="static">
-							<Toolbar>
-								<Typography type="title" color="inherit" className="mr-auto">
-									{id ? name : "Create"}
-								</Typography>
-								<Link to={`/tasks`}>
-									<IconButton color="contrast">
-										<Close />
-									</IconButton>
-								</Link>
-							</Toolbar>
-						</AppBar>
-						<form onSubmit={this.handleSubmit} className="container-fluid">
-							<TextField
-								name="name"
-								value={name}
-								onChange={this.handleFormInput}
-								label="Name"
-								required
-							/>
-							<TextField
-								name="notes"
-								value={notes}
-								onChange={this.handleFormInput}
-								label="Notes"
-							/>
-
-							<TextField
-								value={user ? `${user.firstName} ${user.lastName}`.trim() : ""}
-								label="Assigned"
-								className=""
-								disabled
-							/>
-							<Link to={`${match.url}/assign`}>Assign</Link>
-							<Button raised className="d-block" type="submit" color="primary">
-								{save.pending ? (
-									<CircularProgress size={15} />
-								) : id ? (
-									"Save"
-								) : (
-									"Create"
-								)}
-							</Button>
-						</form>
-					</RenderContextView>
+				<Switch>
 					<Route
 						path={`${match.url}/assign`}
 						render={props => (
-							<Paper className="col h-100vh" elevation={1}>
+							<div>
 								<AppBar position="static">
 									<Toolbar>
 										<Typography
@@ -126,7 +80,7 @@ class Form extends Component {
 											color="inherit"
 											className="mr-auto"
 										>
-											Assign
+											{`${id ? name : "Create"} > Assign`}
 										</Typography>
 										<Link to={match.url}>
 											<IconButton color="contrast">
@@ -139,10 +93,71 @@ class Form extends Component {
 									{...props}
 									onSelect={this.handleSelectUser}
 								/>
-							</Paper>
+							</div>
 						)}
 					/>
-				</div>
+					<Route
+						render={props => (
+							<div>
+								<AppBar position="static">
+									<Toolbar>
+										<Typography
+											type="title"
+											color="inherit"
+											className="mr-auto"
+										>
+											{id ? name : "Create"}
+										</Typography>
+										<Link to={`/tasks`}>
+											<IconButton color="contrast">
+												<Close />
+											</IconButton>
+										</Link>
+									</Toolbar>
+								</AppBar>
+								<form onSubmit={this.handleSubmit} className="container-fluid">
+									<TextField
+										name="name"
+										value={name}
+										onChange={this.handleFormInput}
+										label="Name"
+										required
+									/>
+									<TextField
+										name="notes"
+										value={notes}
+										onChange={this.handleFormInput}
+										label="Notes"
+									/>
+
+									<TextField
+										value={
+											user ? `${user.firstName} ${user.lastName}`.trim() : ""
+										}
+										label="Assigned"
+										className=""
+										disabled
+									/>
+									<Link to={`${match.url}/assign`}>Assign</Link>
+									<Button
+										raised
+										className="d-block"
+										type="submit"
+										color="primary"
+									>
+										{save.pending ? (
+											<CircularProgress size={15} />
+										) : id ? (
+											"Save"
+										) : (
+											"Create"
+										)}
+									</Button>
+								</form>
+							</div>
+						)}
+					/>
+				</Switch>
 			</Paper>
 		);
 	}

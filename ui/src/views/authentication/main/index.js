@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import componentQueries from "react-component-queries";
 import Sidebar from "./sidebar";
 import { Me } from "./me";
 import Task from "./task";
@@ -9,8 +10,14 @@ class Main extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showSideBar: true,
+			showSideBar: !props.temporaryDock,
 		};
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.temporaryDock !== this.props.temporaryDock) {
+			this.setState({ showSideBar: !nextProps.temporaryDock });
+		}
 	}
 
 	toggleSideBar = evt => {
@@ -19,11 +26,17 @@ class Main extends Component {
 	};
 
 	render() {
-		const { signOut } = this.props;
+		const { signOut, temporaryDock } = this.props;
 		const { showSideBar } = this.state;
 		return (
 			<div style={{ display: "flex" }}>
-				<Sidebar signOut={signOut} showSideBar={showSideBar} {...this.props} />
+				<Sidebar
+					temporaryDock={temporaryDock}
+					signOut={signOut}
+					showSideBar={showSideBar}
+					toggleSideBar={this.toggleSideBar}
+					{...this.props}
+				/>
 				<div style={{ flex: 1 }}>
 					<Switch>
 						<Route
@@ -64,4 +77,13 @@ class Main extends Component {
 	}
 }
 
-export { Main };
+const ConnectedMain = componentQueries({
+	queries: [
+		({ width }) => ({
+			temporaryDock: width < 800,
+		}),
+	],
+	config: { pure: false },
+})(Main);
+
+export { ConnectedMain as Main };

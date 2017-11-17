@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
+import componentQueries from "react-component-queries";
 import AppBar from "material-ui/AppBar";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
@@ -16,12 +17,13 @@ import { Create, Edit } from "./form";
 
 class UserIndex extends Component {
 	render() {
-		const { match, findAll, toggleSideBar } = this.props;
+		const { match, findAll, singleView, toggleSideBar } = this.props;
 
 		return (
 			<div className="row no-gutters">
 				<Route
 					path={`${match.path}`}
+					exact={singleView}
 					render={props => (
 						<div className="col h-100vh">
 							<AppBar position="static">
@@ -63,7 +65,7 @@ class UserIndex extends Component {
 							<Create
 								{...props}
 								className="col h-100vh"
-								refreshList={findAll.call}
+								refreshList={singleView ? undefined : findAll.call}
 							/>
 						)}
 					/>
@@ -73,7 +75,7 @@ class UserIndex extends Component {
 							<Edit
 								{...props}
 								className="col h-100vh"
-								refreshList={findAll.call}
+								refreshList={singleView ? undefined : findAll.call}
 							/>
 						)}
 					/>
@@ -83,9 +85,18 @@ class UserIndex extends Component {
 	}
 }
 
-export default connect({
-	findAll: {
-		params: props => ({}),
-		promise: findAll,
-	},
-})(UserIndex);
+export default componentQueries({
+	queries: [
+		({ width }) => ({
+			singleView: width < 1000,
+		}),
+	],
+	config: { pure: false },
+})(
+	connect({
+		findAll: {
+			params: props => ({}),
+			promise: findAll,
+		},
+	})(UserIndex)
+);
