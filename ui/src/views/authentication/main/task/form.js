@@ -72,11 +72,11 @@ class Form extends Component {
 					<RenderContextView className="col h-100vh">
 						<AppBar position="static">
 							<Toolbar>
-								<Typography type="title" className="mr-auto">
+								<Typography type="title" color="inherit" className="mr-auto">
 									{id ? name : "Create"}
 								</Typography>
 								<Link to={`/tasks`}>
-									<IconButton>
+									<IconButton color="contrast">
 										<Close />
 									</IconButton>
 								</Link>
@@ -121,11 +121,15 @@ class Form extends Component {
 							<Paper className="col h-100vh" elevation={1}>
 								<AppBar position="static">
 									<Toolbar>
-										<Typography type="title" className="mr-auto">
+										<Typography
+											type="title"
+											color="inherit"
+											className="mr-auto"
+										>
 											Assign
 										</Typography>
 										<Link to={match.url}>
-											<IconButton>
+											<IconButton color="contrast">
 												<Close />
 											</IconButton>
 										</Link>

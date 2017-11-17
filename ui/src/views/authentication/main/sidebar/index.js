@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Drawer from "./drawer";
-import List, { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
+import List, { ListItem, ListItemText } from "material-ui/List";
 import Avatar from "material-ui/Avatar";
 import Collapse from "material-ui/transitions/Collapse";
 import ExpandLess from "material-ui-icons/ExpandLess";

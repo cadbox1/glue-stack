@@ -4,7 +4,7 @@ import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import { history } from "common/history";
 import blue from "material-ui/colors/blue";
-import { Authentication } from "./authentication";
+import { Authentication } from "./views/authentication";
 import "./App.css";
 
 injectTapEventPlugin();

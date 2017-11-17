@@ -67,11 +67,11 @@ class Form extends Component {
 			<Paper className={className} elevation={1}>
 				<AppBar position="static">
 					<Toolbar>
-						<Typography type="title" className="mr-auto">
+						<Typography type="title" color="inherit" className="mr-auto">
 							{id ? `${firstName} ${lastName}` : "Create"}
 						</Typography>
 						<Link to={`/users`}>
-							<IconButton>
+							<IconButton color="contrast">
 								<Close />
 							</IconButton>
 						</Link>
