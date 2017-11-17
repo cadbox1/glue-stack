@@ -17,7 +17,7 @@ class PromiseState {
 		this.callback = null;
 
 		this.autoRun = this.autoRun.bind(this);
-		this.promise = this.promise.bind(this);
+		this.call = this.call.bind(this);
 		this.subscribe = this.subscribe.bind(this);
 	}
 
@@ -39,7 +39,7 @@ class PromiseState {
 			// hash is different -> run
 			this.params = params;
 			this.paramsHash = newHash;
-			this.promise();
+			this.call();
 		}
 	}
 
@@ -47,7 +47,7 @@ class PromiseState {
 		this.callback = callback;
 	}
 
-	promise() {
+	call() {
 		const params = [].slice.call(arguments);
 		if (!params[0]) {
 			params[0] = this.params;
@@ -121,8 +121,8 @@ export { connect };
 
 class Users extends Component {
 	handleCreate = () => {
-		this.props.create.promise({ name: "new thing" }).then(result => {
-			this.props.findAll.promise();
+		this.props.create.call({ name: "new thing" }).then(result => {
+			this.props.findAll.call();
 		});
 	};
 

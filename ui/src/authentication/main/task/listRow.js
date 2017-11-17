@@ -13,15 +13,15 @@ class ListRow extends Component {
 	handleDone = () => {
 		const { data, patch, findAll } = this.props;
 		patch
-			.promise(data.id, { statusId: TaskStatus.DONE })
-			.then(() => findAll.promise());
+			.call(data.id, { statusId: TaskStatus.DONE })
+			.then(() => findAll.call());
 	};
 
 	handleUndo = () => {
 		const { data, patch, findAll } = this.props;
 		patch
-			.promise(data.id, { statusId: TaskStatus.TODO })
-			.then(() => findAll.promise());
+			.call(data.id, { statusId: TaskStatus.TODO })
+			.then(() => findAll.call());
 	};
 
 	render() {
@@ -29,7 +29,11 @@ class ListRow extends Component {
 		return (
 			<TableRow key={data.id}>
 				<TableCell>
-					<Link to={`${listURL}/${data.id}`}>{data.name}</Link>
+					{listURL ? (
+						<Link to={`${listURL}/${data.id}`}>{data.name}</Link>
+					) : (
+						data.name
+					)}
 				</TableCell>
 				<TableCell>{data.notes}</TableCell>
 				<TableCell>
@@ -48,7 +52,9 @@ class ListRow extends Component {
 						disabled={patch.pending}
 					>
 						{patch.pending ? (
-							<CircularProgress size={15} />
+							<span>
+								<CircularProgress size={15} />
+							</span>
 						) : data.statusId === TaskStatus.TODO ? (
 							<Done />
 						) : (

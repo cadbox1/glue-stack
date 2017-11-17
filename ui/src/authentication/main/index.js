@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Sidebar from "./sidebar";
-import { MyTasks } from "./mytasks";
+import { Me } from "./me";
 import Task from "./task";
 import User from "./user";
 
@@ -23,13 +23,13 @@ class Main extends Component {
 		const { showSideBar } = this.state;
 		return (
 			<div style={{ display: "flex" }}>
-				<Sidebar signOut={signOut} showSideBar={showSideBar} />
+				<Sidebar signOut={signOut} showSideBar={showSideBar} {...this.props} />
 				<div style={{ flex: 1 }}>
 					<Switch>
 						<Route
-							path="/mytasks"
+							path="/me"
 							render={props => (
-								<MyTasks
+								<Me
 									{...props}
 									{...this.props}
 									toggleSideBar={this.toggleSideBar}
@@ -56,7 +56,7 @@ class Main extends Component {
 								/>
 							)}
 						/>
-						<Route exactly path="/" render={() => <Redirect to="/mytasks" />} />
+						<Route exactly path="/" render={() => <Redirect to="/me" />} />
 					</Switch>
 				</div>
 			</div>

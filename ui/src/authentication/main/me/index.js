@@ -5,11 +5,12 @@ import Typography from "material-ui/Typography";
 import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
 import Refresh from "material-ui-icons/Refresh";
+import { CircularProgress } from "material-ui/Progress";
 import { findAll } from "api/task";
 import { connect } from "api/connector";
 import List from "../task/list";
 
-class MyTasks extends Component {
+class Me extends Component {
 	render() {
 		const { findAll, toggleSideBar } = this.props;
 		return (
@@ -23,11 +24,17 @@ class MyTasks extends Component {
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography type="title" className="mr-auto">
-							My Tasks
+						<Typography type="title" color="inherit" className="mr-auto">
+							Me
 						</Typography>
-						<IconButton onClick={findAll.promise}>
-							<Refresh />
+						<IconButton color="contrast" onClick={findAll.call}>
+							{findAll.pending ? (
+								<span>
+									<CircularProgress color="inherit" size={14} />
+								</span>
+							) : (
+								<Refresh />
+							)}
 						</IconButton>
 					</Toolbar>
 				</AppBar>
@@ -37,11 +44,11 @@ class MyTasks extends Component {
 	}
 }
 
-const ConnectedMyTasks = connect({
+const ConnectedMe = connect({
 	findAll: {
 		params: props => ({ userId: props.authenticate.value.data.id }),
 		promise: findAll,
 	},
-})(MyTasks);
+})(Me);
 
-export { ConnectedMyTasks as MyTasks };
+export { ConnectedMe as Me };

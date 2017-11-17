@@ -45,7 +45,7 @@ class Form extends Component {
 		if (body.user) {
 			body.user = { id: body.user.id };
 		}
-		save.promise(body).then(result => {
+		save.call(body).then(result => {
 			if (refreshList) {
 				refreshList();
 			}
@@ -96,14 +96,13 @@ class Form extends Component {
 								onChange={this.handleFormInput}
 								label="Notes"
 							/>
-							{user && (
-								<TextField
-									value={`${user.firstName} ${user.lastName}`.trim()}
-									label="Assigned"
-									className=""
-									disabled
-								/>
-							)}
+
+							<TextField
+								value={user ? `${user.firstName} ${user.lastName}`.trim() : ""}
+								label="Assigned"
+								className=""
+								disabled
+							/>
 							<Link to={`${match.url}/assign`}>Assign</Link>
 							<Button raised className="d-block" type="submit" color="primary">
 								{save.pending ? (

@@ -6,12 +6,12 @@ import { Main } from "./main";
 
 class Authentication extends Component {
 	componentDidMount() {
-		this.props.authenticate.promise();
+		this.props.authenticate.call();
 	}
 
 	signOut = () => {
 		signOut();
-		this.props.authenticate.promise();
+		this.props.authenticate.call();
 	};
 
 	render() {

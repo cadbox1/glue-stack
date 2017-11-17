@@ -20,7 +20,7 @@ class Login extends Component {
 		evt.preventDefault();
 		const { email, password } = this.state;
 		const { authenticate } = this.props;
-		authenticate.promise({ username: email, password });
+		authenticate.call({ username: email, password });
 	};
 
 	render() {

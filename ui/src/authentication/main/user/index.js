@@ -7,6 +7,7 @@ import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
+import { CircularProgress } from "material-ui/Progress";
 import { findAll } from "api/user";
 import { connect } from "api/connector";
 
@@ -21,7 +22,7 @@ class UserIndex extends Component {
 			<div className="row no-gutters">
 				<Route
 					path={`${match.path}`}
-					render={props =>
+					render={props => (
 						<div className="col h-100vh">
 							<AppBar position="static">
 								<Toolbar>
@@ -32,40 +33,49 @@ class UserIndex extends Component {
 									>
 										<MenuIcon />
 									</IconButton>
-									<Typography type="title" className="mr-auto">
+									<Typography color="inherit" type="title" className="mr-auto">
 										Users
 									</Typography>
-									<IconButton onClick={findAll.promise}>
-										<Refresh />
+									<IconButton color="contrast" onClick={findAll.call}>
+										{findAll.pending ? (
+											<span>
+												<CircularProgress color="inherit" size={14} />
+											</span>
+										) : (
+											<Refresh />
+										)}
 									</IconButton>
 									<Link to={`${match.path}/create`}>
-										<IconButton>
+										<IconButton color="contrast">
 											<Add />
 										</IconButton>
 									</Link>
 								</Toolbar>
 							</AppBar>
 							<List listURL={match.path} findAll={findAll} />
-						</div>}
+						</div>
+					)}
 				/>
 				<Switch>
 					<Route
 						path={`${match.path}/create`}
-						render={props =>
+						render={props => (
 							<Create
 								{...props}
 								className="col h-100vh"
-								refreshList={findAll.promise}
-							/>}
+								refreshList={findAll.call}
+							/>
+						)}
 					/>
 					<Route
 						path={`${match.path}/:id`}
-						render={props =>
+						render={props => (
 							<Edit
 								{...props}
 								className="col h-100vh"
-								refreshList={findAll.promise}
-							/>}
+								refreshList={findAll.call}
+							/>
+						)}
 					/>
 				</Switch>
 			</div>

@@ -42,7 +42,7 @@ class Form extends Component {
 	handleSubmit = evt => {
 		evt.preventDefault();
 		const { save, refreshList, history } = this.props;
-		save.promise(this.state).then(result => {
+		save.call(this.state).then(result => {
 			if (refreshList) {
 				refreshList();
 			}

@@ -28,7 +28,7 @@ class Signup extends Component {
 		const body = { name, users: [{ firstName, lastName, email, password }] };
 		save(body)
 			.then(
-				() => this.props.authenticate.promise({ username: email, password }),
+				() => this.props.authenticate.call({ username: email, password }),
 				error => {
 					debugger;
 				}
