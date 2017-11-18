@@ -42,7 +42,7 @@ Organisations can sign up and manage their users' tasks.
     * Git
     * Git Town
 * Editors
-    * vscode
+    * Visual Studio Code (vscode)
     * Sequel Pro
 
 ## Getting Started
@@ -80,7 +80,7 @@ Mac Instructions
     mvn spring-boot:run
     ```
     This will start our Spring Boot Java application which will setup the tables in our database using a tool called Flyway.
-1. The second tab will run our ui (frontend) development server. You don't need this in production.
+1. The second tab will run our ui (frontend) development server. You won't need this in production.
     ```
     cd ui
     yarn
@@ -90,3 +90,45 @@ Mac Instructions
 1. Signup your organisation!
 
 ## Development Environment Setup
+
+1. Sequel Pro (Database) 
+    1. Download [Sequel Pro](https://www.sequelpro.com/)
+    1. Install Sequel Pro
+    1. Open Sequel Pro
+    1. Select Socket as the Connection type
+    1. Name: localhost
+    1. Username: root
+    1. Test Connection
+    1. Save as Favorites
+    1. Connect
+    1. Select the Glue database on the top left dropdown
+    1. Have a look around
+1. Visual Studio Code (vscode)
+    1. Download [vscode](https://code.visualstudio.com/)
+    1. Download these extensions
+        1. [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
+        1. [Git History (git log)](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
+        1. [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+        1. [Reactjs code snippets](https://marketplace.visualstudio.com/items?itemName=xabikos.ReactSnippets)
+    1. Optional but recommended
+        1. [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+        1. [vscode-icons](https://marketplace.visualstudio.com/items?itemName=robertohuertasm.vscode-icons)
+        1. Fira Code font for font ligatures
+            1. go to https://github.com/tonsky/FiraCode#solution
+            1. click download
+            1. extract the zip
+            1. open the ttf folder
+            1. select all the fonts then right click and select open
+    1. Settings (CMD + ,)
+        ```
+        {
+            "editor.minimap.enabled": false,
+            "editor.fontFamily": "Fira Code",
+            "editor.fontLigatures": true,
+            "editor.fontSize": 14,
+            "git.confirmSync": false,
+            "workbench.iconTheme": "vscode-icons",
+            "editor.formatOnSave": true,
+            "git.enableSmartCommit": true,
+        }
+        ```
