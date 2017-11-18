@@ -1,7 +1,5 @@
 # Glue Stack
-A Multi-Tenant, Multi-User Todo application.
-
-Organisations can sign up and manage their users' tasks.
+A multi-tenant, multi-user todo application where organisations can sign up and manage their users' tasks.
 
 ![Screeshot](./Screenshot.png)
 
