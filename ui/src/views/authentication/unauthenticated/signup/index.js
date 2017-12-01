@@ -15,6 +15,7 @@ class Signup extends Component {
 			lastName: "",
 			email: "",
 			password: "",
+			error: "",
 		};
 	}
 
@@ -26,14 +27,23 @@ class Signup extends Component {
 		evt.preventDefault();
 		const { name, firstName, lastName, email, password } = this.state;
 		const body = { name, users: [{ firstName, lastName, email, password }] };
+		this.setState({
+			error: "",
+		});
 		save(body)
-			.then(
-				() => this.props.authenticate.call({ username: email, password }),
-				error => {
-					debugger;
+			.then(() => this.props.authenticate.call({ username: email, password }))
+			.then(() => this.props.history.push("/"))
+			.catch(error => {
+				if(error.response.data.errors[0].code === "UniqueEmailConstraint"){
+					this.setState({
+						error: "That email is already taken",
+					});
+				} else {
+					this.setState({
+						error: "An unknown error occurred",
+					});
 				}
-			)
-			.then(() => this.props.history.push("/"));
+			});
 	};
 
 	render() {
@@ -89,6 +99,7 @@ class Signup extends Component {
 									type="password"
 									required
 								/>
+								<div className="error-text">{this.state.error}</div>
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">

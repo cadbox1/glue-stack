@@ -9,7 +9,7 @@ import Button from "material-ui/Button";
 class Login extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { email: "", password: "" };
+		this.state = { email: "", password: "", error: "" };
 	}
 
 	handleInput = evt => {
@@ -20,7 +20,17 @@ class Login extends Component {
 		evt.preventDefault();
 		const { email, password } = this.state;
 		const { authenticate } = this.props;
-		authenticate.call({ username: email, password });
+		this.setState({
+			error: "",
+		});
+		authenticate
+			.call({ username: email, password })
+			.catch(e => {
+				console.error(e);
+				this.setState({
+					error: "Invalid username or password",
+				})
+			});
 	};
 
 	render() {
@@ -56,6 +66,7 @@ class Login extends Component {
 									onChange={this.handleInput}
 									required
 								/>
+								<div className="error-text">{this.state.error}</div>
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">
