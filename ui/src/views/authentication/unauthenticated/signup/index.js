@@ -6,7 +6,10 @@ import TextField from "common/TextField";
 import Button from "material-ui/Button";
 import { save } from "api/organisation";
 
-class Signup extends Component {
+export const emailTakenError = "That email is already taken";
+export const unknownError = "An unknown error occurred";
+
+export class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -33,18 +36,20 @@ class Signup extends Component {
 		save(body)
 			.then(() => this.props.authenticate.call({ username: email, password }))
 			.then(() => this.props.history.push("/"))
-			.catch(error => {
-				if(error.response.data.errors[0].code === "UniqueEmailConstraint"){
-					this.setState({
-						error: "That email is already taken",
-					});
-				} else {
-					this.setState({
-						error: "An unknown error occurred",
-					});
-				}
-			});
+			.catch(error => this.handleError(error));
 	};
+
+	handleError = error => {
+		if(error.response.data.errors[0].code === "UniqueEmailConstraint"){
+			this.setState({
+				error: emailTakenError,
+			});
+		} else {
+			this.setState({
+				error: unknownError,
+			});
+		}
+	}
 
 	render() {
 		const { name, firstName, lastName, email, password } = this.state;

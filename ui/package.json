@@ -17,9 +17,14 @@
 		"react-tap-event-plugin": "3.0.2"
 	},
 	"devDependencies": {
+		"chai": "^4.1.2",
+		"enzyme": "^3.2.0",
+		"enzyme-adapter-react-16": "^1.1.0",
 		"husky": "0.14.3",
 		"lint-staged": "5.0.0",
+		"mock-local-storage": "^1.0.5",
 		"prettier": "1.8.2",
+		"promise": "^8.0.1",
 		"react-scripts": "1.0.17"
 	},
 	"scripts": {

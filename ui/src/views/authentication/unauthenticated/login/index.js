@@ -6,7 +6,9 @@ import TextField from "common/TextField";
 import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
 
-class Login extends Component {
+export const wrongCredentialsError = "Invalid username or password";
+
+export class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { email: "", password: "", error: "" };
@@ -25,13 +27,14 @@ class Login extends Component {
 		});
 		authenticate
 			.call({ username: email, password })
-			.catch(e => {
-				console.error(e);
-				this.setState({
-					error: "Invalid username or password",
-				});
-			});
+			.catch(error => this.handleError(error));
 	};
+
+	handleError = error => {
+		this.setState({
+			error: wrongCredentialsError,
+		});
+	}
 
 	render() {
 		const { email, password } = this.state;
