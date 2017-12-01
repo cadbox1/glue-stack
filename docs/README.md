@@ -5,22 +5,19 @@ A multi-tenant, multi-user todo application where organisations can sign up and 
 
 ## Why
 * A modern Relational, Java, React example application
-* Solve a problem common to a lot of businesses (who you may work for)
+* Solve a problem common to a lot of businesses (who might pay you)
 * A small, living codebase where I can contribute and demonstrate my ideas
 * Documentation for professional application development that can teach beginners
 * Put together some of my favourite tools
 * Make a mobile friendly application
 
 ## Concepts
+* In-Depth Development documentation
 * Authentication
+* Create, List and Edit flow
 * Sorting and Pagination
 * Mobile Friendly
-* Material Design
-* Hamburger Menu
-* Create, List and Edit flow
 * Multi-tenancy: Allowing multiple organisations to share a common appication and database in SaaS style
-* Development documentation
-* Efficient SQL queries (no N+1 queries)
 
 ## Tools
 * Database
