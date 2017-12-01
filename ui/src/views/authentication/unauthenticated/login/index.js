@@ -29,7 +29,7 @@ class Login extends Component {
 				console.error(e);
 				this.setState({
 					error: "Invalid username or password",
-				})
+				});
 			});
 	};
 
