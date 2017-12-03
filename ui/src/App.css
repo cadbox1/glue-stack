@@ -8,8 +8,3 @@ body,
 .h-100vh {
 	height: 100vh;
 }
-
-.error-text {
-	color: red;
-	display: inline-block;
-}

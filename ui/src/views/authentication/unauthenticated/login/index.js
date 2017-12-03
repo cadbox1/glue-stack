@@ -15,7 +15,10 @@ export class Login extends Component {
 	}
 
 	handleInput = evt => {
-		this.setState({ [evt.target.name]: evt.target.value });
+		this.setState({
+			[evt.target.name]: evt.target.value,
+			error: "",
+		});
 	};
 
 	handleSubmit = evt => {
@@ -57,6 +60,7 @@ export class Login extends Component {
 								<TextField
 									label="Email"
 									name="email"
+									error={this.state.error!==""}
 									value={email}
 									onChange={this.handleInput}
 									required
@@ -65,11 +69,12 @@ export class Login extends Component {
 									label="Password"
 									type="password"
 									name="password"
+									error={this.state.error!==""}
 									value={password}
 									onChange={this.handleInput}
 									required
 								/>
-								<div className="error-text">{this.state.error}</div>
+								<Typography color="error">{this.state.error}</Typography>
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">

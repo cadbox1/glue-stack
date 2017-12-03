@@ -6,7 +6,6 @@ import { history } from "common/history";
 import { authenticate } from "api/authentication";
 import { shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { expect } from "chai";
 
 configure({ adapter: new Adapter() });
 
@@ -21,5 +20,5 @@ it("handles error", () => {
     const div = document.createElement("div");
     const login = shallow(<Login authenticate={authenticate} router={{}} />);
     login.instance().handleError();
-    expect(login.state().error).to.equal(wrongCredentialsError);
+    expect(login.state().error).toEqual(wrongCredentialsError);
 });

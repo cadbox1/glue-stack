@@ -6,7 +6,6 @@ import { history } from "common/history";
 import { authenticate } from "api/authentication";
 import { shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { expect } from "chai";
 
 configure({ adapter: new Adapter() });
 
@@ -21,14 +20,14 @@ it("handles error", () => {
     const div = document.createElement("div");
     const signup = shallow(<Signup authenticate={authenticate} />);
     signup.instance().handleError(createError("UniqueEmailConstraint"));
-    expect(signup.state().error).to.equal(emailTakenError);
+    expect(signup.state().emailError).toEqual(emailTakenError);
 });
 
 it("handles error", () => {
     const div = document.createElement("div");
     const signup = shallow(<Signup authenticate={authenticate} />);
     signup.instance().handleError(createError("SomeOtherError"));
-    expect(signup.state().error).to.equal(unknownError);
+    expect(signup.state().error).toEqual(unknownError);
 });
 
 const createError = code => {

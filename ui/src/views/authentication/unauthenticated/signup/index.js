@@ -19,11 +19,16 @@ export class Signup extends Component {
 			email: "",
 			password: "",
 			error: "",
+			emailError: "",
 		};
 	}
 
 	handleFormInput = evt => {
-		this.setState({ [evt.target.name]: evt.target.value });
+		this.setState({
+			[evt.target.name]: evt.target.value,
+			error: "",
+			emailError: "",
+		});
 	};
 
 	handleSubmit = evt => {
@@ -32,6 +37,7 @@ export class Signup extends Component {
 		const body = { name, users: [{ firstName, lastName, email, password }] };
 		this.setState({
 			error: "",
+			emailError: "",
 		});
 		save(body)
 			.then(() => this.props.authenticate.call({ username: email, password }))
@@ -42,7 +48,7 @@ export class Signup extends Component {
 	handleError = error => {
 		if(error.response.data.errors[0].code === "UniqueEmailConstraint"){
 			this.setState({
-				error: emailTakenError,
+				emailError: emailTakenError,
 			});
 		} else {
 			this.setState({
@@ -94,6 +100,8 @@ export class Signup extends Component {
 									value={email}
 									onChange={this.handleFormInput}
 									label="Email"
+									error={this.state.emailError!==""}
+									helperText={this.state.emailError}
 									required
 								/>
 								<TextField
@@ -104,7 +112,7 @@ export class Signup extends Component {
 									type="password"
 									required
 								/>
-								<div className="error-text">{this.state.error}</div>
+								<Typography color="error">{this.state.error}</Typography>
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">
