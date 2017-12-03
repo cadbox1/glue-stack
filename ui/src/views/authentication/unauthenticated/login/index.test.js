@@ -12,13 +12,13 @@ configure({ adapter: new Adapter() });
 it("renders without crashing", () => {
 	const div = document.createElement("div");
 	ReactDOM.render(<Router history={history}>
-            <Login authenticate={authenticate} />
-        </Router>, div);
+		<Login authenticate={authenticate} />
+	</Router>, div);
 });
 
 it("handles error", () => {
-    const div = document.createElement("div");
-    const login = shallow(<Login authenticate={authenticate} router={{}} />);
-    login.instance().handleError();
-    expect(login.state().error).toEqual(wrongCredentialsError);
+	const div = document.createElement("div");
+	const login = shallow(<Login authenticate={authenticate} router={{}} />);
+	login.instance().handleError();
+	expect(login.state().error).toEqual(wrongCredentialsError);
 });

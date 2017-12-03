@@ -5,6 +5,7 @@ import Typography from "material-ui/Typography";
 import TextField from "common/TextField";
 import Button from "material-ui/Button";
 import { save } from "api/organisation";
+import {errorType} from "api/authentication";
 
 export const emailTakenError = "That email is already taken";
 export const unknownError = "An unknown error occurred";
@@ -46,7 +47,7 @@ export class Signup extends Component {
 	};
 
 	handleError = error => {
-		if(error.response.data.errors[0].code === "UniqueEmailConstraint"){
+		if(error === errorType.EMAIL_NOT_UNIQUE){
 			this.setState({
 				emailError: emailTakenError,
 			});
