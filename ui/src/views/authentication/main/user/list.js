@@ -5,14 +5,15 @@ import Table, {
 	TableCell,
 	TableHead,
 	TableRow,
+	TableFooter,
 } from "material-ui/Table";
 import IconButton from "material-ui/IconButton";
 import Add from "material-ui-icons/Add";
-import { LinearProgress } from "material-ui/Progress";
+import { parseURL } from "common/parseURL";
+import { TablePagination } from "common/tablePagination";
 import { findAll } from "api/user";
-import { connect } from "api/connector";
 
-class List extends Component {
+export class List extends Component {
 	render() {
 		const { findAll, listURL, onSelect } = this.props;
 		return (
@@ -26,13 +27,6 @@ class List extends Component {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{findAll.pending && (
-							<TableRow>
-								<TableCell colSpan={onSelect ? 3 : 2}>
-									<LinearProgress />
-								</TableCell>
-							</TableRow>
-						)}
 						{findAll.rejected && (
 							<TableRow>
 								<TableCell colSpan={onSelect ? 3 : 2}>
@@ -67,17 +61,20 @@ class List extends Component {
 								</TableRow>
 							))}
 					</TableBody>
+					{findAll.fulfilled && (
+						<TableFooter>
+							<TablePagination findAll={findAll} />
+						</TableFooter>
+					)}
 				</Table>
 			</div>
 		);
 	}
 }
 
-export const ConnectedUserList = connect({
+export const connectConfig = {
 	findAll: {
-		params: props => ({}),
+		params: props => parseURL(props),
 		promise: findAll,
 	},
-})(List);
-
-export default List;
+};

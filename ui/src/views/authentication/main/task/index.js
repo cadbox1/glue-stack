@@ -9,10 +9,10 @@ import MenuIcon from "material-ui-icons/Menu";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
 import { CircularProgress } from "material-ui/Progress";
-import { findAll } from "api/task";
 import { connect } from "api/connector";
+import { urlStateHolder } from "common/stateHolder";
 
-import List from "./list";
+import { List, connectConfig } from "./list";
 import { Create, Edit } from "./form";
 
 class TaskIndex extends Component {
@@ -37,7 +37,7 @@ class TaskIndex extends Component {
 									<Typography type="title" color="inherit" className="mr-auto">
 										Tasks
 									</Typography>
-									<IconButton onClick={findAll.call} color="contrast">
+									<IconButton onClick={findAll.refresh} color="contrast">
 										{findAll.pending ? (
 											<span>
 												<CircularProgress color="inherit" size={14} />
@@ -53,7 +53,7 @@ class TaskIndex extends Component {
 									</Link>
 								</Toolbar>
 							</AppBar>
-							<List listURL={match.path} findAll={findAll} />
+							<List {...props} listURL={match.path} findAll={findAll} />
 						</div>
 					)}
 				/>
@@ -91,11 +91,4 @@ export default componentQueries({
 		}),
 	],
 	config: { pure: false },
-})(
-	connect({
-		findAll: {
-			params: props => ({}),
-			promise: findAll,
-		},
-	})(TaskIndex)
-);
+})(urlStateHolder(connect(connectConfig)(TaskIndex)));

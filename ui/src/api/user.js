@@ -2,8 +2,8 @@ import axios from "axios";
 
 const path = "users";
 
-export function findAll({ something } = {}) {
-	return axios.get(path);
+export function findAll({ page, size, sort } = {}) {
+	return axios.get(path, { params: { page, size, sort } });
 }
 
 export function findOne(id) {
