@@ -3,6 +3,7 @@ import React, { Component } from "react";
 class PromiseState {
 	constructor(config, setState) {
 		this.name = config.name;
+		this.handleUpdate = config.handleUpdate;
 		this.paramsFunction = config.params;
 		this.promiseFunction = config.promise;
 		this.setState = setState;
@@ -18,6 +19,7 @@ class PromiseState {
 
 		this.autoRun = this.autoRun.bind(this);
 		this.call = this.call.bind(this);
+		this.refresh = this.refresh.bind(this);
 		this.subscribe = this.subscribe.bind(this);
 	}
 
@@ -45,6 +47,10 @@ class PromiseState {
 
 	subscribe(callback) {
 		this.callback = callback;
+	}
+
+	refresh() {
+		this.call();
 	}
 
 	call() {
@@ -79,18 +85,18 @@ class PromiseState {
 	}
 }
 
-function connect(allConfig) {
+export function connect(allConfig) {
 	return function(WrappedComponent) {
 		return class Connect extends Component {
-			constructor() {
-				super();
-				const state = {};
+			constructor(props) {
+				super(props);
+				this.state = {};
 				Object.keys(allConfig).forEach(name => {
 					const config = allConfig[name];
 					config.name = name;
-					state[name] = new PromiseState(config, this.setState.bind(this));
+					config.handleUpdate = props.handleUpdate;
+					this.state[name] = new PromiseState(config, this.setState.bind(this));
 				});
-				this.state = state;
 			}
 
 			componentDidMount() {
@@ -114,8 +120,6 @@ function connect(allConfig) {
 		};
 	};
 }
-
-export { connect };
 
 // example
 

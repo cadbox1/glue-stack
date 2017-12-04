@@ -9,10 +9,10 @@ import MenuIcon from "material-ui-icons/Menu";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
 import { CircularProgress } from "material-ui/Progress";
-import { findAll } from "api/user";
 import { connect } from "api/connector";
+import { urlStateHolder } from "common/stateHolder";
 
-import List from "./list";
+import { connectConfig, List } from "./list";
 import { Create, Edit } from "./form";
 
 class UserIndex extends Component {
@@ -38,7 +38,7 @@ class UserIndex extends Component {
 									<Typography color="inherit" type="title" className="mr-auto">
 										Users
 									</Typography>
-									<IconButton color="contrast" onClick={findAll.call}>
+									<IconButton color="contrast" onClick={findAll.refresh}>
 										{findAll.pending ? (
 											<span>
 												<CircularProgress color="inherit" size={14} />
@@ -65,7 +65,7 @@ class UserIndex extends Component {
 							<Create
 								{...props}
 								className="col h-100vh"
-								refreshList={singleView ? undefined : findAll.call}
+								refreshList={singleView ? undefined : findAll.refresh}
 							/>
 						)}
 					/>
@@ -75,7 +75,7 @@ class UserIndex extends Component {
 							<Edit
 								{...props}
 								className="col h-100vh"
-								refreshList={singleView ? undefined : findAll.call}
+								refreshList={singleView ? undefined : findAll.refresh}
 							/>
 						)}
 					/>
@@ -92,11 +92,4 @@ export default componentQueries({
 		}),
 	],
 	config: { pure: false },
-})(
-	connect({
-		findAll: {
-			params: props => ({}),
-			promise: findAll,
-		},
-	})(UserIndex)
-);
+})(urlStateHolder(connect(connectConfig)(UserIndex)));
