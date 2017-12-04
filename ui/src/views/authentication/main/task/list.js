@@ -5,10 +5,10 @@ import Table, {
 	TableHead,
 	TableRow,
 	TableFooter,
-	TablePagination,
 } from "material-ui/Table";
+import { parseURL } from "common/parseURL";
+import { TablePagination } from "common/tablePagination";
 import { findAll } from "api/task";
-import { connect } from "api/connector";
 import { ListRow } from "./listRow";
 
 class List extends Component {
@@ -53,14 +53,7 @@ class List extends Component {
 				</TableBody>
 				{findAll.fulfilled && (
 					<TableFooter>
-						<TablePagination
-							count={findAll.value.data.totalElements}
-							rowsPerPage={findAll.value.data.size}
-							page={findAll.value.data.number}
-							rowsPerPageOptions={[10, 20, 50, 100]}
-							onChangePage={this.handleChangePage}
-							onChangeRowsPerPage={this.handleChangeRowsPerPage}
-						/>
+						<TablePagination findAll={findAll} />
 					</TableFooter>
 				)}
 			</Table>
@@ -68,11 +61,11 @@ class List extends Component {
 	}
 }
 
-export const ConnectedTaskList = connect({
+export { List };
+
+export const connectConfig = {
 	findAll: {
-		params: props => ({}),
+		params: props => parseURL(props),
 		promise: findAll,
 	},
-})(List);
-
-export default List;
+};

@@ -1,12 +1,19 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"type": "java",
-			"name": "Debug (Launch)",
-			"request": "launch",
-			"mainClass": "com.api.Application",
-			"args": ""
-		}
-	]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug API",
+      "type": "java",
+      "request": "launch",
+      "mainClass": "com.api.Application",
+      "args": ""
+    },
+    {
+      "name": "Debug UI",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceRoot}/ui/src"
+    }
+  ]
 }

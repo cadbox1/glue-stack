@@ -11,8 +11,11 @@ import Paper from "material-ui/Paper";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
-import { ConnectedUserList } from "../user/list";
 import { TaskStatus } from "common/taskStatus";
+import { stateHolder } from "common/stateHolder";
+import { List, connectConfig } from "../user/list";
+
+const ConnectedUserList = stateHolder(connect(connectConfig)(List));
 
 class Form extends Component {
 	constructor(props) {
