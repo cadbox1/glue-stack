@@ -10,6 +10,7 @@ import Table, {
 import IconButton from "material-ui/IconButton";
 import Add from "material-ui-icons/Add";
 import { parseURL } from "common/parseURL";
+import { TableSortLabel } from "common/tableSortLabel";
 import { TablePagination } from "common/tablePagination";
 import { findAll } from "api/user";
 
@@ -21,8 +22,16 @@ export class List extends Component {
 				<Table>
 					<TableHead>
 						<TableRow>
-							<TableCell>Name</TableCell>
-							<TableCell>Email</TableCell>
+							<TableCell>
+								<TableSortLabel findAll={findAll} property="firstName">
+									Name
+								</TableSortLabel>
+							</TableCell>
+							<TableCell>
+								<TableSortLabel findAll={findAll} property="email">
+									Email
+								</TableSortLabel>
+							</TableCell>
 							{onSelect && <TableCell>Select</TableCell>}
 						</TableRow>
 					</TableHead>

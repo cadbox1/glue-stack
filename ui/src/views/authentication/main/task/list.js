@@ -8,6 +8,7 @@ import Table, {
 } from "material-ui/Table";
 import { parseURL } from "common/parseURL";
 import { TablePagination } from "common/tablePagination";
+import { TableSortLabel } from "common/tableSortLabel";
 import { findAll } from "api/task";
 import { ListRow } from "./listRow";
 
@@ -18,10 +19,26 @@ class List extends Component {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell>Name</TableCell>
-						<TableCell>Notes</TableCell>
-						<TableCell>Status</TableCell>
-						<TableCell>Assigned</TableCell>
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="name">
+								Name
+							</TableSortLabel>
+						</TableCell>
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="notes">
+								Notes
+							</TableSortLabel>
+						</TableCell>
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="statusId">
+								Status
+							</TableSortLabel>
+						</TableCell>
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="user.firstName">
+								Assigned
+							</TableSortLabel>
+						</TableCell>
 						<TableCell>Actions</TableCell>
 					</TableRow>
 				</TableHead>
