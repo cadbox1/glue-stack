@@ -6,12 +6,14 @@ import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
+import SearchIcon from "material-ui-icons/Search";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
 import { CircularProgress } from "material-ui/Progress";
 import { connect } from "api/connector";
 import { urlStateHolder } from "common/stateHolder";
 
+import { Search } from "./search";
 import { List, connectConfig } from "./list";
 import { Create, Edit } from "./form";
 
@@ -46,6 +48,11 @@ class TaskIndex extends Component {
 											<Refresh />
 										)}
 									</IconButton>
+									<Link to={`${match.path}/search`}>
+										<IconButton color="contrast">
+											<SearchIcon />
+										</IconButton>
+									</Link>
 									<Link to={`${match.path}/create`}>
 										<IconButton color="contrast">
 											<Add />
@@ -58,6 +65,12 @@ class TaskIndex extends Component {
 					)}
 				/>
 				<Switch>
+					<Route
+						path={`${match.path}/search`}
+						render={props => (
+							<Search {...props} className="col h-100vh" findAll={findAll} />
+						)}
+					/>
 					<Route
 						path={`${match.path}/create`}
 						render={props => (

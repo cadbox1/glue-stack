@@ -7,8 +7,6 @@ import Table, {
 	TableRow,
 	TableFooter,
 } from "material-ui/Table";
-import IconButton from "material-ui/IconButton";
-import Add from "material-ui-icons/Add";
 import { parseURL } from "common/parseURL";
 import { TableSortLabel } from "common/tableSortLabel";
 import { TablePagination } from "common/tablePagination";
@@ -32,13 +30,12 @@ export class List extends Component {
 									Email
 								</TableSortLabel>
 							</TableCell>
-							{onSelect && <TableCell>Select</TableCell>}
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{findAll.rejected && (
 							<TableRow>
-								<TableCell colSpan={onSelect ? 3 : 2}>
+								<TableCell colSpan={2}>
 									{findAll.reason ? (
 										<div>
 											<p>{findAll.reason.error}</p>
@@ -52,27 +49,32 @@ export class List extends Component {
 							</TableRow>
 						)}
 						{findAll.value &&
-							findAll.value.data.content.map(row => (
-								<TableRow key={row.id}>
-									<TableCell>
-										<Link to={`${listURL}/${row.id}`}>
-											{row.firstName} {row.lastName}
-										</Link>
-									</TableCell>
-									<TableCell>{row.email}</TableCell>
-									{onSelect && (
+							findAll.value.data.content.map(row => {
+								const name = `${row.firstName} ${row.lastName}`;
+								return (
+									<TableRow
+										key={row.id}
+										onClick={onSelect && onSelect.bind(null, row)}
+										hover={onSelect}
+										style={{ cursor: onSelect ? "pointer" : "default" }}
+									>
 										<TableCell>
-											<IconButton onClick={onSelect.bind(null, row)}>
-												<Add />
-											</IconButton>
+											{listURL ? (
+												<Link to={`${listURL}/${row.id}`}>{name}</Link>
+											) : (
+												name
+											)}
 										</TableCell>
-									)}
-								</TableRow>
-							))}
+										<TableCell>{row.email}</TableCell>
+									</TableRow>
+								);
+							})}
 					</TableBody>
 					{findAll.fulfilled && (
 						<TableFooter>
-							<TablePagination findAll={findAll} />
+							<TableRow>
+								<TablePagination findAll={findAll} />
+							</TableRow>
 						</TableFooter>
 					)}
 				</Table>

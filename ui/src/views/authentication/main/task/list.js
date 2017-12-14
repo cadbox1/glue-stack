@@ -70,7 +70,9 @@ class List extends Component {
 				</TableBody>
 				{findAll.fulfilled && (
 					<TableFooter>
-						<TablePagination findAll={findAll} />
+						<TableRow>
+							<TablePagination findAll={findAll} />
+						</TableRow>
 					</TableFooter>
 				)}
 			</Table>
@@ -82,7 +84,11 @@ export { List };
 
 export const connectConfig = {
 	findAll: {
-		params: props => parseURL(props),
+		params: props => ({
+			...parseURL(props),
+			statusId: props.params.statusId,
+			userId: props.params.userId,
+		}),
 		promise: findAll,
 	},
 };
