@@ -3,6 +3,7 @@ import React, { Component } from "react";
 class PromiseState {
 	constructor(config, setState) {
 		this.name = config.name;
+		this.params = {};
 		this.handleUpdate = config.handleUpdate;
 		this.paramsFunction = config.params;
 		this.promiseFunction = config.promise;

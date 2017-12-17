@@ -7,6 +7,7 @@ import Typography from "material-ui/Typography";
 import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
 import SearchIcon from "material-ui-icons/Search";
+import FilterListIcon from "material-ui-icons/FilterList";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
 import { CircularProgress } from "material-ui/Progress";
@@ -18,10 +19,17 @@ import { List, connectConfig } from "./list";
 import { Create, Edit } from "./form";
 
 class TaskIndex extends Component {
+	state = { showFilters: false };
+
+	toggleShowFilters = () => {
+		this.setState(({ showFilters }) => ({ showFilters: !showFilters }));
+	};
+
 	render() {
 		const { match, findAll, toggleSideBar, singleView } = this.props;
+		const { showFilters } = this.state;
 		return (
-			<div className="row no-gutters" style={{ flexWrap: "nowrap" }}>
+			<div className="row no-gutters w-100" style={{ flexWrap: "nowrap" }}>
 				<Route
 					path={`${match.path}`}
 					exact={singleView}
@@ -39,6 +47,14 @@ class TaskIndex extends Component {
 									<Typography type="title" color="inherit" className="mr-auto">
 										Tasks
 									</Typography>
+									<Link to={`${match.path}/search`}>
+										<IconButton color="contrast">
+											<SearchIcon />
+										</IconButton>
+									</Link>
+									<IconButton onClick={this.toggleShowFilters} color="contrast">
+										<FilterListIcon />
+									</IconButton>
 									<IconButton onClick={findAll.refresh} color="contrast">
 										{findAll.pending ? (
 											<span>
@@ -48,11 +64,6 @@ class TaskIndex extends Component {
 											<Refresh />
 										)}
 									</IconButton>
-									<Link to={`${match.path}/search`}>
-										<IconButton color="contrast">
-											<SearchIcon />
-										</IconButton>
-									</Link>
 									<Link to={`${match.path}/create`}>
 										<IconButton color="contrast">
 											<Add />
@@ -60,17 +71,12 @@ class TaskIndex extends Component {
 									</Link>
 								</Toolbar>
 							</AppBar>
+							{showFilters && <Search {...props} findAll={findAll} />}
 							<List {...props} listURL={match.path} findAll={findAll} />
 						</div>
 					)}
 				/>
 				<Switch>
-					<Route
-						path={`${match.path}/search`}
-						render={props => (
-							<Search {...props} className="col h-100vh" findAll={findAll} />
-						)}
-					/>
 					<Route
 						path={`${match.path}/create`}
 						render={props => (

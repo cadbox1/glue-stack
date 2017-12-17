@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import Table, {
 	TableBody,
-	TableCell,
 	TableHead,
 	TableRow,
 	TableFooter,
 } from "material-ui/Table";
+import Hidden from "material-ui/Hidden";
+import { TableCell } from "common/tableCell";
 import { parseURL } from "common/parseURL";
 import { TablePagination } from "common/tablePagination";
 import { TableSortLabel } from "common/tableSortLabel";
@@ -24,11 +25,13 @@ class List extends Component {
 								Name
 							</TableSortLabel>
 						</TableCell>
-						<TableCell>
-							<TableSortLabel findAll={findAll} property="notes">
-								Notes
-							</TableSortLabel>
-						</TableCell>
+						<Hidden smDown>
+							<TableCell>
+								<TableSortLabel findAll={findAll} property="notes">
+									Notes
+								</TableSortLabel>
+							</TableCell>
+						</Hidden>
 						<TableCell>
 							<TableSortLabel findAll={findAll} property="statusId">
 								Status
@@ -84,11 +87,14 @@ export { List };
 
 export const connectConfig = {
 	findAll: {
-		params: props => ({
-			...parseURL(props),
-			statusId: props.params.statusId,
-			userId: props.params.userId,
-		}),
+		params: props => {
+			const { statusId, userId } = props.params;
+			return {
+				...parseURL(props),
+				statusId: statusId != null ? Number(statusId) : statusId,
+				userId: userId != null ? Number(userId) : userId,
+			};
+		},
 		promise: findAll,
 	},
 };

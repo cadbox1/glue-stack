@@ -20,7 +20,7 @@ class UserIndex extends Component {
 		const { match, findAll, singleView, toggleSideBar } = this.props;
 
 		return (
-			<div className="row no-gutters">
+			<div className="row no-gutters w-100">
 				<Route
 					path={`${match.path}`}
 					exact={singleView}
