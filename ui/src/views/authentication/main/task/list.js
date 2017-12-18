@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import Table, {
 	TableBody,
-	TableCell,
 	TableHead,
 	TableRow,
 	TableFooter,
 } from "material-ui/Table";
+import Hidden from "material-ui/Hidden";
+import { TableCell } from "common/tableCell";
 import { parseURL } from "common/parseURL";
 import { TablePagination } from "common/tablePagination";
+import { TableSortLabel } from "common/tableSortLabel";
 import { findAll } from "api/task";
 import { ListRow } from "./listRow";
 
@@ -18,10 +20,28 @@ class List extends Component {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell>Name</TableCell>
-						<TableCell>Notes</TableCell>
-						<TableCell>Status</TableCell>
-						<TableCell>Assigned</TableCell>
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="name">
+								Name
+							</TableSortLabel>
+						</TableCell>
+						<Hidden smDown>
+							<TableCell>
+								<TableSortLabel findAll={findAll} property="notes">
+									Notes
+								</TableSortLabel>
+							</TableCell>
+						</Hidden>
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="statusId">
+								Status
+							</TableSortLabel>
+						</TableCell>
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="user.firstName">
+								Assigned
+							</TableSortLabel>
+						</TableCell>
 						<TableCell>Actions</TableCell>
 					</TableRow>
 				</TableHead>
@@ -53,7 +73,9 @@ class List extends Component {
 				</TableBody>
 				{findAll.fulfilled && (
 					<TableFooter>
-						<TablePagination findAll={findAll} />
+						<TableRow>
+							<TablePagination findAll={findAll} />
+						</TableRow>
 					</TableFooter>
 				)}
 			</Table>
@@ -65,7 +87,14 @@ export { List };
 
 export const connectConfig = {
 	findAll: {
-		params: props => parseURL(props),
+		params: props => {
+			const { statusId, userId } = props.params;
+			return {
+				...parseURL(props),
+				statusId: statusId != null ? Number(statusId) : statusId,
+				userId: userId != null ? Number(userId) : userId,
+			};
+		},
 		promise: findAll,
 	},
 };

@@ -15,11 +15,15 @@ history.listen(() => {
 	addLocationQuery(history);
 });
 
-export function replaceParams(newParams) {
+export function replaceParams(changedParams) {
 	const { location } = history;
-	const newLocation = `${location.pathname}?${queryString.stringify({
+	const newParams = {
 		...location.query,
-		...newParams,
-	})}`;
+		...changedParams,
+	};
+	const newLocation = `${location.pathname}?${queryString.stringify(
+		newParams
+	)}`;
+
 	history.push(newLocation);
 }

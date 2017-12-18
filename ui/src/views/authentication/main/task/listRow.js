@@ -5,6 +5,7 @@ import { CircularProgress } from "material-ui/Progress";
 import IconButton from "material-ui/IconButton";
 import Done from "material-ui-icons/Done";
 import Undo from "material-ui-icons/Undo";
+import Hidden from "material-ui/Hidden";
 import { patch } from "api/task";
 import { connect } from "api/connector";
 import { TaskStatus } from "common/taskStatus";
@@ -35,7 +36,9 @@ class ListRow extends Component {
 						data.name
 					)}
 				</TableCell>
-				<TableCell>{data.notes}</TableCell>
+				<Hidden smDown>
+					<TableCell>{data.notes}</TableCell>
+				</Hidden>
 				<TableCell>
 					{data.statusId === TaskStatus.TODO ? "To Do" : "Done"}
 				</TableCell>

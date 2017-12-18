@@ -37,41 +37,39 @@ class Main extends Component {
 					toggleSideBar={this.toggleSideBar}
 					{...this.props}
 				/>
-				<div style={{ flex: 1 }}>
-					<Switch>
-						<Route
-							path="/me"
-							render={props => (
-								<Me
-									{...props}
-									{...this.props}
-									toggleSideBar={this.toggleSideBar}
-								/>
-							)}
-						/>
-						<Route
-							path="/tasks"
-							render={props => (
-								<Task
-									{...props}
-									{...this.props}
-									toggleSideBar={this.toggleSideBar}
-								/>
-							)}
-						/>
-						<Route
-							path="/users"
-							render={props => (
-								<User
-									{...props}
-									{...this.props}
-									toggleSideBar={this.toggleSideBar}
-								/>
-							)}
-						/>
-						<Route exactly path="/" render={() => <Redirect to="/me" />} />
-					</Switch>
-				</div>
+				<Switch>
+					<Route
+						path="/me"
+						render={props => (
+							<Me
+								{...props}
+								{...this.props}
+								toggleSideBar={this.toggleSideBar}
+							/>
+						)}
+					/>
+					<Route
+						path="/tasks"
+						render={props => (
+							<Task
+								{...props}
+								{...this.props}
+								toggleSideBar={this.toggleSideBar}
+							/>
+						)}
+					/>
+					<Route
+						path="/users"
+						render={props => (
+							<User
+								{...props}
+								{...this.props}
+								toggleSideBar={this.toggleSideBar}
+							/>
+						)}
+					/>
+					<Route exactly path="/" render={() => <Redirect to="/me" />} />
+				</Switch>
 			</div>
 		);
 	}

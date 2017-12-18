@@ -37,12 +37,7 @@ class Sidebar extends Component {
 						<ListItemText primary={`${user.firstName} ${user.lastName}`} />
 						{userMenuOpen ? <ExpandLess /> : <ExpandMore />}
 					</ListItem>
-					<Collapse
-						component="li"
-						in={userMenuOpen}
-						transitionDuration="auto"
-						unmountOnExit
-					>
+					<Collapse component="li" in={userMenuOpen} unmountOnExit>
 						<List disablePadding>
 							<ListItem button onClick={signOut}>
 								<ListItemText inset primary="Sign Out" />

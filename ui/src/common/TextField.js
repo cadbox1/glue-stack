@@ -9,7 +9,7 @@ const CustomTextField = props => {
 			InputLabelProps={{
 				shrink: true,
 			}}
-			inputProps={{
+			InputProps={{
 				...props.inputProps,
 				required: props.required,
 			}}
