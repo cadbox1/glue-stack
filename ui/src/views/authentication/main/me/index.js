@@ -16,7 +16,7 @@ class Me extends Component {
 	render() {
 		const { findAll, toggleSideBar } = this.props;
 		return (
-			<div>
+			<div className="w-100">
 				<AppBar position="static">
 					<Toolbar>
 						<IconButton
@@ -35,8 +35,8 @@ class Me extends Component {
 									<CircularProgress color="inherit" size={14} />
 								</span>
 							) : (
-								<Refresh />
-							)}
+									<Refresh />
+								)}
 						</IconButton>
 					</Toolbar>
 				</AppBar>

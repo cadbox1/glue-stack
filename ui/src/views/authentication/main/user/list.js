@@ -2,72 +2,89 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table, {
 	TableBody,
-	TableCell,
 	TableHead,
 	TableRow,
 	TableFooter,
 } from "material-ui/Table";
-import IconButton from "material-ui/IconButton";
-import Add from "material-ui-icons/Add";
+import { TableCell } from "common/tableCell";
+import Radio from "material-ui/Radio";
 import { parseURL } from "common/parseURL";
+import { TableSortLabel } from "common/tableSortLabel";
 import { TablePagination } from "common/tablePagination";
 import { findAll } from "api/user";
 
 export class List extends Component {
 	render() {
-		const { findAll, listURL, onSelect } = this.props;
+		const { findAll, listURL, onSelect, selected } = this.props;
 		return (
-			<div>
-				<Table>
-					<TableHead>
+			<Table>
+				<TableHead>
+					<TableRow>
+						{onSelect && <TableCell padding="checkbox" />}
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="firstName">
+								Name
+							</TableSortLabel>
+						</TableCell>
+						<TableCell>
+							<TableSortLabel findAll={findAll} property="email">
+								Email
+							</TableSortLabel>
+						</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{findAll.rejected && (
 						<TableRow>
-							<TableCell>Name</TableCell>
-							<TableCell>Email</TableCell>
-							{onSelect && <TableCell>Select</TableCell>}
+							<TableCell colSpan={2}>
+								{findAll.reason ? (
+									<div>
+										<p>{findAll.reason.error}</p>
+										<p>{findAll.reason.exception}</p>
+										<p>{findAll.reason.message}</p>
+									</div>
+								) : (
+									<p>Error</p>
+								)}
+							</TableCell>
 						</TableRow>
-					</TableHead>
-					<TableBody>
-						{findAll.rejected && (
-							<TableRow>
-								<TableCell colSpan={onSelect ? 3 : 2}>
-									{findAll.reason ? (
-										<div>
-											<p>{findAll.reason.error}</p>
-											<p>{findAll.reason.exception}</p>
-											<p>{findAll.reason.message}</p>
-										</div>
-									) : (
-										<p>Error</p>
-									)}
-								</TableCell>
-							</TableRow>
-						)}
-						{findAll.value &&
-							findAll.value.data.content.map(row => (
-								<TableRow key={row.id}>
-									<TableCell>
-										<Link to={`${listURL}/${row.id}`}>
-											{row.firstName} {row.lastName}
-										</Link>
-									</TableCell>
-									<TableCell>{row.email}</TableCell>
+					)}
+					{findAll.value &&
+						findAll.value.data.content.map(row => {
+							const name = `${row.firstName} ${row.lastName}`;
+							return (
+								<TableRow
+									key={row.id}
+									onClick={onSelect && onSelect.bind(null, row)}
+									hover={onSelect}
+									style={{ cursor: onSelect ? "pointer" : "default" }}
+									selected={selected && selected.includes(row.id)}
+								>
 									{onSelect && (
-										<TableCell>
-											<IconButton onClick={onSelect.bind(null, row)}>
-												<Add />
-											</IconButton>
+										<TableCell padding="checkbox">
+											<Radio checked={selected && selected.includes(row.id)} />
 										</TableCell>
 									)}
+									<TableCell>
+										{listURL ? (
+											<Link to={`${listURL}/${row.id}`}>{name}</Link>
+										) : (
+											name
+										)}
+									</TableCell>
+									<TableCell>{row.email}</TableCell>
 								</TableRow>
-							))}
-					</TableBody>
-					{findAll.fulfilled && (
-						<TableFooter>
+							);
+						})}
+				</TableBody>
+				{findAll.fulfilled && (
+					<TableFooter>
+						<TableRow>
 							<TablePagination findAll={findAll} />
-						</TableFooter>
-					)}
-				</Table>
-			</div>
+						</TableRow>
+					</TableFooter>
+				)}
+			</Table>
 		);
 	}
 }
