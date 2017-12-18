@@ -47,11 +47,11 @@ class TaskIndex extends Component {
 									<Typography type="title" color="inherit" className="mr-auto">
 										Tasks
 									</Typography>
-									<Link to={`${match.path}/search`}>
+									{/* <Link to={`${match.path}/search`}>
 										<IconButton color="contrast">
 											<SearchIcon />
 										</IconButton>
-									</Link>
+									</Link> */}
 									<IconButton onClick={this.toggleShowFilters} color="contrast">
 										<FilterListIcon />
 									</IconButton>
@@ -61,8 +61,8 @@ class TaskIndex extends Component {
 												<CircularProgress color="inherit" size={14} />
 											</span>
 										) : (
-											<Refresh />
-										)}
+												<Refresh />
+											)}
 									</IconButton>
 									<Link to={`${match.path}/create`}>
 										<IconButton color="contrast">
