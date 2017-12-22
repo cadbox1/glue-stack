@@ -36,7 +36,7 @@ CREATE TABLE `field` (
 CREATE TABLE `organisation` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
-  `statusID` int(11) unsigned NOT NULL,
+  `statusId` int(11) unsigned NOT NULL,
   `active` bit(1) NOT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
@@ -75,6 +75,7 @@ CREATE TABLE `task` (
   `name` varchar(255) NOT NULL DEFAULT '',
   `notes` varchar(255) DEFAULT NULL,
   `userId` int(11) unsigned DEFAULT NULL,
+  `statusId` int(11) unsigned DEFAULT NULL,
   `active` bit(1) NOT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime DEFAULT NULL,

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { connect } from "api/connector";
 import Card, { CardActions, CardContent } from "material-ui/Card";
 import Typography from "material-ui/Typography";
+import { CircularProgress } from "material-ui/Progress";
 import TextField from "common/TextField";
 import Button from "material-ui/Button";
 import { save } from "api/organisation";
 
-class Signup extends Component {
+export class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -19,25 +21,39 @@ class Signup extends Component {
 	}
 
 	handleFormInput = evt => {
-		this.setState({ [evt.target.name]: evt.target.value });
+		this.setState({
+			[evt.target.name]: evt.target.value,
+		});
+		const { save } = this.props;
+		if (save.rejected) {
+			this.props.save.reset();
+		}
 	};
 
 	handleSubmit = evt => {
 		evt.preventDefault();
+		const { save } = this.props;
 		const { name, firstName, lastName, email, password } = this.state;
 		const body = { name, users: [{ firstName, lastName, email, password }] };
-		save(body)
-			.then(
-				() => this.props.authenticate.call({ username: email, password }),
-				error => {
-					debugger;
-				}
-			)
+		save
+			.call(body)
+			.then(() => this.props.authenticate.call({ username: email, password }))
 			.then(() => this.props.history.push("/"));
 	};
 
 	render() {
+		const { save } = this.props;
 		const { name, firstName, lastName, email, password } = this.state;
+
+		const emailNotUnique =
+			save.rejected &&
+			save.reason.response &&
+			save.reason.response.data.errors &&
+			Array.isArray(save.reason.response.data.errors) &&
+			save.reason.response.data.errors.some(
+				error => error.code === "UniqueEmailConstraint"
+			);
+
 		return (
 			<div
 				className="d-flex align-items-md-center justify-content-center"
@@ -79,6 +95,8 @@ class Signup extends Component {
 									value={email}
 									onChange={this.handleFormInput}
 									label="Email"
+									error={emailNotUnique}
+									helperText={emailNotUnique && "That email is already taken"}
 									required
 								/>
 								<TextField
@@ -92,7 +110,7 @@ class Signup extends Component {
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">
-									Signup
+									{save.pending ? <CircularProgress size={15} /> : "Signup"}
 								</Button>
 							</CardActions>
 						</form>
@@ -103,4 +121,8 @@ class Signup extends Component {
 	}
 }
 
-export default withRouter(Signup);
+export default connect({
+	save: {
+		promise: save,
+	},
+})(withRouter(Signup));

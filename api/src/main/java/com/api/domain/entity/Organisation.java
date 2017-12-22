@@ -20,7 +20,7 @@ public class Organisation extends BaseEntity {
 	private String name;
 
 	@Column(nullable = false)
-	private Integer statusID;
+	private Integer statusId;
 
 	//bi-directional many-to-one association to Task
 	@OneToMany(mappedBy = "organisation")
@@ -43,12 +43,12 @@ public class Organisation extends BaseEntity {
 		this.name = name;
 	}
 
-	public Integer getStatusID() {
-		return this.statusID;
+	public Integer getStatusId() {
+		return this.statusId;
 	}
 
-	public void setStatusID(Integer statusID) {
-		this.statusID = statusID;
+	public void setStatusId(Integer statusId) {
+		this.statusId = statusId;
 	}
 
 	public List<Task> getTasks() {

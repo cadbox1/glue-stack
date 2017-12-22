@@ -6,14 +6,20 @@ import TextField from "common/TextField";
 import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
 
-class Login extends Component {
+export class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { email: "", password: "" };
 	}
 
 	handleInput = evt => {
-		this.setState({ [evt.target.name]: evt.target.value });
+		this.setState({
+			[evt.target.name]: evt.target.value,
+		});
+		const { authenticate } = this.props;
+		if (authenticate.rejected) {
+			authenticate.reset();
+		}
 	};
 
 	handleSubmit = evt => {
@@ -26,6 +32,13 @@ class Login extends Component {
 	render() {
 		const { email, password } = this.state;
 		const { authenticate } = this.props;
+
+		const invalidLogin =
+			authenticate.rejected &&
+			authenticate.reason &&
+			authenticate.reason.response &&
+			authenticate.reason.response.status === 401;
+
 		return (
 			<div
 				className="d-flex align-items-md-center justify-content-center"
@@ -45,6 +58,7 @@ class Login extends Component {
 									label="Email"
 									name="email"
 									value={email}
+									error={authenticate.rejected}
 									onChange={this.handleInput}
 									required
 								/>
@@ -53,6 +67,11 @@ class Login extends Component {
 									type="password"
 									name="password"
 									value={password}
+									error={authenticate.rejected}
+									helperText={
+										(invalidLogin && "Invalid Username or Password") ||
+										(authenticate.reason && authenticate.reason.message)
+									}
 									onChange={this.handleInput}
 									required
 								/>
