@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { connect } from "api/connector";
 import Card, { CardActions, CardContent } from "material-ui/Card";
 import Typography from "material-ui/Typography";
+import { CircularProgress } from "material-ui/Progress";
 import TextField from "common/TextField";
 import Button from "material-ui/Button";
 import { save } from "api/organisation";
-import {errorType} from "api/authentication";
-
-export const emailTakenError = "That email is already taken";
-export const unknownError = "An unknown error occurred";
 
 export class Signup extends Component {
 	constructor(props) {
@@ -19,47 +17,43 @@ export class Signup extends Component {
 			lastName: "",
 			email: "",
 			password: "",
-			error: "",
-			emailError: "",
 		};
 	}
 
 	handleFormInput = evt => {
 		this.setState({
 			[evt.target.name]: evt.target.value,
-			error: "",
-			emailError: "",
 		});
+		const { save } = this.props;
+		if (save.rejected) {
+			this.props.save.reset();
+		}
 	};
 
 	handleSubmit = evt => {
 		evt.preventDefault();
+		const { save } = this.props;
 		const { name, firstName, lastName, email, password } = this.state;
 		const body = { name, users: [{ firstName, lastName, email, password }] };
-		this.setState({
-			error: "",
-			emailError: "",
-		});
-		save(body)
+		save
+			.call(body)
 			.then(() => this.props.authenticate.call({ username: email, password }))
-			.then(() => this.props.history.push("/"))
-			.catch(error => this.handleError(error));
+			.then(() => this.props.history.push("/"));
 	};
 
-	handleError = error => {
-		if(error === errorType.EMAIL_NOT_UNIQUE){
-			this.setState({
-				emailError: emailTakenError,
-			});
-		} else {
-			this.setState({
-				error: unknownError,
-			});
-		}
-	}
-
 	render() {
+		const { save } = this.props;
 		const { name, firstName, lastName, email, password } = this.state;
+
+		const emailNotUnique =
+			save.rejected &&
+			save.reason.response &&
+			save.reason.response.data.errors &&
+			Array.isArray(save.reason.response.data.errors) &&
+			save.reason.response.data.errors.some(
+				error => error.code === "UniqueEmailConstraint"
+			);
+
 		return (
 			<div
 				className="d-flex align-items-md-center justify-content-center"
@@ -101,8 +95,8 @@ export class Signup extends Component {
 									value={email}
 									onChange={this.handleFormInput}
 									label="Email"
-									error={this.state.emailError!==""}
-									helperText={this.state.emailError}
+									error={emailNotUnique}
+									helperText={emailNotUnique && "That email is already taken"}
 									required
 								/>
 								<TextField
@@ -113,11 +107,10 @@ export class Signup extends Component {
 									type="password"
 									required
 								/>
-								<Typography color="error">{this.state.error}</Typography>
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">
-									Signup
+									{save.pending ? <CircularProgress size={15} /> : "Signup"}
 								</Button>
 							</CardActions>
 						</form>
@@ -128,4 +121,8 @@ export class Signup extends Component {
 	}
 }
 
-export default withRouter(Signup);
+export default connect({
+	save: {
+		promise: save,
+	},
+})(withRouter(Signup));

@@ -9,12 +9,6 @@ class PromiseState {
 		this.promiseFunction = config.promise;
 		this.setState = setState;
 
-		this.fulfilled = false;
-		this.pending = false;
-		this.rejected = false;
-		this.value = null;
-		this.reason = null;
-
 		this.paramsHash = null;
 		this.callback = null;
 
@@ -22,6 +16,9 @@ class PromiseState {
 		this.call = this.call.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.subscribe = this.subscribe.bind(this);
+		this.reset = this.reset.bind(this);
+
+		this.reset(false);
 	}
 
 	updateState() {
@@ -48,6 +45,17 @@ class PromiseState {
 
 	subscribe(callback) {
 		this.callback = callback;
+	}
+
+	reset(updateState = true) {
+		this.fulfilled = false;
+		this.pending = false;
+		this.rejected = false;
+		this.value = null;
+		this.reason = null;
+		if (updateState) {
+			this.updateState();
+		}
 	}
 
 	refresh() {

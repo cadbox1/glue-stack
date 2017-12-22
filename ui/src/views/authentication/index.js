@@ -6,13 +6,18 @@ import { Main } from "./main";
 
 class Authentication extends Component {
 	componentDidMount() {
-		this.props.authenticate.call();
+		this.authenticate();
 	}
 
 	signOut = () => {
 		signOut();
-		this.props.authenticate.call();
+		this.authenticate();
 	};
+
+	authenticate() {
+		const { authenticate } = this.props;
+		authenticate.call().catch(() => authenticate.reset()); // swallow any errors
+	}
 
 	render() {
 		const { authenticate } = this.props;

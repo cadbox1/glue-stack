@@ -1,5 +1,4 @@
 import axios from "axios";
-import { signOut } from "./authentication";
 
 const path = "organisations";
 
@@ -15,7 +14,6 @@ export function save(body) {
 	if (body.id) {
 		return axios.patch(`${path}/${body.id}`, body);
 	} else {
-		signOut();
 		return axios.post(path, body);
 	}
 }

@@ -3,11 +3,6 @@ import { setCredentials } from "common/axiosConfig";
 
 const credentialsKey = "credentials";
 
-export const errorType = {
-	EMAIL_NOT_UNIQUE: "EMAIL_NOT_UNIQUE",
-	UNKNOWN_ERROR: "UNKNOWN_ERROR",
-}
-
 export function authenticate({ username, password } = {}) {
 	if (username == null) {
 		const credentials = getCredentials();
@@ -23,9 +18,6 @@ export function authenticate({ username, password } = {}) {
 			setCredentials(username, password);
 			saveCredentials(username, password);
 			return result;
-		})
-		.catch(error => {
-			throw error.response.data.errors[0].code;
 		});
 }
 

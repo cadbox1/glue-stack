@@ -6,42 +6,39 @@ import TextField from "common/TextField";
 import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
 
-export const wrongCredentialsError = "Invalid username or password";
-
 export class Login extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { email: "", password: "", error: "" };
+		this.state = { email: "", password: "" };
 	}
 
 	handleInput = evt => {
 		this.setState({
 			[evt.target.name]: evt.target.value,
-			error: "",
 		});
+		const { authenticate } = this.props;
+		if (authenticate.rejected) {
+			authenticate.reset();
+		}
 	};
 
 	handleSubmit = evt => {
 		evt.preventDefault();
 		const { email, password } = this.state;
 		const { authenticate } = this.props;
-		this.setState({
-			error: "",
-		});
-		authenticate
-			.call({ username: email, password })
-			.catch(error => this.handleError(error));
+		authenticate.call({ username: email, password });
 	};
-
-	handleError = error => {
-		this.setState({
-			error: wrongCredentialsError,
-		});
-	}
 
 	render() {
 		const { email, password } = this.state;
 		const { authenticate } = this.props;
+
+		const invalidLogin =
+			authenticate.rejected &&
+			authenticate.reason &&
+			authenticate.reason.response &&
+			authenticate.reason.response.status === 401;
+
 		return (
 			<div
 				className="d-flex align-items-md-center justify-content-center"
@@ -60,8 +57,8 @@ export class Login extends Component {
 								<TextField
 									label="Email"
 									name="email"
-									error={this.state.error!==""}
 									value={email}
+									error={authenticate.rejected}
 									onChange={this.handleInput}
 									required
 								/>
@@ -69,12 +66,15 @@ export class Login extends Component {
 									label="Password"
 									type="password"
 									name="password"
-									error={this.state.error!==""}
 									value={password}
+									error={authenticate.rejected}
+									helperText={
+										(invalidLogin && "Invalid Username or Password") ||
+										(authenticate.reason && authenticate.reason.message)
+									}
 									onChange={this.handleInput}
 									required
 								/>
-								<Typography color="error">{this.state.error}</Typography>
 							</CardContent>
 							<CardActions>
 								<Button raised color="primary" type="submit">
