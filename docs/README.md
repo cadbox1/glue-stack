@@ -1,3 +1,4 @@
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/cadbox1/glue-stack.png?columns=all)](https://waffle.io/cadbox1/glue-stack?utm_source=badge)
 # Glue Stack
 A multi-tenant, multi-user todo application where organisations can sign up and manage their users' tasks.
 
