@@ -142,7 +142,7 @@ Mac Instructions
     ```
 3. Checkout this repository
     ```
-    git clone https://github.com/cadc/glue-stack.git
+    git clone https://github.com/cadbox1/glue-stack.git
     cd glue-stack
     ```
 4. Run the setup bash script
