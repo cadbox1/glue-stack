@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -20,7 +19,7 @@ public class Organisation extends BaseEntity {
 	private String name;
 
 	@Column(nullable = false)
-	private Integer statusId;
+	private Integer statusId = 1;
 
 	//bi-directional many-to-one association to Task
 	@OneToMany(mappedBy = "organisation")
