@@ -28,9 +28,6 @@ public class OrganisationService extends BaseService<Organisation, Integer> {
 	}
 
 	public Organisation create(Organisation organisation) {
-
-		organisation.setStatusId(1);
-
 		User user = organisation.getUsers().get(0);
 
 		user.setOrganisation(organisation);
