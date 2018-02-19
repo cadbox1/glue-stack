@@ -2,7 +2,6 @@ package com.api.service;
 
 import com.api.domain.entity.Organisation;
 import com.api.domain.entity.User;
-import com.api.domain.entity.authorization.TaskPermission;
 import com.api.domain.other.Permission;
 import com.api.repository.OrganisationRepository;
 import com.querydsl.core.types.Predicate;
@@ -32,12 +31,6 @@ public class OrganisationService extends BaseService<Organisation, Integer> {
 
 		user.setOrganisation(organisation);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-		TaskPermission taskPermission = new TaskPermission();
-		taskPermission.setRead(true);
-		taskPermission.setWrite(true);
-		taskPermission.setExecute(true);
-		user.addTaskPermission(taskPermission);
 
 		return organisationRepository.save(organisation);
 	}
