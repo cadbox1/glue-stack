@@ -1,7 +1,6 @@
 package com.api.domain.entity;
 
 import com.api.config.UniqueEmailConstraint;
-import com.api.domain.entity.authorization.TaskPermission;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,8 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,11 +38,6 @@ public class User extends BaseOrganisedEntity implements UserDetails {
 	//bi-directional many-to-one association to TaskSchedule
 	@OneToMany(mappedBy = "user")
 	private List<Task> tasks = new ArrayList<>();
-
-	//bi-directional many-to-one association to TaskPermission
-	@Cascade(CascadeType.ALL)
-	@OneToMany(mappedBy = "user")
-	private List<TaskPermission> taskPermissions = new ArrayList<>();
 
 	public User() {
 	}
@@ -88,28 +80,6 @@ public class User extends BaseOrganisedEntity implements UserDetails {
 
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
-	}
-
-	public List<TaskPermission> getTaskPermissions() {
-		return this.taskPermissions;
-	}
-
-	public void setTaskPermissions(List<TaskPermission> taskPermissions) {
-		this.taskPermissions = taskPermissions;
-	}
-
-	public TaskPermission addTaskPermission(TaskPermission taskPermission) {
-		getTaskPermissions().add(taskPermission);
-		taskPermission.setUser(this);
-
-		return taskPermission;
-	}
-
-	public TaskPermission removeTaskPermission(TaskPermission taskPermission) {
-		getTaskPermissions().remove(taskPermission);
-		taskPermission.setUser(null);
-
-		return taskPermission;
 	}
 
 	@Override

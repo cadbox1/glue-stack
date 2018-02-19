@@ -1,15 +1,10 @@
 package com.api.domain.entity;
 
-import com.api.domain.entity.authorization.TaskPermission;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,17 +24,6 @@ public class Task extends BaseOrganisedEntity {
 
 	@Column(nullable = false)
 	private Integer statusId;
-
-	//bi-directional many-to-many association to TaskGroup
-	@ManyToMany
-	@JoinTable(name = "task_tag", joinColumns = {
-			@JoinColumn(name = "taskId", nullable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "tagId", nullable = false) })
-	private List<Tag> tags;
-
-	//bi-directional many-to-one association to TaskPermission
-	@OneToMany(mappedBy = "task")
-	private List<TaskPermission> taskPermissions;
 
 	public Task() {
 	}
@@ -75,35 +59,4 @@ public class Task extends BaseOrganisedEntity {
 	public void setStatusId(Integer statusId) {
 		this.statusId = statusId;
 	}
-
-	public List<Tag> getTags() {
-		return tags;
-	}
-
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
-
-	public List<TaskPermission> getTaskPermissions() {
-		return this.taskPermissions;
-	}
-
-	public void setTaskPermissions(List<TaskPermission> taskPermissions) {
-		this.taskPermissions = taskPermissions;
-	}
-
-	public TaskPermission addTaskPermission(TaskPermission taskPermission) {
-		getTaskPermissions().add(taskPermission);
-		taskPermission.setTask(this);
-
-		return taskPermission;
-	}
-
-	public TaskPermission removeTaskPermission(TaskPermission taskPermission) {
-		getTaskPermissions().remove(taskPermission);
-		taskPermission.setTask(null);
-
-		return taskPermission;
-	}
-
 }
