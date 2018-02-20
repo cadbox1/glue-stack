@@ -1,11 +1,6 @@
 package com.api;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 /**
  * issue: https://stackoverflow.com/questions/34984166/spring-data-page-pageable-cant-deserialization-how-to-use
@@ -13,7 +8,7 @@ import org.springframework.data.domain.Sort;
  *
  * @param <T>
  */
-public class PageResponse<T> extends PageImpl<T> {
+public class PageResponse<T> {
 
 	private int number;
 	private int size;
@@ -25,25 +20,7 @@ public class PageResponse<T> extends PageImpl<T> {
 	private boolean nextPage;
 	private boolean last;
 	private List<T> content;
-	private Sort sort;
 
-	public PageResponse(List<T> content, Pageable pageable, long total) {
-		super(content, pageable, total);
-	}
-
-	public PageResponse(List<T> content) {
-		super(content);
-	}
-
-	public PageResponse() {
-		super(new ArrayList<T>());
-	}
-
-	public PageImpl<T> pageImpl() {
-		return new PageImpl<T>(getContent(), new PageRequest(getNumber(), getSize(), getSort()), getTotalElements());
-	}
-
-	@Override
 	public int getNumber() {
 		return number;
 	}
@@ -52,7 +29,6 @@ public class PageResponse<T> extends PageImpl<T> {
 		this.number = number;
 	}
 
-	@Override
 	public int getSize() {
 		return size;
 	}
@@ -61,7 +37,6 @@ public class PageResponse<T> extends PageImpl<T> {
 		this.size = size;
 	}
 
-	@Override
 	public int getTotalPages() {
 		return totalPages;
 	}
@@ -70,7 +45,6 @@ public class PageResponse<T> extends PageImpl<T> {
 		this.totalPages = totalPages;
 	}
 
-	@Override
 	public int getNumberOfElements() {
 		return numberOfElements;
 	}
@@ -79,7 +53,6 @@ public class PageResponse<T> extends PageImpl<T> {
 		this.numberOfElements = numberOfElements;
 	}
 
-	@Override
 	public long getTotalElements() {
 		return totalElements;
 	}
@@ -96,7 +69,6 @@ public class PageResponse<T> extends PageImpl<T> {
 		this.previousPage = previousPage;
 	}
 
-	@Override
 	public boolean isFirst() {
 		return first;
 	}
@@ -113,7 +85,6 @@ public class PageResponse<T> extends PageImpl<T> {
 		this.nextPage = nextPage;
 	}
 
-	@Override
 	public boolean isLast() {
 		return last;
 	}
@@ -122,21 +93,11 @@ public class PageResponse<T> extends PageImpl<T> {
 		this.last = last;
 	}
 
-	@Override
 	public List<T> getContent() {
 		return content;
 	}
 
 	public void setContent(List<T> content) {
 		this.content = content;
-	}
-
-	@Override
-	public Sort getSort() {
-		return sort;
-	}
-
-	public void setSort(Sort sort) {
-		this.sort = sort;
 	}
 }

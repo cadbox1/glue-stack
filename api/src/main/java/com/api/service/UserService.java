@@ -1,15 +1,13 @@
 package com.api.service;
 
 import com.api.domain.entity.QUser;
-import com.api.repository.UserRepository;
 import com.api.domain.entity.User;
 import com.api.domain.other.Permission;
+import com.api.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,6 +46,6 @@ public class UserService extends BaseService<User, Integer> {
 				// duplicate found, throw exception
 			}
 		}
-		return userRepository.save(users);
+		return userRepository.saveAll(users);
 	}
 }

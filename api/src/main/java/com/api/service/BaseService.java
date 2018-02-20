@@ -12,9 +12,7 @@ import com.querydsl.core.types.Predicate;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-
 import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +38,7 @@ abstract public class BaseService<T extends BaseEntity, ID extends Serializable>
 	}
 
 	private <E extends T, F extends BaseRepository<E, ID>> F getRepository(Class<E> entityClass) {
-		return (F) repositories.getRepositoryFor(entityClass);
+		return (F) repositories.getRepositoryFor(entityClass).get();
 	}
 
 	private BaseRepository<T, ID> getDefaultRepository() {
@@ -60,7 +58,7 @@ abstract public class BaseService<T extends BaseEntity, ID extends Serializable>
 	}
 
 	public T findOne(User principalUser, ID id) {
-		return getDefaultRepository().findOne(id);
+		return getDefaultRepository().findById(id).get();
 	}
 
 	public T create(User principalUser, T entity) {
@@ -77,7 +75,7 @@ abstract public class BaseService<T extends BaseEntity, ID extends Serializable>
 			if (this.entityManager.contains(newEntity)) {
 				entityManager.detach(newEntity);
 			}
-			oldEntity = getDefaultRepository().findOne((ID) newEntity.getId());
+			oldEntity = getDefaultRepository().findById((ID) newEntity.getId()).get();
 		}
 		return save(principalUser, newEntity, oldEntity);
 	}
@@ -92,11 +90,11 @@ abstract public class BaseService<T extends BaseEntity, ID extends Serializable>
 	}
 
 	public Iterable<T> save(User principalUser, Iterable<T> entities) {
-		return getDefaultRepository().save(entities);
+		return getDefaultRepository().saveAll(entities);
 	}
 
 	public T patch(User principalUser, ID id, JsonNode patchedFields) throws IOException {
-		T entity = getDefaultRepository().findOne(id);
+		T entity = getDefaultRepository().findById(id).get();
 		T updatedEntity = objectMapper.readerForUpdating(entity).readValue(patchedFields);
 		return update(principalUser, updatedEntity);
 	}
