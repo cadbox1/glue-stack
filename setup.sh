@@ -27,6 +27,7 @@ installPackages(){
 
         brew install mysql
         mysql.server restart
+	echo -e "\nJust hit enter for no password (recommended)\n"
         mysql -uroot -p -e "CREATE DATABASE ${databaseName} /*\!40100 DEFAULT CHARACTER SET utf8 */;"
 
         brew install maven
@@ -56,7 +57,7 @@ installPackages(){
 
 setupProperties() {
     echo -e "\n>>> Starting API server setup <<<\n"
-    echo -e "\n>>> Press enter to use default values shown in square brackets <<<\n"
+    echo -e "\n>>> Press enter to use default values (shown in square brackets) <<<\n"
 
     read -p "mysql url [mysql://localhost]: " databaseUrl
     read -p "mysql username [root]: " databaseUsername
@@ -76,7 +77,7 @@ setupProperties() {
     databasePassword=$(sed 's/[&/\]/\\&/g' <<< "$databasePassword")
 
     # Insert database variables into application properties
-    sed -i'' -e "s/\(spring\.datasource\.url=\).*\$/\1jdbc:${databaseUrl}\/${databaseName}/" -e "s/\(spring\.datasource\.username=\).*\$/\1${databaseUsername}/" -e "s/\(spring\.datasource\.password=\).*\$/\1${databasePassword}/" api/src/main/resources/application.properties
+    sed -i '' -e "s/\(spring\.datasource\.url=\).*\$/\1jdbc:${databaseUrl}\/${databaseName}/" -e "s/\(spring\.datasource\.username=\).*\$/\1${databaseUsername}/" -e "s/\(spring\.datasource\.password=\).*\$/\1${databasePassword}/" api/src/main/resources/application.properties
 }
 
 main() {
