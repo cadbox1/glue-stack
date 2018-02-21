@@ -37,6 +37,9 @@ installPackages(){
         echo "Installing Yarn..."
         brew install yarn
         echo "\n"
+        echo "Installing Flyway..."
+        brew install flyway
+        echo "\n"
         echo "Opening Docker, complete the setup there."
         open -a Docker
         echo "\n"
