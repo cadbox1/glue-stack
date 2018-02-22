@@ -13,7 +13,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-public class FindAll extends BaseTest {
+public class FindAllTest extends BaseTest {
 
 	@Test
 	public void findAllUsersTest() throws Exception {

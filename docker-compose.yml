@@ -1,0 +1,10 @@
+version: '3'
+services:
+  database:
+    image: mysql/mysql-server:5.7.21
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: "glue"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_HOST: "%"

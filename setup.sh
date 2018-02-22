@@ -1,7 +1,3 @@
-
-databaseName=Glue
-
-
 lowercase(){
 	echo "$1" | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
 }
@@ -11,7 +7,7 @@ installPackages(){
     OS=`lowercase \`uname\``
 	KERNEL=`uname -r`
 	MACH=`uname -m`
-    noSupport="Sorry your OS is not supported in this setup script, please follow the setup instructions in the README"
+    noSupport="Sorry your OS is not supported by this setup script."
 
     if [ "${OS}" == "windowsnt" ]; then
         echo -n ${noSupport}
@@ -20,21 +16,34 @@ installPackages(){
         if [[ $? != 0 ]] ; then
             # Install Homebrew
             # https://github.com/mxcl/homebrew/wiki/installation
+            echo "\n"
+            echo "Installing Homebrew..."
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         else
+            echo "\n"
+            echo "Updating Homebrew..."
             brew update
         fi
-
-        brew install mysql
-        mysql.server restart
-	echo -e "\nJust hit enter for no password (recommended)\n"
-        mysql -uroot -p -e "CREATE DATABASE ${databaseName} /*\!40100 DEFAULT CHARACTER SET utf8 */;"
-
+        echo "\n"
+        echo "Installing Docker..."
+        brew cask install docker
+        echo "\n"
+        echo "Installing Maven..."
         brew install maven
-
+        echo "\n"
+        echo "Installing Node..."
         brew install node
-
+        echo "\n"
+        echo "Installing Yarn..."
         brew install yarn
+        echo "\n"
+        echo "Installing Flyway..."
+        brew install flyway
+        echo "\n"
+        echo "Opening Docker, complete the setup there."
+        open -a Docker
+        echo "\n"
+        echo "Done!"
     else
         OS=`uname`
         if [ "${OS}" = "Linux" ] ; then
@@ -55,34 +64,4 @@ installPackages(){
     fi
 }
 
-setupProperties() {
-    echo -e "\n>>> Starting API server setup <<<\n"
-    echo -e "\n>>> Press enter to use default values (shown in square brackets) <<<\n"
-
-    read -p "mysql url [mysql://localhost]: " databaseUrl
-    read -p "mysql username [root]: " databaseUsername
-    echo -n "mysql password []: "
-    read -s databasePassword
-    echo -e $"\n"
-
-    if [ -z "$databaseUrl" ]; then
-        databaseUrl=mysql://localhost
-    fi
-    if [ -z "$databaseUsername" ]; then
-        databaseUsername=root
-    fi
-
-    databaseUrl=$(sed 's/[&/\]/\\&/g' <<< "$databaseUrl")
-    databaseUsername=$(sed 's/[&/\]/\\&/g' <<< "$databaseUsername")
-    databasePassword=$(sed 's/[&/\]/\\&/g' <<< "$databasePassword")
-
-    # Insert database variables into application properties
-    sed -i '' -e "s/\(spring\.datasource\.url=\).*\$/\1jdbc:${databaseUrl}\/${databaseName}/" -e "s/\(spring\.datasource\.username=\).*\$/\1${databaseUsername}/" -e "s/\(spring\.datasource\.password=\).*\$/\1${databasePassword}/" api/src/main/resources/application.properties
-}
-
-main() {
-    installPackages
-    setupProperties
-}
-
-main
+installPackages
