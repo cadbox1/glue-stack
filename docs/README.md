@@ -34,7 +34,7 @@ My favourite tools and practises glued together to make a multi-tenant todo appl
 ## Architecture
 Multitenant, monolithic, 3-tier application with a MySQL database, Spring Boot HTTP API and React Single Page Application.
 
-| Tier                                    | Type                          | Language   | Implementation                 |
+| Tier/Component                          | Type                          | Language   | Implementation                 |
 | --------------------------------------- | ----------------------------- | ---------- | ------------------------------ |
 | DB (Database)                           | Relational                    | SQL        | MySQL (pronounced "my sequel") |
 | API (Application Programming Interface) | HTTP with JSON                | Java       | Spring Boot                    |
@@ -77,24 +77,24 @@ CRUD is commonly used to describe a set of common features in applications - Cre
 
 These are our core features that will be used over and over again in our app. Managing your personal tasks,  organisation's users and organisation's tasks will all follow the same `Managing Resources` pattern. Even signup is a Create operation. 
 
-We will design our stack and documentation to address these core features because they will be used throughout the life of the app. For example, users may want comments on tasks in the future. We could sit down and have a think about the best tool for the job, with maybe a nosql database, research what other companies are doing with comments, should they be nested or flat and come up with a solution. But I would prefer to apply our `Managing Resources` framework to get something usable to the customer fast. It should be trivial to do so not because its an 'easy' solution but because we've designed the application specifically to `Manage Resources` AND because we have documentation to develop the feature so that *anyone* can get something working for the customer as fast as possible. I'm sure a grad student would love to develop this feature while [developing documentation](#developing-documentation). 
-
-If users still aren't happy with our solution then we can sit down and design a more unique solution. I would still prefer to treat the unique solution as an experiment for learning new tools to see if we can improve our core features and when we can and can't apply them. 
+In the future users may want comments on tasks. We could sit down and have a think about the best tool for the job, with maybe a nosql database, research what other companies are doing with comments, should they be nested or flat and come up with a solution. But I would prefer to apply our `Managing Resources` framework to get an MVP (minimum viable product) to users as fast as possible. It should be trivial for anyone to develop not because its 'easy' (which depends on your perspective) but because we've designed our application and our documentation specifically to make it easy. If users still aren't happy with our solution then we can sit down and design a more unique solution.
 
 ## Tier Responsibilities
 
-| Tier | Location                                 | Storage & Retrieval | Security | Navigation |
-| ---- | ---------------------------------------- | ------------------- | -------- | ---------- |
-| DB   | Private server (cloud)                   | yes                 |          |            |
-| API  | Public server (internet facing) (cloud)  | yes                 | yes      |            |
-| UI   | Internet browsers (desktop and mobile devices) | yes                 | yes      | yes        |
+| Tier/Component | Location                                 | Storage & Retrieval | Security | Navigation |
+| -------------- | ---------------------------------------- | ------------------- | -------- | ---------- |
+| DB             | Private server (cloud)                   | yes                 |          |            |
+| API            | Public server (internet facing) (cloud)  | yes                 | yes      |            |
+| UI             | Internet browsers (desktop and mobile devices) | yes                 | yes      | yes        |
 
-<!--Expand on each tier.-->
+It is important to "never trust the client". In our application the client refers to the ui and the reason for that is because we can't control client side code - they are free to interact with our internet facing server however they wish. That's why we have an API so that users can't directly access our database and potentially other organisations' data. I see it as a middleman between the user and the database. It is primarily in charge of enforcing the security measures we mentioned under [Managing Resources](#managing-resources) as well as preparing the data from the database. The UI may be aware of this security as well but can never be the one enforcing it.
+
+The other thing to notice is that all components are involved in the storage and retrieval of data so all components need to support how we want our users to interact with our data.
 
 ## Tools
 ### Stack Tools
 
-What we use to make stuff happen
+Tools that make our application work.
 
 * Database
     * MySQL
@@ -112,7 +112,7 @@ What we use to make stuff happen
 
 ### Development Tools
 
-How we develop our application through time into the future
+Tools that we use to develop our application over time.
 
 * Version Control
     * Git
@@ -127,7 +127,7 @@ How we develop our application through time into the future
 * Feature toggles
 * Testing
 * Deployment
-    * deploy features as they're ready, reducing batching
+    * Deploy features as they're ready, reducing batching
     * Flyway for automated database migrations
 
 ## Running Locally
@@ -160,22 +160,22 @@ We support Mac primarily and linux with best-efforts.
     ```
     docker-compose up
     ```
-5. Create a new terminal tab (CMD + t)
-6. The next tab will run the api (backend).
+7. Create a new terminal tab (CMD + t)
+8. The next tab will run the api (backend).
     ```
     cd api
     mvn spring-boot:run
     ```
     This will start our Spring Boot Java application which will setup the tables in our database using a tool called Flyway.
-7. The next tab will run our ui (frontend) development server. You won't need this in production.
+9. The next tab will run our ui (frontend) development server. You won't need this in production.
     ```
     cd ui
     yarn
     yarn start
     ```
     This will open a browser window to our application. Make sure both servers are started before your start playing with it.
-8. Signup your organisation!
-9. To stop any of the components hit Control + C in the tab. This is how to stop running terminal programs.
+10. Signup your organisation!
+11. To stop any of the components hit Control + C in the tab. This is how to stop running terminal programs.
 
 ## Setup Development Tools
 
@@ -188,11 +188,11 @@ We support Mac primarily and linux with best-efforts.
 5. Name: localhost
 6. Username: root
 7. Port: 3307 (The MySQL standard is to use 3306, i've used 3307 to avoid clashes)
-7. Test Connection
-8. Save as Favorites
-9. Connect
-10. Select the glue database on the top left dropdown
-11. Have a look around
+8. Test Connection
+9. Save as Favorites
+10. Connect
+11. Select the glue database on the top left dropdown
+12. Have a look around
 
 ### Setup Visual Studio Code (vscode)
 
@@ -225,9 +225,17 @@ We support Mac primarily and linux with best-efforts.
     }
     ```
 
+### Setup Flyway (less important, for database development)
+
+1. Install Flyway CLI (command line interface)
+
+   ```
+   brew install flyway
+   ```
+
 ## Developing Documentation
 
-Sharing knowledge is something that I feel strongly about and its why I made this project in the first place. It's commonly overlooked because we often forget what it's like to struggle through something once we've completed it, saying how silly we are for not getting it sooner. I feel like this is especially common among developers since we are constantly learning so much so that we're almost expected to struggle through tasks all in the name of learning something new. And that's fine unless everyone else in your team is also struggling through the same tasks.
+Sharing knowledge is something that I feel strongly about and its why I made this project in the first place. It's commonly overlooked because we often forget what it's like to struggle through something once we've completed it, saying how silly we are for not getting it sooner. I feel like this is especially common among developers since we are constantly learning so much so that we're almost expected to struggle through tasks all in the name of learning something new. And that's fine, unless everyone else in your team is also struggling through the same stuff.
 
 If you learn something new you should be sharing that knowledge so the rest of your team can benefit. The more we share knowledge, the more we communicate with each other, the more we understand each other, the easier it is to identify team problems and solve them collaboratively instead of solving the same problems indidually with varying results.
 
