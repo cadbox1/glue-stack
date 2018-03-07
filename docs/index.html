@@ -8,29 +8,33 @@
         crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <style>
+        :root {
+            --hue-1: 246;
+            --hue-2: 354;
+            --saturation: 100%;
+            --lightness: 66%;
+            --text-on-background-color: white;
+            --gradient-direction: 135deg;
+            --gradient-lightness-fade: 5%;
+        }
+
         body {
             text-align: center;
-        }
-
-        h1,
-        h2,
-        h3,
-        p {
             font-family: 'Open Sans', sans-serif;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-weight: normal;
         }
 
         h1 {
             font-size: 4rem;
+            font-weight: normal;
         }
 
         p {
-            max-width: 560px;
+            max-width: 35rem;
+        }
+
+        img {
+            width: 100%;
+            max-width: 30rem;
         }
 
         aside {
@@ -46,11 +50,6 @@
             margin: 1rem;
         }
 
-        img {
-            width: 100%;
-            max-width: 700px;
-        }
-
         section {
             display: flex;
             flex-direction: column;
@@ -60,13 +59,28 @@
             padding: 0 1rem;
         }
 
-        .bg-purple {
-            background-image: linear-gradient(135deg, #9084ff 0, #6555FF 100%);
-            color: white;
+        .bg-1 {
+            background-image: linear-gradient( var(--gradient-direction),
+            hsl( var(--hue-1),
+            var(--saturation),
+            calc(var(--lightness) + var(--gradient-lightness-fade))) 0,
+            hsl( var(--hue-1),
+            var(--saturation),
+            var(--lightness)) 100%);
+
+            color: var(--text-on-background-color);
         }
 
-        .bg-green {
-            background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+        .bg-2 {
+            background-image: linear-gradient( var(--gradient-direction),
+            hsl( var(--hue-2),
+            var(--saturation),
+            calc(var(--lightness) + var(--gradient-lightness-fade))) 0,
+            hsl( var(--hue-2),
+            var(--saturation),
+            var(--lightness)) 100%);
+
+            color: var(--text-on-background-color);
         }
     </style>
     <title>Glue Stack</title>
@@ -79,7 +93,7 @@
         <a href="#sunsets" data-scroll>Sunsets</a>
         <a href="#pricing" data-scroll>Pricing</a>
     </aside>
-    <section id="home" class="bg-purple">
+    <section id="home" class="bg-1">
         <h1>Big Text!</h1>
         <p>You think you're so good because you've got a gradient background? Well you are. And so am I.</p>
     </section>
@@ -88,17 +102,16 @@
         <p>I've got so many i'm not even going to list them all just yet. But there is advanced features, features that will
             make you shit your pants. Not just a shart but a full blown shit.</p>
     </section>
-    <section id="sunsets">
+    <section id="sunsets" class="bg-2">
         <h1>Photos of Sunsets</h1>
         <p>Don't take it all in, you can do that later after you get the social validation you're desperately craving by posting
             pictures to Instagram and other socials.</p>
         <img src="jordan-mcqueen-10434-unsplash.jpg" alt="city" role="presentation" />
     </section>
-    <section id="pricing" class="bg-green">
+    <section id="pricing" class="bg-1">
         <h1>Pricing</h1>
         <p>We're a SASS so our pricing model is so good for us. I mean we'll sell it like we're saving you a bunch of money
             but really we're trying to milk you for everything you've got.</p>
-
     </section>
     <script>
         var scroll = new SmoothScroll('a[href*="#"]');
