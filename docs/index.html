@@ -10,7 +10,6 @@
     <style>
         :root {
             --hue-1: 246;
-            --hue-2: 354;
             --saturation: 100%;
             --lightness: 66%;
             --text-on-background-color: white;
@@ -21,20 +20,23 @@
         body {
             text-align: center;
             font-family: 'Open Sans', sans-serif;
+            padding-bottom: 2rem;
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: 3rem;
             font-weight: normal;
         }
 
         p {
             max-width: 35rem;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         img {
             width: 100%;
-            max-width: 30rem;
+            max-width: 70rem;
         }
 
         aside {
@@ -42,21 +44,32 @@
             display: flex;
             width: 100%;
             justify-content: center;
-            background-color: white;
         }
 
         aside a {
             display: block;
             margin: 1rem;
+            color: var(--light)
         }
 
-        section {
+        aside a:hover,
+        aside a:focus {
+            color: white;
+        }
+
+        .hero {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            padding: 0 1rem;
+        }
+
+        .hero h1 {
+            margin-bottom: 1rem;
+        }
+
+        section {
+            padding: 4rem 1rem;
         }
 
         .bg-1 {
@@ -70,18 +83,6 @@
 
             color: var(--text-on-background-color);
         }
-
-        .bg-2 {
-            background-image: linear-gradient( var(--gradient-direction),
-            hsl( var(--hue-2),
-            var(--saturation),
-            calc(var(--lightness) + var(--gradient-lightness-fade))) 0,
-            hsl( var(--hue-2),
-            var(--saturation),
-            var(--lightness)) 100%);
-
-            color: var(--text-on-background-color);
-        }
     </style>
     <title>Glue Stack</title>
     <script src="smooth-scroll.min.js"></script>
@@ -90,28 +91,17 @@
 <body>
     <aside>
         <a href="#features" data-scroll>Features</a>
-        <a href="#sunsets" data-scroll>Sunsets</a>
-        <a href="#pricing" data-scroll>Pricing</a>
+        <a href="https://github.com/cadbox1/glue-stack" data-scroll>GitHub</a>
     </aside>
-    <section id="home" class="bg-1">
-        <h1>Big Text!</h1>
-        <p>You think you're so good because you've got a gradient background? Well you are. And so am I.</p>
+    <section id="home" class="hero bg-1">
+        <h1>How I make web applications</h1>
+        <p class="lead">Glue Stack is a todo application where I share what I know and learn about developing web applications.</p>
     </section>
     <section id="features">
         <h1>Features</h1>
         <p>I've got so many i'm not even going to list them all just yet. But there is advanced features, features that will
             make you shit your pants. Not just a shart but a full blown shit.</p>
-    </section>
-    <section id="sunsets" class="bg-2">
-        <h1>Photos of Sunsets</h1>
-        <p>Don't take it all in, you can do that later after you get the social validation you're desperately craving by posting
-            pictures to Instagram and other socials.</p>
-        <img src="jordan-mcqueen-10434-unsplash.jpg" alt="city" role="presentation" />
-    </section>
-    <section id="pricing" class="bg-1">
-        <h1>Pricing</h1>
-        <p>We're a SASS so our pricing model is so good for us. I mean we'll sell it like we're saving you a bunch of money
-            but really we're trying to milk you for everything you've got.</p>
+        <img src="Screenshot.png" alt="screenshot" role="presentation" style="border: 1px solid hsl(0, 0%, 92%)" />
     </section>
     <script>
         var scroll = new SmoothScroll('a[href*="#"]');
