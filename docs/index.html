@@ -18,9 +18,7 @@
         }
 
         body {
-            text-align: center;
             font-family: 'Open Sans', sans-serif;
-            padding-bottom: 2rem;
         }
 
         h1 {
@@ -32,6 +30,21 @@
             max-width: 35rem;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: 1px solid white;
+            border-radius: 2rem;
+            background-color: white;
+            font-weight: bold;
+            color: hsl(var(--hue-1), var(--saturation), var(--lightness)) !important;
+        }
+
+        .btn:hover,
+        .btn:focus {
+            background-color: hsl(0, 0%, 93%);
+            border-color: hsl(0, 0%, 93%);
         }
 
         img {
@@ -49,7 +62,8 @@
         aside a {
             display: block;
             margin: 1rem;
-            color: var(--light)
+            color: var(--light);
+            text-decoration: none;
         }
 
         aside a:hover,
@@ -61,6 +75,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             min-height: 100vh;
         }
 
@@ -70,6 +85,14 @@
 
         section {
             padding: 4rem 1rem;
+        }
+
+        section {
+            text-align: center;
+        }
+
+        .container {
+            text-align: left;
         }
 
         .bg-1 {
@@ -83,6 +106,10 @@
 
             color: var(--text-on-background-color);
         }
+
+        .bg-1 a {
+            color: var(--text-on-background-color);
+        }
     </style>
     <title>Glue Stack</title>
     <script src="smooth-scroll.min.js"></script>
@@ -94,14 +121,38 @@
         <a href="https://github.com/cadbox1/glue-stack" data-scroll>GitHub</a>
     </aside>
     <section id="home" class="hero bg-1">
-        <h1>How I make web applications</h1>
+        <h1>How I make web apps</h1>
         <p class="lead">Glue Stack is a todo application where I share what I know and learn about developing web applications.</p>
+        <a href="https://github.com/cadbox1/glue-stack" class="btn">Open on GitHub</a>
     </section>
     <section id="features">
-        <h1>Features</h1>
-        <p>I've got so many i'm not even going to list them all just yet. But there is advanced features, features that will
-            make you shit your pants. Not just a shart but a full blown shit.</p>
-        <img src="Screenshot.png" alt="screenshot" role="presentation" style="border: 1px solid hsl(0, 0%, 92%)" />
+        <img src="Screenshot.png" alt="screenshot" role="presentation" style="border: 1px solid hsl(0, 0%, 92%); margin-bottom: 4rem" />
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6 col-xl-4">
+                    <h5>Relational Database - MySQL</h5>
+                    <p>Data is normalised and fit to store your application's data while allowing powerful analytics when required.</p>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <h5>Java Web API - Spring Boot</h5>
+                    <p>Spring Boot offers a convention over configuration approach to Java web applications which aligns nicely with this project.</p>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <h5>Single Page Application - React</h5>
+                    <p>React has dominated the front end space. Its small API makes it easy to get started without comprimising development speed later on.</p>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <h5>Documentation Focus</h5>
+                    <p>I am committed to document the development process using these tools so that its easy to learn and improve.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section id="call-to-action" class="bg-1">
+        <h2>What are you waiting for?</h2>
+        <p class="mb-3">Everything is fully open source and available on GitHub.</p>
+        <a class="btn d-inline-block mx-auto">Open in GitHub</a>
     </section>
     <script>
         var scroll = new SmoothScroll('a[href*="#"]');
