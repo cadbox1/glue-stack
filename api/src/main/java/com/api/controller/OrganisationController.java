@@ -3,7 +3,6 @@ package com.api.controller;
 import com.api.domain.entity.Organisation;
 import com.api.service.OrganisationService;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("api/organisations")
-public class OrganisationController extends BaseController<Organisation, Integer> {
+public class OrganisationController extends BaseController<Organisation> {
 
 	@Autowired
 	private OrganisationService organisationService;

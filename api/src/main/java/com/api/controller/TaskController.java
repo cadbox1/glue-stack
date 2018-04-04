@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("api/tasks")
-public class TaskController extends BaseController<Task, Integer> {
+public class TaskController extends BaseController<Task> {
 
 	@Autowired
 	private TaskService taskService;

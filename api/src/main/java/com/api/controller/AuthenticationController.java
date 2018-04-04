@@ -15,7 +15,6 @@ public class AuthenticationController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public User authenticate(Authentication authentication) {
-		User principalUser = (User) authentication.getPrincipal();
-		return principalUser;
+		return (User) authentication.getPrincipal();
 	}
 }
