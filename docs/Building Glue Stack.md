@@ -60,7 +60,7 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
 
     The standard port for MySQL is 3306 but i've chosen to map it to 3307 so it doesn't clash if you already have a MySQL database running - you can't have two applications listening to the same port.
 
-2.  Start the database
+2. Start the database
 
     ```
     docker-compose up
@@ -68,7 +68,23 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
 
     The MySQL database will be open after the line`Starting MySQL 5.7.21-1.1.3`. To close it hit Control+C
 
-3.  Download and install Sequel Pro from [https://www.sequelpro.com/](https://www.sequelpro.com/)
+3.  Commit your changes to git from terminal
+
+    1.  Stage all your files (will just be our docker-compose file)
+
+        ```
+        git add -A
+        ```
+
+    2.  Commit
+
+        ```
+        git commit
+        ```
+
+        This will bring up a vim editor just like we did before. To write your commit message you use `i` to insert, write your commit message "added docker-compose file for database" above the commented (hashed) lines, then `esc`, then `:wq`. 
+
+4. Download and install Sequel Pro from [https://www.sequelpro.com/](https://www.sequelpro.com/)
 
 4.  Open Sequel Pro (possibly using spotlight)
 
@@ -380,7 +396,9 @@ That's it! Have a play with the content tab on the tables to enter data if you'r
 
 8.  Open Chrome and go to [http://localhost:8080/](http://localhost:8080/)
 
-9.  Notice how everything is secure by default
+9. Notice how everything is secure by default
+
+10. Commit your changes using the second menu item on the left. Just like before you can stage all or individual files and write a commit message saying "first running spring boot commit"
 
 10. Configure Spring Security
 
@@ -452,6 +470,8 @@ That's it! Have a play with the content tab on the tables to enter data if you'r
 12. Go back to Sequel Pro and hit the refresh button on the bottom of the left pain to refresh the tables.
 
     You should see all your tables re-appaear plus a new table called `flyway_schema_history`. That table is what Flyway uses internally to check where your database is at so it can run scripts on startup so that everyone's databases is kept up to date.
+
+13.  Commit your work saying "added database setup scripts".
 
 ### Create JPA (Hibernate) Entities
 
@@ -749,15 +769,19 @@ I'm going to walk you through making the abstractions first becuase it makes thi
     }
     ```
 
-6.  Start the application. Hibernate will validate that your data classes match your database and will fail to start if they don't.
+6. Start the application. Hibernate will validate that your data classes match your database and will fail to start if they don't.
 
     ```
     mvn spring-boot:run
     ```
 
+7.  Commit your work; "created entities"
+
 ### Create the Repository Layer
 
-1.  Add Querydsl JPA as a dependency. Querydsl JPA is a Java library for typesafe JPA queries that also works really well with another one of our cool libraries, Spring-Data-JPA, which is powering our repository layer.
+The repository layer in Spring is a layer dedicated for communicating with data sources.
+
+1. Add Querydsl JPA as a dependency. Querydsl JPA is a Java library for typesafe JPA queries that also works really well with another one of our cool libraries, Spring-Data-JPA, which is powering our repository layer.
 
     1.  Open the pom.xml file (using command + p) and add the following line to the properties element.
 
@@ -859,6 +883,26 @@ I'm going to walk you through making the abstractions first becuase it makes thi
     }
     ```
 
-6.  Restart the application to make sure its all correct.
+6. Restart the application to make sure its all correct.
+
+7. Commit your work; "created repository layer"
 
 ### Create the Service Layer
+
+The service layer is where most of your API logic lives. Some people choose to split up the service layer further where they see fit but I prefer Services call other Services as required instead of creating mandatory layers.
+
+1. Create the `Permission.java` Enum at `api/src/main/java/org/gluestack/api/domain/other`
+
+   ```
+   package org.gluestack.api.domain.other;
+
+   public enum Permission {
+       READ, WRITE, EXECUTE,
+   }
+   ```
+
+   ​
+
+2. Create the `BaseService.java` file at `api/src/main/java/org/gluestack/api/service`. This is up there with the most custom code in this entire project so you can just grab the source from the code repo. [https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java)
+
+3. ​
