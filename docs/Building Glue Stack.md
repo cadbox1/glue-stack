@@ -348,7 +348,7 @@ That's it! Have a play with the content tab on the tables to enter data if you'r
     spring init --list
     ```
 
-3.  [Setup VSCode](https://github.com/cadbox1/glue-stack/blob/master/docs/Setup%20VSCode.md)
+3.  [Setup VSCode](Setup%20VSCode.md)
 
 4.  Open the glue-stack folder
 
@@ -827,37 +827,59 @@ The repository layer in Spring is a layer dedicated for communicating with data 
         </plugin>
         ```
 
-2.  Create the `BaseRepository.java` file at `api/src/main/java/org/gluestack/api/repository`.
+2. Add this plugin so VSCode finds the classes that Querydsl generates.
+
+    ```
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>add-source</id>
+                <phase>generate-sources</phase>
+                <goals>
+                	<goal>add-source</goal>
+                </goals>
+                <configuration>
+                <sources>
+               		<source>${project.build.directory}/generated-sources/java/</source>
+                </sources>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+    ```
+
+3. Create the `BaseRepository.java` file at `api/src/main/java/org/gluestack/api/repository`.
 
     ```
     package org.gluestack.api.repository;
 
-    import java.io.Serializable;
     import org.springframework.data.querydsl.QuerydslPredicateExecutor;
     import org.springframework.data.repository.CrudRepository;
     import org.springframework.data.repository.NoRepositoryBean;
 
     @NoRepositoryBean
-    public interface BaseRepository<T, ID extends Serializable>
-                    extends CrudRepository<T, ID>, QuerydslPredicateExecutor<T> {
+    public interface BaseRepository<T>
+                    extends CrudRepository<T, Integer>, QuerydslPredicateExecutor<T> {
 
     }
     ```
 
-3.  Create the `OrganisationRepository.java`
+4. Create the `OrganisationRepository.java`
 
     ```
     package org.gluestack.api.repository;
 
     import org.gluestack.api.domain.entity.Organisation;
 
-    public interface OrganisationRepository extends BaseRepository<Organisation, Integer> {
+    public interface OrganisationRepository extends BaseRepository<Organisation> {
     }
     ```
 
     ​
 
-4.  Create the `UserRepository.java`. The findOneByEmail method will allow us to find a User in the database by their email and the EntityGraph annotation will load their Organisation in the same query. This will be useful for authentication. This is where Spring Data JPA is pretty cool, its an interface that automagically implements itself!
+5. Create the `UserRepository.java`. The findOneByEmail method will allow us to find a User in the database by their email and the EntityGraph annotation will load their Organisation in the same query. This will be useful for authentication. This is where Spring Data JPA is pretty cool, its an interface that automagically implements itself!
 
     ```
     package org.gluestack.api.repository;
@@ -865,44 +887,32 @@ The repository layer in Spring is a layer dedicated for communicating with data 
     import org.gluestack.api.domain.entity.User;
     import org.springframework.data.jpa.repository.EntityGraph;
 
-    public interface UserRepository extends BaseRepository<User, Integer> {
+    public interface UserRepository extends BaseRepository<User> {
 
     	@EntityGraph(attributePaths = { "organisation" })
     	User findOneByEmail(String email);
     }
     ```
 
-5.  Create the `TaskRepository.java`
+6. Create the `TaskRepository.java`
 
     ```
     package org.gluestack.api.repository;
 
     import org.gluestack.api.domain.entity.Task;
 
-    public interface TaskRepository extends BaseRepository<Task, Integer> {
+    public interface TaskRepository extends BaseRepository<Task> {
     }
     ```
 
-6. Restart the application to make sure its all correct.
+7. Restart the application to make sure its all correct.
 
-7. Commit your work; "created repository layer"
+8. Commit your work; "created repository layer"
 
 ### Create the Service Layer
 
 The service layer is where most of your API logic lives. Some people choose to split up the service layer further where they see fit but I prefer Services call other Services as required instead of creating mandatory layers.
 
-1. Create the `Permission.java` Enum at `api/src/main/java/org/gluestack/api/domain/other`
+1. Create the `BaseService.java` file at `api/src/main/java/org/gluestack/api/service`. This is up there with the most custom code in this entire project so you can just grab the source from the code repo. [https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java)
 
-   ```
-   package org.gluestack.api.domain.other;
-
-   public enum Permission {
-       READ, WRITE, EXECUTE,
-   }
-   ```
-
-   ​
-
-2. Create the `BaseService.java` file at `api/src/main/java/org/gluestack/api/service`. This is up there with the most custom code in this entire project so you can just grab the source from the code repo. [https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java)
-
-3. ​
+2. ​

@@ -21,7 +21,7 @@ abstract public class BaseService<T extends BaseEntity> {
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
-	private BaseRepository<T, Integer> baseRepository;
+	private BaseRepository<T> baseRepository;
 
 	private Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
 			.getActualTypeArguments()[0];
