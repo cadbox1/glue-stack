@@ -3,101 +3,106 @@ package com.api.service;
 import com.api.domain.entity.BaseEntity;
 import com.api.domain.entity.BaseOrganisedEntity;
 import com.api.domain.entity.User;
-import com.api.domain.other.Permission;
 import com.api.repository.BaseRepository;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import java.io.IOException;
-import java.io.Serializable;
+import com.querydsl.core.types.dsl.PathBuilderFactory;
 import java.lang.reflect.ParameterizedType;
+import java.util.Optional;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.support.Repositories;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
-@Transactional
-abstract public class BaseService<T extends BaseEntity, ID extends Serializable> {
+abstract public class BaseService<T extends BaseEntity> {
 
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
-	private ObjectMapper objectMapper;
-	private Class<T> defaultEntityClass = null;
-	private Repositories repositories = null;
+	private BaseRepository<T, Integer> baseRepository;
 
-	@Autowired
-	public void init(WebApplicationContext appContext) {
-		this.repositories = new Repositories(appContext);
-		this.defaultEntityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
-				.getActualTypeArguments()[0];
-	}
-
-	private <E extends T, F extends BaseRepository<E, ID>> F getRepository(Class<E> entityClass) {
-		return (F) repositories.getRepositoryFor(entityClass).get();
-	}
-
-	private BaseRepository<T, ID> getDefaultRepository() {
-		return getRepository(this.defaultEntityClass);
-	}
-
-	public <E extends T> Page<E> findAll(User principalUser, Class<E> entityClass, Predicate predicate,
-			Pageable pageRequest) {
-		BooleanBuilder builder = new BooleanBuilder(predicate);
-		builder.and(getPermissionPredicate(principalUser, Permission.READ));
-		Page<E> result = getRepository(entityClass).findAll(builder, pageRequest);
-		return result;
-	}
+	private Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
+			.getActualTypeArguments()[0];
 
 	public Page<T> findAll(User principalUser, Predicate predicate, Pageable pageRequest) {
-		return findAll(principalUser, defaultEntityClass, predicate, pageRequest);
+		BooleanBuilder builder = new BooleanBuilder(predicate);
+		builder.and(getReadPermissionPredicate(principalUser));
+		return baseRepository.findAll(builder, pageRequest);
 	}
 
-	public T findOne(User principalUser, ID id) {
-		return getDefaultRepository().findById(id).get();
-	}
-
-	public T create(User principalUser, T entity) {
-		return save(principalUser, entity);
-	}
-
-	public T update(User principalUser, T entity) {
-		return save(principalUser, entity);
+	public Optional<T> findById(User principalUser, Integer id) {
+		// this is the hack until this is fixed: https://github.com/querydsl/querydsl/issues/2115
+		Predicate findOnePredicate = new PathBuilderFactory().create(entityClass).get("id").eq(id);
+		Page<T> result = findAll(principalUser, findOnePredicate, PageRequest.of(0, 1));
+		if (result.hasContent()) {
+			return Optional.of(result.iterator().next());
+		}
+		return Optional.empty();
 	}
 
 	public T save(User principalUser, T newEntity) {
+		return saveAndPreparePreviousVersion(principalUser, newEntity);
+	}
+
+	private T saveAndPreparePreviousVersion(User principalUser, T newEntity) {
 		T oldEntity = null;
 		if (newEntity.getId() != null) {
 			if (this.entityManager.contains(newEntity)) {
 				entityManager.detach(newEntity);
 			}
-			oldEntity = getDefaultRepository().findById((ID) newEntity.getId()).get();
+			Optional<T> oldEntityOptional = findById(principalUser, newEntity.getId());
+			if (!oldEntityOptional.isPresent()) {
+				throw new EntityNotFoundException();
+			}
+			oldEntity = oldEntityOptional.get();
 		}
-		return save(principalUser, newEntity, oldEntity);
+		return saveWithPreviousVersion(principalUser, newEntity, oldEntity);
 	}
 
-	protected T save(User principalUser, T newEntity, T oldEntity) {
-		if (newEntity instanceof BaseOrganisedEntity) {
-			BaseOrganisedEntity casted = (BaseOrganisedEntity) newEntity;
-			casted.setOrganisation(principalUser.getOrganisation());
-			newEntity = (T) casted;
+	private T saveWithPreviousVersion(User principalUser, T newEntity, T oldEntity) {
+		prepareSaveData(principalUser, newEntity, oldEntity);
+		validateChanges(principalUser, newEntity, oldEntity);
+		return baseRepository.save(newEntity);
+	}
+
+	protected void validateChanges(User principalUser, T newEntity, T oldEntity) {
+		validateOrganisationChange(principalUser, newEntity, oldEntity);
+	}
+
+	private void validateOrganisationChange(User principalUser, T newEntity, T oldEntity) {
+		if (oldEntity != null) {
+			if (oldEntity instanceof BaseOrganisedEntity) {
+				BaseOrganisedEntity oldEntityCasted = (BaseOrganisedEntity) oldEntity;
+				BaseOrganisedEntity newEntityCasted = (BaseOrganisedEntity) newEntity;
+				if (oldEntityCasted.getOrganisation() == null) {
+					throw new RuntimeException("Current organised entity has no organisation");
+				}
+				// this really should have been covered in the read permission predicate
+				if (!oldEntityCasted.getOrganisation().getId().equals(principalUser.getOrganisation().getId())) {
+					throw new RuntimeException("This entity is not in your organisation");
+				}
+				if (!oldEntityCasted.getOrganisation().getId().equals(newEntityCasted.getOrganisation().getId())) {
+					throw new RuntimeException("You can't change an entity's organisation");
+				}
+			}
 		}
-		return getDefaultRepository().save(newEntity);
 	}
 
-	public Iterable<T> save(User principalUser, Iterable<T> entities) {
-		return getDefaultRepository().saveAll(entities);
+	protected void prepareSaveData(User principalUser, T newEntity, T oldEntity) {
+		if (oldEntity == null) {
+			// new entity
+			if (newEntity instanceof BaseOrganisedEntity) {
+				if (principalUser.getOrganisation() == null) {
+					throw new RuntimeException("Principal user has no organisation to assign the new entity to");
+				}
+				BaseOrganisedEntity newEntityCasted = (BaseOrganisedEntity) newEntity;
+				newEntityCasted.setOrganisation(principalUser.getOrganisation());
+				newEntity = (T) newEntityCasted;
+			}
+		}
 	}
 
-	public T patch(User principalUser, ID id, JsonNode patchedFields) throws IOException {
-		T entity = getDefaultRepository().findById(id).get();
-		T updatedEntity = objectMapper.readerForUpdating(entity).readValue(patchedFields);
-		return update(principalUser, updatedEntity);
-	}
-
-	abstract public Predicate getPermissionPredicate(User principalUser, Permission permission);
+	abstract public Predicate getReadPermissionPredicate(User principalUser);
 }
