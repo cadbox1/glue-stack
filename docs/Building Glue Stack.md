@@ -915,4 +915,130 @@ The service layer is where most of your API logic lives. Some people choose to s
 
 1. Create the `BaseService.java` file at `api/src/main/java/org/gluestack/api/service`. This is up there with the most custom code in this entire project so you can just grab the source from the code repo. [https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java)
 
-2. ​
+2. Create the `OrganisationService.java` file in the same folder. 
+
+   This demonstrates the general structure of the services: 
+
+   There's a method that returns a Querydsl Predicate which is a typesafe database criteria that has defines what entities can be returned from the database. You can see that this will only match the organisation of the current user and this is repeated for the other services as well.
+
+   The create method for an organisation also needs to create a user which this service is not responsible for so it uses a method on the UserService.
+
+   ```
+   package org.gluestack.api.service;
+
+   import org.gluestack.api.domain.entity.Organisation;
+   import org.gluestack.api.domain.entity.QOrganisation;
+   import org.gluestack.api.domain.entity.User;
+   import org.gluestack.api.repository.OrganisationRepository;
+   import com.querydsl.core.types.Predicate;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.stereotype.Service;
+
+   /**
+    * Created by cchristo on 23/5/17.
+    */
+   @Service
+   public class OrganisationService extends BaseService<Organisation> {
+
+       @Autowired
+       private OrganisationRepository organisationRepository;
+       @Autowired
+       private UserService userService;
+
+       @Override
+       public Predicate getReadPermissionPredicate(User principalUser) {
+           return QOrganisation.organisation.id.eq(principalUser.getOrganisation().getId());
+       }
+
+       public Organisation create(Organisation organisation) {
+           User user = organisation.getUsers().get(0);
+           user.setOrganisation(organisation);
+           userService.preparePassword(user, null);
+           return organisationRepository.save(organisation);
+       }
+   }
+   ```
+
+3. Create the `UserService.java`
+
+   In this Service it overrides one of the save lifecycle methods to implement some extra functionality; hashing a user's plaintext password. The hashing functionality is provided by Spring Security and is important for keeping passwords safe in the database because it is a one way hash, it can't be decrypted. The API validates user's passwords by applying the hash to the password supplied during authentication and is checked against the hash in the database. The only way to 'decrypt' the hash is to generate hashes which should take a long time. That's why new hashing algorithms are created to stay ahead of the speed improvements of computers. 
+
+   Java has a convention of `Mapping` which might help here but I don't like the pattern much so i'm trying to avoid it and I think this code is okay.
+
+   ```
+   package org.gluestack.api.service;
+
+   import org.gluestack.api.domain.entity.QUser;
+   import org.gluestack.api.domain.entity.User;
+   import com.querydsl.core.types.Predicate;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.security.crypto.password.PasswordEncoder;
+   import org.springframework.stereotype.Service;
+
+   /**
+    * Created by cchristo on 17/03/2017.
+    */
+   @Service
+   public class UserService extends BaseService<User> {
+
+       @Autowired
+       private PasswordEncoder passwordEncoder;
+
+       @Override
+       public Predicate getReadPermissionPredicate(User principalUser) {
+           return QUser.user.organisation.id.eq(principalUser.getOrganisation().getId());
+       }
+
+       @Override
+       public void prepareSaveData(User principalUser, User newEntity, User oldEntity) {
+           preparePassword(newEntity, oldEntity);
+           super.prepareSaveData(principalUser, newEntity, oldEntity);
+       }
+
+       public void preparePassword(User newUser, User oldUser) {
+           if (oldUser == null || !oldUser.getPassword().equals(newUser.getPassword())) {
+               newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+           }
+       }
+   }
+   ```
+
+4. Create the `TaskService.java` 
+
+   In this case the TaskService wants to return related entities to the user (the user details of the assigned user) so we use hibernate to load those details and the `jackson-datatype-hibernate5` we'll be adding later will automatically handle the serialisation (in our case its converting java objects to JSON).
+
+   ```
+   package org.gluestack.api.service;
+
+   import org.gluestack.api.domain.entity.QTask;
+   import org.gluestack.api.domain.entity.Task;
+   import org.gluestack.api.domain.entity.User;
+   import com.querydsl.core.types.Predicate;
+   import org.hibernate.Hibernate;
+   import org.springframework.data.domain.Page;
+   import org.springframework.data.domain.Pageable;
+   import org.springframework.stereotype.Service;
+
+   /**
+    * Created by cchristo on 11/04/2017.
+    */
+   @Service
+   public class TaskService extends BaseService<Task> {
+
+       @Override
+       public Predicate getReadPermissionPredicate(User principalUser) {
+           return QTask.task.organisation.id.eq(principalUser.getOrganisation().getId());
+       }
+
+       @Override
+       public Page<Task> findAll(User principalUser, Predicate predicate, Pageable pageRequest) {
+           Page<Task> tasks = super.findAll(principalUser, predicate, pageRequest);
+           tasks.getContent().forEach(task -> Hibernate.initialize(task.getUser()));
+           return tasks;
+       }
+   }
+   ```
+
+5. As always, start the appliation to make sure it works then commit your changes
+
+### Create the Controller layer
