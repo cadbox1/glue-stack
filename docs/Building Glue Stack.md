@@ -1,6 +1,8 @@
 # Building Glue Stack
 
-1.  Make a development folder in your home folder. This is for all your development stuff.
+1. Run the setup.sh as part of the [Running Locally](https://github.com/cadbox1/glue-stack#running-locally) process. This will install some of the tools we're going to need.
+
+2. Make a development folder in your home folder. This is for all your development stuff.
 
     1.  Open terminal (Command+Space then type terminal - this is called spotlight)
 
@@ -12,14 +14,14 @@
         cd development
         ```
 
-2.  create a folder for our app
+3. create a folder for our app
 
     ```
     mkdir glue-stack
     cd glue-stack
     ```
 
-3.  Initialise the folder as a git repository. Git is a tool for version control - tracking code changes over time.
+4. Initialise the folder as a git repository. Git is a tool for version control - tracking code changes over time.
 
     ```
     git init
@@ -354,7 +356,7 @@ That's it! Have a play with the content tab on the tables to enter data if you'r
 
 5.  Add some configuration to our project
 
-    1.  Hit Command+p then start typing application.properties then open it.
+    1.  Hit Command+p then start typing `application.properties` then open it.
 
         This is where we configure our Spring Boot application
 
@@ -582,7 +584,7 @@ I'm going to walk you through making the abstractions first becuase it makes thi
     }
     ```
 
-3.  Create `Organisation.java`
+3.  Create `Organisation.java`. This is largely what you would call a `POJO` in Java - Plain Old Java Object. A `POJO` is Java class that just has fields and getters and setters. We've added some annotations but I still largely consider this a `POJO`.
 
     ```
     package org.gluestack.api.domain.entity;
@@ -781,6 +783,8 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
 The repository layer in Spring is a layer dedicated for communicating with data sources.
 
+To do this, we'll need to add some `dependencies` to our project. Dependencies are dependencies on `libraries`. A Library is a separate, reusable piece of code that does something and makes your life easier and associated with the concept of `abstraction` which means to reduce complexity. A lot of people write Java Web Applications so its only natural that we deal with the same problems so libraries are an attempt to solve some of those common problems. In Java you used to have to download a compiled library but this is hard to maintain and leads to large project sizes so we use what's called dependency management where you simply specify the library and the version that you want and that will be used to download that library for you. In Java you can use Maven to manage dependencies and it stores the version information in a `pom.xml` file.
+
 1. Add Querydsl JPA as a dependency. Querydsl JPA is a Java library for typesafe JPA queries that also works really well with another one of our cool libraries, Spring-Data-JPA, which is powering our repository layer.
 
     1.  Open the pom.xml file (using command + p) and add the following line to the properties element.
@@ -913,7 +917,7 @@ The repository layer in Spring is a layer dedicated for communicating with data 
 
 The service layer is where most of your API logic lives. Some people choose to split up the service layer further where they see fit but I prefer Services call other Services as required instead of creating mandatory layers.
 
-1. Create the `BaseService.java` file at `api/src/main/java/org/gluestack/api/service`. This is up there with the most custom code in this entire project so you can just grab the source from the code repo. [https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java)
+1. Create the `BaseService.java` file at `api/src/main/java/org/gluestack/api/service`. Its a lot of custom code that I've developed for this project so just copy and paste it from this repo; [BaseService.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/service/BaseService.java). You may have to update the package and some of the imports so it compiles.
 
 2. Create the `OrganisationService.java` file in the same folder. 
 
@@ -934,9 +938,6 @@ The service layer is where most of your API logic lives. Some people choose to s
    import org.springframework.beans.factory.annotation.Autowired;
    import org.springframework.stereotype.Service;
 
-   /**
-    * Created by cchristo on 23/5/17.
-    */
    @Service
    public class OrganisationService extends BaseService<Organisation> {
 
@@ -975,9 +976,6 @@ The service layer is where most of your API logic lives. Some people choose to s
    import org.springframework.security.crypto.password.PasswordEncoder;
    import org.springframework.stereotype.Service;
 
-   /**
-    * Created by cchristo on 17/03/2017.
-    */
    @Service
    public class UserService extends BaseService<User> {
 
@@ -1019,9 +1017,6 @@ The service layer is where most of your API logic lives. Some people choose to s
    import org.springframework.data.domain.Pageable;
    import org.springframework.stereotype.Service;
 
-   /**
-    * Created by cchristo on 11/04/2017.
-    */
    @Service
    public class TaskService extends BaseService<Task> {
 
@@ -1042,3 +1037,416 @@ The service layer is where most of your API logic lives. Some people choose to s
 5. As always, start the appliation to make sure it works then commit your changes
 
 ### Create the Controller layer
+
+The controller layer is what connects our application to the internet. It defines what URLs the application listens to and what Java objects we're expecting to receive or send. Spring MVC will convert the Java objects to and from JSON which is convenient for the frontend.
+
+1. Create the `BaseController.java` at `api/src/main/java/org/gluestack/api/controller`. Again, like the the `BaseService` its custom code so copy and paste it; [BaseController.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/main/java/com/api/controller/BaseController.java).
+
+2. Create the `OrganisationController.java`. This controller is a bit unique because it needs to handle new signups which means it works without a logged in user.
+
+   ```
+   package org.gluestack.api.controller;
+
+   import org.gluestack.api.domain.entity.Organisation;
+   import org.gluestack.api.service.OrganisationService;
+   import javax.validation.Valid;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.security.core.Authentication;
+   import org.springframework.web.bind.annotation.RequestBody;
+   import org.springframework.web.bind.annotation.RequestMapping;
+   import org.springframework.web.bind.annotation.RequestMethod;
+   import org.springframework.web.bind.annotation.RestController;
+
+   @RestController
+   @RequestMapping("api/organisations")
+   public class OrganisationController extends BaseController<Organisation> {
+
+       @Autowired
+       private OrganisationService organisationService;
+
+       @Override
+       @RequestMapping(method = RequestMethod.POST)
+       public Organisation create(Authentication authentication, @RequestBody @Valid Organisation entity) {
+           Organisation organisation = organisationService.create(entity);
+           organisation.setUsers(null); // this is a bit of a hack to fix some serialisation issues.
+           return organisation;
+       }
+   }
+   ```
+
+3. Create the `UserController.java`. This is what our typical controller method looks like, I would have liked to move the findAll method to the BaseController but currently its not possible.
+
+   ```
+   package org.gluestack.api.controller;
+
+   import org.gluestack.api.domain.entity.User;
+   import org.gluestack.api.service.UserService;
+   import com.querydsl.core.types.Predicate;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.data.domain.Page;
+   import org.springframework.data.domain.Pageable;
+   import org.springframework.data.querydsl.binding.QuerydslPredicate;
+   import org.springframework.security.core.Authentication;
+   import org.springframework.web.bind.annotation.RequestMapping;
+   import org.springframework.web.bind.annotation.RequestMethod;
+   import org.springframework.web.bind.annotation.RestController;
+
+   @RestController
+   @RequestMapping("api/users")
+   public class UserController extends BaseController<User> {
+
+       @Autowired
+       private UserService userService;
+
+       @RequestMapping(method = RequestMethod.GET)
+       public Page<User> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
+               Pageable pageRequest) {
+           User principalUser = (User) authentication.getPrincipal();
+           return userService.findAll(principalUser, predicate, pageRequest);
+       }
+
+   }
+   ```
+
+4. Create the `TaskController.java`.
+
+   ```
+   package org.gluestack.api.controller;
+
+   import org.gluestack.api.domain.entity.Task;
+   import org.gluestack.api.domain.entity.User;
+   import org.gluestack.api.service.TaskService;
+   import com.querydsl.core.types.Predicate;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.data.domain.Page;
+   import org.springframework.data.domain.Pageable;
+   import org.springframework.data.querydsl.binding.QuerydslPredicate;
+   import org.springframework.security.core.Authentication;
+   import org.springframework.web.bind.annotation.RequestMapping;
+   import org.springframework.web.bind.annotation.RequestMethod;
+   import org.springframework.web.bind.annotation.RestController;
+
+   @RestController
+   @RequestMapping("api/tasks")
+   public class TaskController extends BaseController<Task> {
+
+       @Autowired
+       private TaskService taskService;
+
+       @RequestMapping(method = RequestMethod.GET)
+       public Page<Task> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
+               Pageable pageRequest) {
+           User principalUser = (User) authentication.getPrincipal();
+           return taskService.findAll(principalUser, predicate, pageRequest);
+       }
+
+   }
+   ```
+
+5. Create the `AuthenticationController.java`. This is what the frontend will call to login and if authentication is successful it will return the details of the current user.
+
+   ```
+   package com.api.controller;
+
+   import com.api.domain.entity.User;
+   import org.springframework.security.core.Authentication;
+   import org.springframework.web.bind.annotation.RequestMapping;
+   import org.springframework.web.bind.annotation.RequestMethod;
+   import org.springframework.web.bind.annotation.RestController;
+
+   @RestController
+   @RequestMapping("api/authenticate")
+   public class AuthenticationController {
+
+   	@RequestMapping(method = RequestMethod.GET)
+   	public User authenticate(Authentication authentication) {
+   		return (User) authentication.getPrincipal();
+   	}
+   }
+   ```
+6. Run the application and commit your work.
+
+### Final Configuration
+
+1. Add the dependency for Jackson Hibernate Module inside the dependencies element in your `pom.xml` file. 
+
+   In Java web applications there is the concept of mapping where you convert your Entities into other Java objects which the API would return. Instead of doing that I prefer to use my Entities for the output but Jackson, the library that spring uses to convert Java objects to and from JSON (serialisation and deserialisation), would try and serialise every relation of each entitity (and their relations and so on and so on), causing an infinite loop. This library prevents this by making Jackson only serialise the entities that have been loaded from the database. That means if you want to return more data all you have to do is load more data from the database, which you would have to do anyway if you mapped entities.
+
+   ```
+   <dependency>
+   	<groupId>com.fasterxml.jackson.datatype</groupId>
+   	<artifactId>jackson-datatype-hibernate5</artifactId>
+   </dependency>
+   ```
+
+2. Create `WebMvcConfig.java` inside the config folder.
+
+   This will enable the Jackson Hibernate Module and the Spring Data Web Support which converts URL parameters into a Querydsl predicate to support filtering.
+
+   ```
+   package org.gluestack.api.config;
+
+   import org.springframework.context.annotation.Bean;
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.data.web.config.EnableSpringDataWebSupport;
+   import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+   import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+   import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+   import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module.Feature;
+
+   @Configuration
+   @EnableSpringDataWebSupport
+   public class WebMvcConfig implements WebMvcConfigurer {
+
+       @Bean
+       public Jackson2ObjectMapperBuilder jacksonBuilder() {
+           Jackson2ObjectMapperBuilder b = new Jackson2ObjectMapperBuilder();
+           Hibernate5Module hm = new Hibernate5Module();
+           hm.enable(Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS);
+           hm.disable(Feature.USE_TRANSIENT_ANNOTATION);
+           b.modulesToInstall(hm);
+           return b;
+       }
+   }
+   ```
+
+3. Create the `UserDetailsService.java`. This will be used to configure Spring Security and will be used as part of authentication.
+
+   ```
+   package org.gluestack.api.config;
+
+   import org.gluestack.api.repository.UserRepository;
+   import org.gluestack.api.domain.entity.User;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.security.core.userdetails.UserDetails;
+   import org.springframework.security.core.userdetails.UserDetailsService;
+   import org.springframework.security.core.userdetails.UsernameNotFoundException;
+   import org.springframework.stereotype.Service;
+
+   @Service
+   public class SecurityUserService implements UserDetailsService {
+
+       @Autowired
+       private UserRepository userRepository;
+
+       @Override
+       public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+           User user = userRepository.findOneByEmail(email);
+           if (user == null) {
+               throw new UsernameNotFoundException("Username " + email + " not found");
+           }
+           return user;
+       }
+   }
+   ```
+
+4. Open up the `WebSecurityConfiguration.java` file. Make it look like this.
+
+   ```
+   package org.gluestack.api.config;
+
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.context.annotation.Bean;
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.http.HttpMethod;
+   import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+   import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+   import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+   import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+   import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+   import org.springframework.security.config.http.SessionCreationPolicy;
+   import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+   import org.springframework.security.crypto.password.PasswordEncoder;
+
+   @Configuration
+   @EnableWebSecurity
+   @EnableGlobalMethodSecurity(prePostEnabled = true)
+   public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+   	@Autowired
+   	private SecurityUserService securityUserService;
+
+   	@Bean
+   	public PasswordEncoder passwordEncoder() {
+   		return new BCryptPasswordEncoder();
+   	}
+
+   	@Override
+   	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+   		auth.userDetailsService(securityUserService).passwordEncoder(passwordEncoder());
+   	}
+
+   	@Override
+   	protected void configure(HttpSecurity http) throws Exception {
+   		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+   		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/organisations").permitAll();
+   		http.authorizeRequests().antMatchers("/api/**").fullyAuthenticated();
+   		http.httpBasic();
+   		http.csrf().disable();
+   	}
+   }
+
+   ```
+
+5. Start the application and commit your work.
+
+### Tests
+
+I'm not the best at tests but I think I like this approach.
+
+1. Add the dependency on [Testcontainers](https://www.testcontainers.org/usage/database_containers.html) in the `pom.xml`. 
+
+   Testcontainers allow us use a real MySQL database for our tests and its loaded using docker so you have to have that installed but luckily that's part of our setup scripts.
+
+   ```
+   <dependency>
+       <groupId>org.testcontainers</groupId>
+       <artifactId>mysql</artifactId>
+       <version>1.6.0</version>
+       <scope>test</scope>
+   </dependency>
+   ```
+
+2. Create an `application-test.properties` at `api/src/main/resources/`. 
+
+   This will specify to connect to the testcontainers database during testing. You don't need to replace anything in this code snippet.
+
+   ```
+   # database settings
+   spring.datasource.url=jdbc:tc:mysql:5.7.21://somehostname:someport/databasename
+   spring.datasource.driver-class-name=org.testcontainers.jdbc.ContainerDatabaseDriver
+   ```
+
+3. Delete the `ApiApplication.java` file from `api/src/test/java/org/gluestack/api`.
+
+4. In that same directory, create the `BaseTest.java`.
+
+   My current testing strategy is to have a decent amount of test data available so that you don't have to setup a lot of data for new tests. This might not scale in the long run so I may have to break it up a bit but I think the concept of making it really easy to setup data or not having to do it at all is a good.
+
+   ```
+   package org.gluestack.api;
+
+   import org.gluestack.api.domain.entity.Organisation;
+   import org.gluestack.api.domain.entity.Task;
+   import org.gluestack.api.domain.entity.User;
+   import org.gluestack.api.repository.OrganisationRepository;
+   import org.gluestack.api.repository.TaskRepository;
+   import org.gluestack.api.repository.UserRepository;
+   import com.fasterxml.jackson.databind.ObjectMapper;
+   import org.junit.Before;
+   import org.junit.runner.RunWith;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+   import org.springframework.boot.test.context.SpringBootTest;
+   import org.springframework.security.crypto.password.PasswordEncoder;
+   import org.springframework.test.context.TestPropertySource;
+   import org.springframework.test.context.junit4.SpringRunner;
+   import org.springframework.test.web.servlet.MockMvc;
+
+   @RunWith(SpringRunner.class)
+   @AutoConfigureMockMvc
+   @SpringBootTest
+   @TestPropertySource(locations = "classpath:application-test.properties")
+   public abstract class BaseTest {
+
+   	@Autowired
+   	protected MockMvc mvc;
+
+   	@Autowired
+   	protected ObjectMapper objectMapper;
+
+   	@Autowired
+   	private OrganisationRepository organisationRepository;
+
+   	@Autowired
+   	private UserRepository userRepository;
+
+   	@Autowired
+   	private TaskRepository taskRepository;
+
+   	@Autowired
+   	private PasswordEncoder passwordEncoder;
+
+   	protected User user;
+   	protected Task task;
+
+   	@Before
+   	public void setup() {
+   		Organisation organisation = new Organisation();
+   		organisation.setName("organisation");
+   		organisationRepository.save(organisation);
+
+   		user = new User();
+   		user.setEmail("email");
+   		user.setPassword(passwordEncoder.encode("password"));
+   		user.setFirstName("test");
+   		user.setLastName("user");
+   		user.setOrganisation(organisation);
+   		userRepository.save(user);
+
+   		task = new Task();
+   		task.setName("task");
+   		task.setNotes("notes");
+   		task.setStatusId(1);
+   		task.setUser(user);
+   		task.setOrganisation(organisation);
+   		taskRepository.save(task);
+   	}
+   }
+   ```
+
+5. Create a `POJO` for the `PageResponse` the list views return. I'm not 100% sure why we have to do this but its not terribly hard. Copy it from [https://github.com/cadbox1/glue-stack/blob/master/api/src/test/java/com/api/PageResponse.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/test/java/com/api/PageResponse.java)
+
+6. Create a `FindAllTest.java` in a folder/package called `task`. 
+
+   Its important to end your class with the name test because that's how maven finds tests by default.
+
+   ```
+   package org.gluestack.api.task;
+
+   import org.gluestack.api.BaseTest;
+   import org.gluestack.api.PageResponse;
+   import org.gluestack.api.domain.entity.Task;
+   import static org.hamcrest.MatcherAssert.assertThat;
+   import static org.hamcrest.Matchers.equalTo;
+   import static org.hamcrest.Matchers.hasSize;
+   import static org.junit.Assert.assertEquals;
+   import org.junit.Test;
+   import org.springframework.http.MediaType;
+   import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+   import org.springframework.test.web.servlet.MvcResult;
+   import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+   public class FindAllTest extends BaseTest {
+
+       @Test
+       public void findAllUsersTest() throws Exception {
+           MvcResult mvcResult = mvc.perform(get("/api/tasks").contentType(MediaType.APPLICATION_JSON)
+                   .with(httpBasic(user.getUsername(), "password"))).andReturn();
+           PageResponse<Task> page = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                   objectMapper.getTypeFactory().constructParametricType(PageResponse.class, Task.class));
+
+           assertEquals(1, page.getNumberOfElements());
+           assertEquals(1, page.getTotalElements());
+           assertThat(page.getContent(), hasSize(1));
+
+           Task result = page.getContent().get(0);
+
+           assertThat(result.getName(), equalTo(task.getName()));
+           assertThat(result.getNotes(), equalTo(task.getNotes()));
+           assertThat(result.getStatusId(), equalTo(task.getStatusId()));
+           assertThat(result.getUser().getId(), equalTo(task.getUser().getId()));
+       }
+   }
+   ```
+
+7. At the command line, inside the api folder, run this command to run all the tests.
+
+   ```
+   mvn test
+   ```
+
+8. Commit your work.
+
+## UI
+

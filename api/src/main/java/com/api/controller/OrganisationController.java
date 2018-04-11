@@ -24,7 +24,7 @@ public class OrganisationController extends BaseController<Organisation> {
 	@RequestMapping(method = RequestMethod.POST)
 	public Organisation create(Authentication authentication, @RequestBody @Valid Organisation entity) {
 		Organisation organisation = organisationService.create(entity);
-		organisation.setUsers(null);
+		organisation.setUsers(null); // this is a bit of a hack to fix some serialisation issues.
 		return organisation;
 	}
 }

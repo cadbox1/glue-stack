@@ -17,11 +17,9 @@ public class FindAllTest extends BaseTest {
 
 	@Test
 	public void findAllUsersTest() throws Exception {
-		MvcResult mvcResult = mvc.perform(get("/api/tasks")
-				.contentType(MediaType.APPLICATION_JSON)
-				.with(httpBasic(user.getUsername(),"password"))).andReturn();
-		PageResponse<Task> page = objectMapper.readValue(
-				mvcResult.getResponse().getContentAsString(),
+		MvcResult mvcResult = mvc.perform(get("/api/tasks").contentType(MediaType.APPLICATION_JSON)
+				.with(httpBasic(user.getUsername(), "password"))).andReturn();
+		PageResponse<Task> page = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
 				objectMapper.getTypeFactory().constructParametricType(PageResponse.class, Task.class));
 
 		assertEquals(1, page.getNumberOfElements());
