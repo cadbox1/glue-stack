@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import AppBar from "material-ui/AppBar";
 import IconButton from "material-ui/IconButton";
 import Close from "material-ui-icons/Close";
-import TextField from "common/TextField";
+import TextField from "common/components/TextField";
 import Button from "material-ui/Button";
 import Paper from "material-ui/Paper";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
 import { findOne, save } from "api/user";
-import { connect } from "api/connector";
+import { connect } from "common/connector";
 
 class Form extends Component {
 	constructor(props) {

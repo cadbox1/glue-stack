@@ -3,9 +3,9 @@ import Paper from "material-ui/Paper";
 import { withStyles } from "material-ui/styles";
 import Typography from "material-ui/Typography";
 import MenuItem from "material-ui/Menu/MenuItem";
-import { connect } from "api/connector";
+import { connect } from "common/connector";
 import { stateHolder } from "common/stateHolder";
-import { TaskStatus } from "common/taskStatus";
+import { TaskStatus } from "api/task";
 import { List, connectConfig } from "../user/list";
 import ExpansionPanel, {
 	ExpansionPanelSummary,

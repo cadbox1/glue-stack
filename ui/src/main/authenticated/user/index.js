@@ -6,30 +6,21 @@ import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
-import SearchIcon from "material-ui-icons/Search";
-import FilterListIcon from "material-ui-icons/FilterList";
 import Add from "material-ui-icons/Add";
 import Refresh from "material-ui-icons/Refresh";
 import { CircularProgress } from "material-ui/Progress";
-import { connect } from "api/connector";
+import { connect } from "common/connector";
 import { urlStateHolder } from "common/stateHolder";
 
-import { Search } from "./search";
-import { List, connectConfig } from "./list";
+import { connectConfig, List } from "./list";
 import { Create, Edit } from "./form";
 
-class TaskIndex extends Component {
-	state = { showFilters: false };
-
-	toggleShowFilters = () => {
-		this.setState(({ showFilters }) => ({ showFilters: !showFilters }));
-	};
-
+class UserIndex extends Component {
 	render() {
-		const { match, findAll, toggleSideBar, singleView } = this.props;
-		const { showFilters } = this.state;
+		const { match, findAll, singleView, toggleSideBar } = this.props;
+
 		return (
-			<div className="row no-gutters w-100" style={{ flexWrap: "nowrap" }}>
+			<div className="row no-gutters w-100">
 				<Route
 					path={`${match.path}`}
 					exact={singleView}
@@ -44,25 +35,17 @@ class TaskIndex extends Component {
 									>
 										<MenuIcon />
 									</IconButton>
-									<Typography type="title" color="inherit" className="mr-auto">
-										Tasks
+									<Typography color="inherit" type="title" className="mr-auto">
+										Users
 									</Typography>
-									{/* <Link to={`${match.path}/search`}>
-										<IconButton color="contrast">
-											<SearchIcon />
-										</IconButton>
-									</Link> */}
-									<IconButton onClick={this.toggleShowFilters} color="contrast">
-										<FilterListIcon />
-									</IconButton>
-									<IconButton onClick={findAll.refresh} color="contrast">
+									<IconButton color="contrast" onClick={findAll.refresh}>
 										{findAll.pending ? (
 											<span>
 												<CircularProgress color="inherit" size={14} />
 											</span>
 										) : (
-												<Refresh />
-											)}
+											<Refresh />
+										)}
 									</IconButton>
 									<Link to={`${match.path}/create`}>
 										<IconButton color="contrast">
@@ -71,8 +54,7 @@ class TaskIndex extends Component {
 									</Link>
 								</Toolbar>
 							</AppBar>
-							{showFilters && <Search {...props} findAll={findAll} />}
-							<List {...props} listURL={match.path} findAll={findAll} />
+							<List listURL={match.path} findAll={findAll} />
 						</div>
 					)}
 				/>
@@ -83,7 +65,7 @@ class TaskIndex extends Component {
 							<Create
 								{...props}
 								className="col h-100vh"
-								refreshList={singleView ? undefined : findAll.call}
+								refreshList={singleView ? undefined : findAll.refresh}
 							/>
 						)}
 					/>
@@ -93,7 +75,7 @@ class TaskIndex extends Component {
 							<Edit
 								{...props}
 								className="col h-100vh"
-								refreshList={singleView ? undefined : findAll.call}
+								refreshList={singleView ? undefined : findAll.refresh}
 							/>
 						)}
 					/>
@@ -110,4 +92,4 @@ export default componentQueries({
 		}),
 	],
 	config: { pure: false },
-})(urlStateHolder(connect(connectConfig)(TaskIndex)));
+})(urlStateHolder(connect(connectConfig)(UserIndex)));

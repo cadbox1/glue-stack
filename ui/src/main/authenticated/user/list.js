@@ -6,11 +6,11 @@ import Table, {
 	TableRow,
 	TableFooter,
 } from "material-ui/Table";
-import { TableCell } from "common/tableCell";
+import { TableCell } from "common/components/tableCell";
 import Radio from "material-ui/Radio";
 import { parseURL } from "common/parseURL";
-import { TableSortLabel } from "common/tableSortLabel";
-import { TablePagination } from "common/tablePagination";
+import { TableSortLabel } from "common/components/tableSortLabel";
+import { TablePagination } from "common/components/tablePagination";
 import { findAll } from "api/user";
 
 export class List extends Component {

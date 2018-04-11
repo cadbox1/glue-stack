@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { connect } from "api/connector";
+import { connect } from "common/connector";
 import Card, { CardActions, CardContent } from "material-ui/Card";
 import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
-import TextField from "common/TextField";
+import TextField from "common/components/TextField";
 import Button from "material-ui/Button";
 import { save } from "api/organisation";
 

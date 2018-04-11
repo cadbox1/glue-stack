@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Card, { CardActions, CardContent } from "material-ui/Card";
 import Typography from "material-ui/Typography";
-import TextField from "common/TextField";
+import TextField from "common/components/TextField";
 import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
 

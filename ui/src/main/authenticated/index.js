@@ -6,7 +6,7 @@ import { Me } from "./me";
 import Task from "./task";
 import User from "./user";
 
-class Main extends Component {
+class Authenticated extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -75,13 +75,13 @@ class Main extends Component {
 	}
 }
 
-const ConnectedMain = componentQueries({
+const ConnectedAuthenticated = componentQueries({
 	queries: [
 		({ width }) => ({
 			temporaryDock: width < 800,
 		}),
 	],
 	config: { pure: false },
-})(Main);
+})(Authenticated);
 
-export { ConnectedMain as Main };
+export { ConnectedAuthenticated as Authenticated };

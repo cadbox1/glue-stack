@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { connect } from "api/connector";
+import { connect } from "common/connector";
 import { authenticate, signOut } from "api/authentication";
 import { Unauthenticated } from "./unauthenticated";
-import { Main } from "./main";
+import { Authenticated } from "./authenticated";
 
-class Authentication extends Component {
+class Main extends Component {
 	componentDidMount() {
 		this.authenticate();
 	}
@@ -24,14 +24,14 @@ class Authentication extends Component {
 		if (!authenticate.fulfilled) {
 			return <Unauthenticated authenticate={authenticate} />;
 		}
-		return <Main signOut={this.signOut} authenticate={authenticate} />;
+		return <Authenticated signOut={this.signOut} authenticate={authenticate} />;
 	}
 }
 
-Authentication = connect({
+Main = connect({
 	authenticate: {
 		promise: authenticate,
 	},
-})(Authentication);
+})(Main);
 
-export { Authentication };
+export { Main };

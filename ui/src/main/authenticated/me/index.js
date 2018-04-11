@@ -9,7 +9,7 @@ import { CircularProgress } from "material-ui/Progress";
 import { urlStateHolder } from "common/stateHolder";
 import { parseURL } from "common/parseURL";
 import { findAll } from "api/task";
-import { connect } from "api/connector";
+import { connect } from "common/connector";
 import { List } from "../task/list";
 
 class Me extends Component {
@@ -35,8 +35,8 @@ class Me extends Component {
 									<CircularProgress color="inherit" size={14} />
 								</span>
 							) : (
-									<Refresh />
-								)}
+								<Refresh />
+							)}
 						</IconButton>
 					</Toolbar>
 				</AppBar>

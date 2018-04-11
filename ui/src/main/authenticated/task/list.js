@@ -6,10 +6,10 @@ import Table, {
 	TableFooter,
 } from "material-ui/Table";
 import Hidden from "material-ui/Hidden";
-import { TableCell } from "common/tableCell";
+import { TableCell } from "common/components/tableCell";
 import { parseURL } from "common/parseURL";
-import { TablePagination } from "common/tablePagination";
-import { TableSortLabel } from "common/tableSortLabel";
+import { TablePagination } from "common/components/tablePagination";
+import { TableSortLabel } from "common/components/tableSortLabel";
 import { findAll } from "api/task";
 import { ListRow } from "./listRow";
 

@@ -7,8 +7,8 @@ import Done from "material-ui-icons/Done";
 import Undo from "material-ui-icons/Undo";
 import Hidden from "material-ui/Hidden";
 import { patch } from "api/task";
-import { connect } from "api/connector";
-import { TaskStatus } from "common/taskStatus";
+import { connect } from "common/connector";
+import { TaskStatus } from "api/task";
 
 class ListRow extends Component {
 	handleDone = () => {
