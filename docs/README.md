@@ -76,7 +76,7 @@ We support Mac primarily and linux with best-efforts.
 
 * Share how I currently build web applications
 * Understand how my favourite tools and practices fit together in a real application
-* Establish a standard to compare new tools and processes with
+* Establish my standard to compare new tools and processes with
 * Establish some common web application concepts and how to build them
 * Demonstrate my idea of documentation
 

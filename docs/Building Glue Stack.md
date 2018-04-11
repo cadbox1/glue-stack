@@ -1,8 +1,10 @@
 # Building Glue Stack
 
-1. Run the setup.sh as part of the [Running Locally](https://github.com/cadbox1/glue-stack#running-locally) process. This will install some of the tools we're going to need.
+1. Create a file to write down any questions you have or anything that's unclear in this document so that we can improve it to make it easier for the next person.
 
-2. Make a development folder in your home folder. This is for all your development stuff.
+2. Run the setup.sh as part of the [Running Locally](https://github.com/cadbox1/glue-stack#running-locally) process. This will install some of the tools we're going to need.
+
+3. Make a development folder in your home folder. This is for all your development stuff.
 
     1.  Open terminal (Command+Space then type terminal - this is called spotlight)
 
@@ -14,14 +16,14 @@
         cd development
         ```
 
-3. create a folder for our app
+4. create a folder for our app
 
     ```
     mkdir glue-stack
     cd glue-stack
     ```
 
-4. Initialise the folder as a git repository. Git is a tool for version control - tracking code changes over time.
+5. Initialise the folder as a git repository. Git is a tool for version control - tracking code changes over time.
 
     ```
     git init
@@ -1323,6 +1325,8 @@ I'm not the best at tests but I think I like this approach.
 
    My current testing strategy is to have a decent amount of test data available so that you don't have to setup a lot of data for new tests. This might not scale in the long run so I may have to break it up a bit but I think the concept of making it really easy to setup data or not having to do it at all is a good.
 
+   The other important thing here is the Transactional annotation. That each test will run in a separate database transaction and will be rolled-back after the test completes. This means the database will be in the same state before each tests regardless of which tests ran before it, making our tests independent.
+
    ```
    package org.gluestack.api;
 
@@ -1332,6 +1336,9 @@ I'm not the best at tests but I think I like this approach.
    import org.gluestack.api.repository.OrganisationRepository;
    import org.gluestack.api.repository.TaskRepository;
    import org.gluestack.api.repository.UserRepository;
+
+   import javax.transaction.Transactional;
+
    import com.fasterxml.jackson.databind.ObjectMapper;
    import org.junit.Before;
    import org.junit.runner.RunWith;
@@ -1346,6 +1353,7 @@ I'm not the best at tests but I think I like this approach.
    @RunWith(SpringRunner.class)
    @AutoConfigureMockMvc
    @SpringBootTest
+   @Transactional
    @TestPropertySource(locations = "classpath:application-test.properties")
    public abstract class BaseTest {
 

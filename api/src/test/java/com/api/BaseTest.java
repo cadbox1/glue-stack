@@ -1,5 +1,7 @@
 package com.api;
 
+import javax.transaction.Transactional;
+
 import com.api.domain.entity.Organisation;
 import com.api.domain.entity.Task;
 import com.api.domain.entity.User;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest
+@Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public abstract class BaseTest {
 
