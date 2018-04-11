@@ -1458,3 +1458,164 @@ I'm not the best at tests but I think I like this approach.
 
 ## UI
 
+### Create React App
+
+1. Open a new terminal in VSCode and run this command.
+
+   ```
+   yarn global add create-react-app
+   ```
+
+   This will install `create-react-app` globally. `create-react-app` is by far the most popular way to get a `React` project started. 
+
+2. Create a new project by running the command then the name of the project.
+
+   ```
+   create-react-app ui
+   ```
+
+3. Follow the commands it displays in the terminal
+
+   ```
+   cd ui
+   yarn start
+   ```
+
+   That should open a working react app in your browser, how easy was that!
+
+4. Open the file `package.json` and remove the `^` (caret) from the start of the version numbers. This will ensure that our dependency version won't change unless we change them.
+
+5. Stop the front end development server using Control + c
+
+6. Run yarn. This will produce a new lockfile
+
+   ```
+   yarn
+   ```
+
+7. Commit your work.
+
+8. create a `.env` file at `ui/`. 
+
+   This will allow us to import the folders inside the src folder absolutely instead of  relatively which is more robust when moving stuff around. Its always a good idea to link any relative issues in code that help you come to a solution.
+
+   ```
+   // https://github.com/facebookincubator/create-react-app/issues/741#issuecomment-278945308
+   NODE_PATH=src/
+   ```
+
+9. Create a `.prettierrc.yaml` file.
+
+   This will specify how we want the prettier to format our code, including the prettier VSCode plugin we installed.
+
+   ```
+   useTabs: true
+   trailingComma: es5
+   ```
+
+10. Create a `tsconfig.json` file.
+
+    This will let VSCode understand our project. Tt will make the autocompletes, called Intellisense in VSCode, a lot more helpful.
+
+    ```
+    {
+    	"compilerOptions": {
+    		"allowJs": true,
+    		"baseUrl": "src/"
+    	}
+    }
+    ```
+
+11. Commit your changes
+
+### Add Libraries
+
+We're going to add some Libraries to our project mainly in the form of dependencies. Just like in Java we're going to have a file that holds our library names and versions so that we can download them all instead of putting them in our project. When we run `yarn add` it will download the library from `NPM` and add it to our `package.json`.
+
+The `-E` option uses exact version - it doesn't add the `^` (caret) we removed from the `package.json`.
+
+1. Open a terminal window and cd into the ui directory
+
+2. [React Router](https://github.com/ReactTraining/react-router) (and friends). This is for Routing which is about mapping the url in the address bar to different pages in our app.
+
+   ```
+   yarn add -E react-router-dom
+   yarn add -E history
+   yarn add -E query-string
+   ```
+
+3. [Axios](https://github.com/axios/axios) is a small library that makes netwrok requests just that much easier.
+
+   ```
+   yarn add -E axios
+   ```
+
+4. [Material UI Beta](https://material-ui-next.com/). Material UI is the most popular material design library for `React`. This library is going to heavily influence the design of our app using the popular [Material Design](https://material.io/guidelines/) specifications. Their previous version had some pretty big limitations once you got into it but they've learned a lot and delivered a fantastic beta version. Being a Beta they tend to `Move Fast and Break Things` (and that's a good thing) so we're going to use the exact version I know works.
+
+   ```
+   yarn add -E material-ui@1.0.0-beta.23
+   yarn add -E material-ui-icons@1.0.0-beta.17
+   ```
+
+5. [Bootstrap](https://getbootstrap.com/). Okay, we definitely shouldn't need this but I know the utilities fairly well so it helped me get the ui working quickly but I will definitely be removing this eventually.
+
+   ```
+   yarn add -E bootstrap
+   ```
+
+6. [React Component Queries](https://github.com/ctrlplusb/react-component-queries) allows us to detect the sizes of components so that we can keep our app responsive and working nicely on mobile devices.
+
+   ```
+   yarn add -E react-sizeme react-component-queries
+   ```
+
+7. Okay this next step is a bit of a cop out. Its the re-usable code I've developed while creating the frontend. I really should be explaining each peice but I think i'll come back and do that later. Sorry!
+
+8. Copy the [common](https://github.com/cadbox1/glue-stack/tree/master/ui/src/common) folder to `ui/`.
+
+9. Setup React Router and Material UI at the root component. Open `App.js`.
+
+   ```
+   import React from "react";
+   import { Router } from "react-router-dom";
+   import { MuiThemeProvider } from "material-ui/styles";
+   import { history } from "common/history";
+   import "./App.css";
+
+   const App = () => (
+   	<Router history={history}>
+   		<MuiThemeProvider>
+   			<p>hey</p>
+   		</MuiThemeProvider>
+   	</Router>
+   );
+
+   export default App;
+   ```
+
+10. Delete the `logo.svg`.
+
+11. Open `App.css`.
+
+    ```
+    html,
+    body,
+    #root {
+    	height: 100%;
+    	width: 100%;
+    }
+
+    .h-100vh {
+    	height: 100vh;
+    }
+    ```
+
+12. Commit your work.
+
+### API Requests
+
+1. Create a folder called `api` at `ui/src/`.
+2. ​
+
+
+

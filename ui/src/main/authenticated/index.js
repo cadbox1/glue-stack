@@ -75,7 +75,7 @@ class Authenticated extends Component {
 	}
 }
 
-const ConnectedAuthenticated = componentQueries({
+Authenticated = componentQueries({
 	queries: [
 		({ width }) => ({
 			temporaryDock: width < 800,
@@ -84,4 +84,4 @@ const ConnectedAuthenticated = componentQueries({
 	config: { pure: false },
 })(Authenticated);
 
-export { ConnectedAuthenticated as Authenticated };
+export { Authenticated };
