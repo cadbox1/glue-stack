@@ -35,7 +35,7 @@
 
 We're going to download MySQL and run it using a tool called Docker Compose which uses Docker then connect to it using Sequel Pro.
 
-1.  Create a docker compose file
+1. Create a docker compose file
 
     1.  ```
         vim docker-compose.yml
@@ -72,7 +72,7 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
 
     The MySQL database will be open after the line`Starting MySQL 5.7.21-1.1.3`. To close it hit Control+C
 
-3.  Commit your changes to git from terminal
+3. Commit your changes to git from terminal
 
     1.  Stage all your files (will just be our docker-compose file)
 
@@ -90,33 +90,31 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
 
 4. Download and install Sequel Pro from [https://www.sequelpro.com/](https://www.sequelpro.com/)
 
-4.  Open Sequel Pro (possibly using spotlight)
+5. Open Sequel Pro (possibly using spotlight)
 
-5.  Connect to the MySQL database
+6. Connect to the MySQL database
 
+    ```
     Name: localhost (localhost refers to your own computer)
-
     Host: 127.0.0.1 (the ip address of localhost - your computer)
-
     Username: root
-
     Password: (blank)
-
     Port: 3307
+    ```
 
-6.  Click test connection
+7. Click test connection
 
     1.  If it succeeds click "Add to Favourites"
 
-7.  Click "Connect"
+8. Click "Connect"
 
-8.  Select our "glue" database using the dropdown on the top left
+9. Select our "glue" database using the dropdown on the top left
 
 ### Create Tables
 
 ### Organisation Table
 
-1.  Click the plus on the bottom left
+1. Click the plus on the bottom left
 
     Name: organisation (its considered good practice to make sure table names aren't plurals; they're singular)
 
@@ -124,49 +122,45 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
 
     Table Collation: Default (utf8_general_ci)
 
-2.  Click Add
+2. Click Add
 
-3.  That should bring up the Structure tab where you can manage the Fields of the table
+3. That should bring up the Structure tab where you can manage the Fields of the table
 
-4.  Click the plus icon in the middle of the page underneath the lone id Field to add a new field
+4. Click the plus icon in the middle of the page underneath the lone id Field to add a new field
 
+    ```
     Field: name
-
     Type: VARCHAR (a variable length text field)
-
     Length: 255
-
     Allow Null: false
+    ```
 
-5.  Add another Field
+5. Add another Field
 
+    ```
     Field: active
-
     Type: BIT
-
     Length: 1
-
     Allow Null: false
+    ```
 
-6.  Add another Field
+6. Add another Field
 
+    ```
     Field: createdDate
-
     Type: DATETIME
-
     Length: (leave blank)
-
     Allow Null: false
+    ```
 
-7.  Add another Field
+7. Add another Field
 
+    ```
     Field: modifiedDate
-
     Type: DATETIME
-
     Length: (leave blank)
-
     Allow Null: false
+    ```
 
 Cool you just created the organisation table! If you right click on the organisation table then go "Copy Create Table Syntax" it should look like this:
 
@@ -187,53 +181,48 @@ Alternatively, you can click the console button on the top right to see the SQL 
 
 Each user belongs to a single organisation. We call this a Many-To-One relationship from a user to an organisation (or a One-To-Many relationship from an organisation to users). We model this relationship in relational databases using a foreign key. I like to think of relationships as associations as in a user is associated with an organisation and an organisation has users associated with it. The user table also has unique email addresses - no two users can have the same email.
 
-1.  Click the plus on the bottom left again, name the table "user" with utf8 again.
+1. Click the plus on the bottom left again, name the table "user" with utf8 again.
 
-2.  Add the organisation field
+2. Add the organisation field
 
     The type of this column is going to match the type of the id of the organisation table. To keep things consistent all id columns are the same type.
 
+    ```
     Field: organisationId
-
     Unsigned: true (this means we only want positive numbers)
-
     Type: INT
-
     Length: 11
-
     Allow Null: false
+    ```
 
-3.  Add a **foreign key**
+3. Add a **foreign key**
 
     A foreign key is a relational database constraint that means a particular field must match another field. In this case we're making sure the organisationId references an existing organisation.
 
-    1.  Click the Relations tab (for the user table)
+    1. Click the Relations tab (for the user table)
 
-    2.  Click the plus icon
+    2. Click the plus icon
 
+        ```
         Name: (leave blank)
-
         Column: id
-
         References
-
         Table: organisation
-
         Column: id
+        ```
 
-    3.  Click Add
+    3. Click Add
 
-4.  Add another Field
+4. Add another Field
 
+    ```
     Field: email
-
     Type: VARCHAR
-
     Length: 255
-
     Allow Null: false
+    ```
 
-5.  Add a **unique index** to the email field
+5. Add a **unique index** to the email field
 
     This makes sure that two users can't have the same email address.
 
@@ -245,45 +234,41 @@ Each user belongs to a single organisation. We call this a Many-To-One relations
 
     2.  Click Add
 
-6.  Add another Field
+6. Add another Field
 
+    ```
     Field: email
-
     Type: VARCHAR
-
     Length: 255
-
     Allow Null: false
+    ```
 
-7.  Add another Field
+7. Add another Field
 
+    ```
     Field: password
-
     Type: CHAR (the length of this field doesn't change)
-
     Length: 60 (the length of the password hashes - bcrypt hashes are always 60 characters)
-
     Allow Null: false
+    ```
 
-8.  Add another Field
+8. Add another Field
 
+    ```
     Field: firstName
-
     Type: VARCHAR
-
     Length: 255
-
     Allow Null: false
+    ```
 
-9.  Add another Field
+9. Add another Field
 
+    ```
     Field: lastName
-
     Type: VARCHAR
-
     Length: 255
-
     Allow Null: false
+    ```
 
 10. Let's add the active, createdDate, modifiedDate fields but since we did the same thing for the organisation table we can click the console icon, filter for "alter table" statements and copy the ones for those fields. Open up the query tab and paste them in there and modify them for the user table.
 
@@ -1485,17 +1470,25 @@ I'm not the best at tests but I think I like this approach.
 
 4. Open the file `package.json` and remove the `^` (caret) from the start of the version numbers. This will ensure that our dependency version won't change unless we change them.
 
-5. Stop the front end development server using Control + c
+5. Add this line before the dependencies.
 
-6. Run yarn. This will produce a new lockfile
+   This will route any unkown urls to our API.
+
+   ```
+   "proxy": "http://localhost:8080",
+   ```
+
+6. Stop the front end development server using Control + c
+
+7. Run yarn. This will produce a new lockfile
 
    ```
    yarn
    ```
 
-7. Commit your work.
+8. Commit your work.
 
-8. create a `.env` file at `ui/`. 
+9. create a `.env` file at `ui/`. 
 
    This will allow us to import the folders inside the src folder absolutely instead of  relatively which is more robust when moving stuff around. Its always a good idea to link any relative issues in code that help you come to a solution.
 
@@ -1504,7 +1497,7 @@ I'm not the best at tests but I think I like this approach.
    NODE_PATH=src/
    ```
 
-9. Create a `.prettierrc.yaml` file.
+10. Create a `.prettierrc.yaml` file.
 
    This will specify how we want the prettier to format our code, including the prettier VSCode plugin we installed.
 
@@ -1513,7 +1506,7 @@ I'm not the best at tests but I think I like this approach.
    trailingComma: es5
    ```
 
-10. Create a `tsconfig.json` file.
+11. Create a `tsconfig.json` file.
 
     This will let VSCode understand our project. Tt will make the autocompletes, called Intellisense in VSCode, a lot more helpful.
 
@@ -1526,7 +1519,7 @@ I'm not the best at tests but I think I like this approach.
     }
     ```
 
-11. Commit your changes
+12. Commit your changes
 
 ### Add Libraries
 
@@ -1571,21 +1564,30 @@ The `-E` option uses exact version - it doesn't add the `^` (caret) we removed f
 
 7. Okay this next step is a bit of a cop out. Its the re-usable code I've developed while creating the frontend. I really should be explaining each peice but I think i'll come back and do that later. Sorry!
 
-8. Copy the [common](https://github.com/cadbox1/glue-stack/tree/master/ui/src/common) folder to `ui/`.
+8. Copy the [common](https://github.com/cadbox1/glue-stack/tree/master/ui/src/common) folder to `ui/src/`.
 
-9. Setup React Router and Material UI at the root component. Open `App.js`.
+9. Start the frontend server. This will automatically open the app in a browser window.
+
+   ```
+   yarn start
+   ```
+
+10. Setup React Router and Material UI at the root component. Open `App.js`.
 
    ```
    import React from "react";
    import { Router } from "react-router-dom";
-   import { MuiThemeProvider } from "material-ui/styles";
+   import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
    import { history } from "common/history";
    import "./App.css";
+   import { Main } from "main";
+
+   const theme = createMuiTheme();
 
    const App = () => (
    	<Router history={history}>
-   		<MuiThemeProvider>
-   			<p>hey</p>
+   		<MuiThemeProvider theme={theme}>
+   			<Main />
    		</MuiThemeProvider>
    	</Router>
    );
@@ -1593,9 +1595,11 @@ The `-E` option uses exact version - it doesn't add the `^` (caret) we removed f
    export default App;
    ```
 
-10. Delete the `logo.svg`.
+11. The browser window should automatically refresh and display the word "App".
 
-11. Open `App.css`.
+12. Delete the `logo.svg`.
+
+13. Open `App.css`.
 
     ```
     html,
@@ -1610,12 +1614,492 @@ The `-E` option uses exact version - it doesn't add the `^` (caret) we removed f
     }
     ```
 
-12. Commit your work.
+14. Commit your work.
 
 ### API Requests
 
 1. Create a folder called `api` at `ui/src/`.
-2. ​
+
+2. Create the `organisation.js` file.
+
+   ```
+   import axios from "axios";
+
+   const path = "organisations";
+
+   export function save(body) {
+   	if (body.id) {
+   		return axios.patch(`${path}/${body.id}`, body);
+   	} else {
+   		return axios.post(path, body);
+   	}
+   }
+   ```
+
+3. Create the `user.js` file.
+
+   ```
+   import axios from "axios";
+
+   const path = "users";
+
+   export function findAll({ page, size, sort } = {}) {
+   	return axios.get(path, { params: { page, size, sort } });
+   }
+
+   export function findOne(id) {
+   	return axios.get(`${path}/${id}`);
+   }
+
+   export function save(body) {
+   	if (body.id) {
+   		return axios.patch(`${path}/${body.id}`, body);
+   	} else {
+   		return axios.post(path, body);
+   	}
+   }
+   ```
+
+4. Create the `task.js` file.
+
+   ```
+   import axios from "axios";
+
+   const path = "tasks";
+
+   export function findAll({ userId, statusId, page, size, sort } = {}) {
+   	return axios.get(path, {
+   		params: { "user.id": userId, statusId, page, size, sort },
+   	});
+   }
+
+   export function findOne(id) {
+   	return axios.get(`${path}/${id}`);
+   }
+
+   export function patch(id, body) {
+   	return axios.patch(`${path}/${id}`, body);
+   }
+
+   export function save(body) {
+   	if (body.id) {
+   		return patch(body.id, body);
+   	} else {
+   		return axios.post(path, body);
+   	}
+   }
+
+   export const TaskStatus = {
+   	TODO: 0,
+   	IN_PROGRESS: 1,
+   	DONE: 2,
+   };
+   ```
+
+5. Create the `authentication.js` file.
+
+   ```
+   import axios from "axios";
+   import { setCredentials } from "common/axiosConfig";
+
+   const credentialsKey = "credentials";
+
+   export function authenticate({ username, password } = {}) {
+   	if (username == null) {
+   		const credentials = getCredentials();
+   		if (!credentials) {
+   			return Promise.reject();
+   		}
+   		username = credentials.username;
+   		password = credentials.password;
+   	}
+   	return axios
+   		.get("authenticate", { auth: { username, password } })
+   		.then(result => {
+   			setCredentials(username, password);
+   			saveCredentials(username, password);
+   			return result;
+   		});
+   }
+
+   export function signOut() {
+   	setCredentials();
+   	localStorage.removeItem(credentialsKey);
+   }
+
+   function getCredentials() {
+   	const credentialsJSON = localStorage.getItem(credentialsKey);
+   	if (!credentialsJSON) {
+   		return;
+   	}
+   	return JSON.parse(credentialsJSON);
+   }
+
+   function saveCredentials(username, password) {
+   	localStorage.setItem(credentialsKey, JSON.stringify({ username, password }));
+   }
+   ```
+
+6. Commit your work
+
+
+### Authentication Component
+
+1. Create a folder called `main` at `ui/src/`.
+
+2. Create the `index.js` file at `ui/src/main`.
+
+   ```
+   import React, { Component } from "react";
+   import { connect } from "common/connector";
+   import { authenticate, signOut } from "api/authentication";
+
+   class Main extends Component {
+   	componentDidMount() {
+   		this.authenticate();
+   	}
+
+   	signOut = () => {
+   		signOut();
+   		this.authenticate();
+   	};
+
+   	authenticate() {
+   		const { authenticate } = this.props;
+   		authenticate.call().catch(() => authenticate.reset()); // swallow any errors
+   	}
+
+   	render() {
+   		return <p>Main</p>
+   	}
+   }
+
+   Main = connect({
+   	authenticate: {
+   		promise: authenticate,
+   	},
+   })(Main);
+
+   export { Main };
+   ```
+
+3. Open `App.js`.
+
+   1. Delete the `<p>App</p>` line and start typing the word `<Main`. Then hit enter on the first autocomplete result that says "import main". This will automatically add the import for the `Main` component.
+   2. Close the `Main` component tag with `/>` so it says `<Main />`.
+
+4. The browser window should now show "Main".
+
+5. Commit your work.
+
+### Login Component
+
+1. Create the `index.js` file at `ui/src/main/unauthenticated/login`.
+
+   ```
+   import React, { Component } from "react";
+   import { Link, withRouter } from "react-router-dom";
+   import Card, { CardActions, CardContent } from "material-ui/Card";
+   import Typography from "material-ui/Typography";
+   import TextField from "common/components/TextField";
+   import { CircularProgress } from "material-ui/Progress";
+   import Button from "material-ui/Button";
+
+   class Login extends Component {
+   	constructor(props) {
+   		super(props);
+   		this.state = { email: "", password: "" };
+   	}
+
+   	handleInput = evt => {
+   		this.setState({
+   			[evt.target.name]: evt.target.value,
+   		});
+   		const { authenticate } = this.props;
+   		if (authenticate.rejected) {
+   			authenticate.reset();
+   		}
+   	};
+
+   	handleSubmit = evt => {
+   		evt.preventDefault();
+   		const { email, password } = this.state;
+   		const { authenticate } = this.props;
+   		authenticate.call({ username: email, password });
+   	};
+
+   	render() {
+   		const { email, password } = this.state;
+   		const { authenticate } = this.props;
+
+   		const invalidLogin =
+   			authenticate.rejected &&
+   			authenticate.reason &&
+   			authenticate.reason.response &&
+   			authenticate.reason.response.status === 401;
+
+   		return (
+   			<div
+   				className="d-flex align-items-md-center justify-content-center"
+   				style={{ height: "100vh" }}
+   			>
+   				<div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
+   					<Card>
+   						<form onSubmit={this.handleSubmit}>
+   							<CardContent>
+   								<Typography type="headline" component="h2">
+   									Login
+   								</Typography>
+   								<Typography type="body1">
+   									<Link to="/signup">or Signup Here</Link>
+   								</Typography>
+   								<TextField
+   									label="Email"
+   									name="email"
+   									value={email}
+   									error={authenticate.rejected}
+   									onChange={this.handleInput}
+   									required
+   								/>
+   								<TextField
+   									label="Password"
+   									type="password"
+   									name="password"
+   									value={password}
+   									error={authenticate.rejected}
+   									helperText={
+   										(invalidLogin && "Invalid Username or Password") ||
+   										(authenticate.reason && authenticate.reason.message)
+   									}
+   									onChange={this.handleInput}
+   									required
+   								/>
+   							</CardContent>
+   							<CardActions>
+   								<Button raised color="primary" type="submit">
+   									{authenticate.pending ? (
+   										<CircularProgress size={15} />
+   									) : (
+   										"Login"
+   									)}
+   								</Button>
+   							</CardActions>
+   						</form>
+   					</Card>
+   				</div>
+   			</div>
+   		);
+   	}
+   }
+
+   Login = withRouter(Login);
+
+   export { Login };
+   ```
+
+2. Create the `index.js` at `ui/src/main/unauthenticated`.
+
+   ```
+   import React, { Component } from "react";
+   import { Route, Switch } from "react-router-dom";
+   import { Login } from "./login";
+
+   class Unauthenticated extends Component {
+   	render() {
+   		return (
+   			<Switch>
+   				<Route render={props => <Login {...props} {...this.props} />} />
+   			</Switch>
+   		);
+   	}
+   }
+
+   export { Unauthenticated };
+   ```
+
+3. Open the `main/index.js` by hitting Command + p then start typing `main` then type `/`.
+
+4. Add this between the start of the render function and the return function.
+
+   ```
+   const { authenticate } = this.props;
+   if (!authenticate.fulfilled) {
+   	return <Unauthenticated authenticate={authenticate} />;
+   }
+   ```
+
+   So it looks like this.
+
+   ```
+   render() {
+   	const { authenticate } = this.props;
+   	if (!authenticate.fulfilled) {
+   		return <Unauthenticated authenticate={authenticate} />;
+   	}
+   	return <p>Main</p>;
+   }
+   ```
+
+5. put yor cursor at the end of `Unauthenticated` word then hit Control + space to bring up the autocomplete. Select the option to import the Unauthenticated component, it should be the second option.
+
+6. The browser should now be showing a login form.
+
+### Signup Component
+
+Notice how our Signup Here link doesn't work. Let's fix that.
+
+1. Create the `index.js` file at `ui/src/main/unauthenticated/signup`.
+
+   ```
+   import React, { Component } from "react";
+   import { Link, withRouter } from "react-router-dom";
+   import { connect } from "common/connector";
+   import Card, { CardActions, CardContent } from "material-ui/Card";
+   import Typography from "material-ui/Typography";
+   import { CircularProgress } from "material-ui/Progress";
+   import TextField from "common/components/TextField";
+   import Button from "material-ui/Button";
+   import { save } from "api/organisation";
+
+   class Signup extends Component {
+   	constructor(props) {
+   		super(props);
+   		this.state = {
+   			name: "",
+   			firstName: "",
+   			lastName: "",
+   			email: "",
+   			password: "",
+   		};
+   	}
+
+   	handleFormInput = evt => {
+   		this.setState({
+   			[evt.target.name]: evt.target.value,
+   		});
+   		const { save } = this.props;
+   		if (save.rejected) {
+   			this.props.save.reset();
+   		}
+   	};
+
+   	handleSubmit = evt => {
+   		evt.preventDefault();
+   		const { save } = this.props;
+   		const { name, firstName, lastName, email, password } = this.state;
+   		const body = { name, users: [{ firstName, lastName, email, password }] };
+   		save
+   			.call(body)
+   			.then(() => this.props.authenticate.call({ username: email, password }))
+   			.then(() => this.props.history.push("/"));
+   	};
+
+   	render() {
+   		const { save } = this.props;
+   		const { name, firstName, lastName, email, password } = this.state;
+
+   		console.log(JSON.stringify(save));
+
+   		const emailNotUnique =
+   			save.rejected &&
+   			save.reason.response &&
+   			save.reason.response.data.errors &&
+   			Array.isArray(save.reason.response.data.errors) &&
+   			save.reason.response.data.errors.some(
+   				error => error.code === "UniqueEmailConstraint"
+   			);
+
+   		return (
+   			<div
+   				className="d-flex align-items-md-center justify-content-center"
+   				style={{ height: "100vh" }}
+   			>
+   				<div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
+   					<Card>
+   						<form onSubmit={this.handleSubmit}>
+   							<CardContent>
+   								<Typography type="headline" component="h2">
+   									Signup
+   								</Typography>
+   								<Typography type="body1">
+   									<Link to="/">or Login Here</Link>
+   								</Typography>
+   								<TextField
+   									name="name"
+   									value={name}
+   									onChange={this.handleFormInput}
+   									label="Organisation"
+   									required
+   								/>
+   								<TextField
+   									name="firstName"
+   									value={firstName}
+   									onChange={this.handleFormInput}
+   									label="First Name"
+   									required
+   								/>
+   								<TextField
+   									name="lastName"
+   									value={lastName}
+   									onChange={this.handleFormInput}
+   									label="Last Name"
+   									required
+   								/>
+   								<TextField
+   									name="email"
+   									value={email}
+   									onChange={this.handleFormInput}
+   									label="Email"
+   									error={emailNotUnique}
+   									helperText={emailNotUnique && "That email is already taken"}
+   									required
+   								/>
+   								<TextField
+   									name="password"
+   									value={password}
+   									onChange={this.handleFormInput}
+   									label="Password"
+   									type="password"
+   									required
+   								/>
+   							</CardContent>
+   							<CardActions>
+   								<Button raised color="primary" type="submit">
+   									{save.pending ? <CircularProgress size={15} /> : "Signup"}
+   								</Button>
+   							</CardActions>
+   						</form>
+   					</Card>
+   				</div>
+   			</div>
+   		);
+   	}
+   }
+
+   Signup = connect({
+   	save: {
+   		promise: save,
+   	},
+   })(withRouter(Signup));
+
+   export { Signup };
+   ```
+
+2. Open `unauthenticated/index.js` using Command + p.
+
+3. Before the `<Route>`, create a route for the signup component.
+
+   ```
+   <Route
+       path="/signup"
+   	render={props => <Signup {...props} {...this.props} />}
+   />
+   ```
+
+4. Again, use autocomplete to import the signup component. I'm not going to say this anymore you can just do it for new stuff.
+
+5. Anddddd everything breaks...
+
 
 
 

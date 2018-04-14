@@ -6,7 +6,7 @@ import TextField from "common/components/TextField";
 import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
 
-export class Login extends Component {
+class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { email: "", password: "" };
@@ -93,4 +93,6 @@ export class Login extends Component {
 	}
 }
 
-export default withRouter(Login);
+Login = withRouter(Login);
+
+export { Login };

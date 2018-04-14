@@ -8,7 +8,7 @@ import TextField from "common/components/TextField";
 import Button from "material-ui/Button";
 import { save } from "api/organisation";
 
-export class Signup extends Component {
+class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -44,6 +44,8 @@ export class Signup extends Component {
 	render() {
 		const { save } = this.props;
 		const { name, firstName, lastName, email, password } = this.state;
+
+		console.log(JSON.stringify(save));
 
 		const emailNotUnique =
 			save.rejected &&
@@ -121,8 +123,10 @@ export class Signup extends Component {
 	}
 }
 
-export default connect({
+Signup = connect({
 	save: {
 		promise: save,
 	},
 })(withRouter(Signup));
+
+export { Signup };

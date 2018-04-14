@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import Signup from "./signup";
-import Login from "./login";
+import { Signup } from "./signup";
+import { Login } from "./login";
 
 class Unauthenticated extends Component {
 	render() {
