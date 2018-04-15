@@ -5,6 +5,7 @@ import { history } from "common/history";
 import blue from "material-ui/colors/blue";
 import { Main } from "./main";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 const theme = createMuiTheme({
 	palette: {

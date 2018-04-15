@@ -1133,9 +1133,9 @@ The controller layer is what connects our application to the internet. It define
 5. Create the `AuthenticationController.java`. This is what the frontend will call to login and if authentication is successful it will return the details of the current user.
 
    ```
-   package com.api.controller;
+   package org.gluestack.api.controller;
 
-   import com.api.domain.entity.User;
+   import org.gluestack.api.domain.entity.User;
    import org.springframework.security.core.Authentication;
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RequestMethod;
@@ -1145,10 +1145,10 @@ The controller layer is what connects our application to the internet. It define
    @RequestMapping("api/authenticate")
    public class AuthenticationController {
 
-   	@RequestMapping(method = RequestMethod.GET)
-   	public User authenticate(Authentication authentication) {
-   		return (User) authentication.getPrincipal();
-   	}
+       @RequestMapping(method = RequestMethod.GET)
+       public User authenticate(Authentication authentication) {
+           return (User) authentication.getPrincipal();
+       }
    }
    ```
 6. Run the application and commit your work.
@@ -1580,6 +1580,7 @@ The `-E` option uses exact version - it doesn't add the `^` (caret) we removed f
    import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
    import { history } from "common/history";
    import "./App.css";
+   import "bootstrap/dist/css/bootstrap.css";
    import { Main } from "main";
 
    const theme = createMuiTheme();
@@ -1587,7 +1588,7 @@ The `-E` option uses exact version - it doesn't add the `^` (caret) we removed f
    const App = () => (
    	<Router history={history}>
    		<MuiThemeProvider theme={theme}>
-   			<Main />
+   			<p>App</p>
    		</MuiThemeProvider>
    	</Router>
    );
@@ -2098,7 +2099,179 @@ Notice how our Signup Here link doesn't work. Let's fix that.
 
 4. Again, use autocomplete to import the signup component. I'm not going to say this anymore you can just do it for new stuff.
 
-5. Anddddd everything breaks...
+5. The signup link should now work as well as the login here link on the signup page.
+
+### First Signup
+
+1. Start the API and Database if they are not already running.
+
+   1. In separate tabs in VSCode.
+
+   2. Database.
+
+      ```
+      docker-compose up
+      ```
+
+   3. API.
+
+      ```
+      cd api
+      mvn spring-boot:run
+      ```
+
+2. Fill in the signup form and click signup. You should now see the word "Main" which means you are logged in.
+
+### Sidebar
+
+1. Create `index.js` at `ui/src/main/authenticated/sidebar`.
+
+   ```
+   import React, { Component } from "react";
+   import { Link, withRouter } from "react-router-dom";
+   import Drawer from "./drawer";
+   import List, { ListItem, ListItemText } from "material-ui/List";
+   import Avatar from "material-ui/Avatar";
+   import Collapse from "material-ui/transitions/Collapse";
+   import ExpandLess from "material-ui-icons/ExpandLess";
+   import ExpandMore from "material-ui-icons/ExpandMore";
+   import Divider from "material-ui/Divider";
+
+   class Sidebar extends Component {
+   	constructor(props) {
+   		super(props);
+   		this.state = {
+   			userMenuOpen: false,
+   		};
+   	}
+   	handleClick = evt => {
+   		this.setState({ userMenuOpen: !this.state.userMenuOpen });
+   	};
+   	render() {
+   		const { authenticate, showSideBar, signOut, temporaryDock } = this.props;
+   		const { userMenuOpen } = this.state;
+   		const user = authenticate.value.data;
+   		return (
+   			<Drawer
+   				open={showSideBar}
+   				type={temporaryDock ? "temporary" : "persistent"}
+   				style={{ width: showSideBar ? "256px" : "0px" }}
+   				onRequestClose={this.props.toggleSideBar}
+   			>
+   				<List style={{ padding: 0 }}>
+   					<ListItem button onClick={this.handleClick}>
+   						<Avatar style={{ textTransform: "uppercase" }}>
+   							{user.firstName[0]}
+   						</Avatar>
+   						<ListItemText primary={`${user.firstName} ${user.lastName}`} />
+   						{userMenuOpen ? <ExpandLess /> : <ExpandMore />}
+   					</ListItem>
+   					<Collapse component="li" in={userMenuOpen} unmountOnExit>
+   						<List disablePadding>
+   							<ListItem button onClick={signOut}>
+   								<ListItemText inset primary="Sign Out" />
+   							</ListItem>
+   						</List>
+   					</Collapse>
+   					<Divider />
+   					<Link to="/me">
+   						<ListItem button>
+   							<ListItemText primary="Me" />
+   						</ListItem>
+   					</Link>
+   					<Link to="/tasks">
+   						<ListItem button>
+   							<ListItemText primary="Tasks" />
+   						</ListItem>
+   					</Link>
+   					<Link to="/users">
+   						<ListItem button>
+   							<ListItemText primary="Users" />
+   						</ListItem>
+   					</Link>
+   				</List>
+   			</Drawer>
+   		);
+   	}
+   }
+
+   Sidebar = withRouter(Sidebar);
+
+   export { Sidebar };
+   ```
+
+2. Create a `drawer.js` file in the same folder.
+
+   ```
+
+   ```
+
+3. Create `index.js` at `ui/src/main/authenticated`.
+
+   ```
+   import React, { Component } from "react";
+   import { Redirect, Route, Switch } from "react-router-dom";
+   import componentQueries from "react-component-queries";
+   import { Sidebar } from "./sidebar";
+
+   class Authenticated extends Component {
+   	constructor(props) {
+   		super(props);
+   		this.state = {
+   			showSideBar: !props.temporaryDock,
+   		};
+   	}
+
+   	componentWillReceiveProps(nextProps) {
+   		if (nextProps.temporaryDock !== this.props.temporaryDock) {
+   			this.setState({ showSideBar: !nextProps.temporaryDock });
+   		}
+   	}
+
+   	toggleSideBar = evt => {
+   		const { showSideBar } = this.state;
+   		this.setState({ showSideBar: !showSideBar });
+   	};
+
+   	render() {
+   		const { signOut, temporaryDock } = this.props;
+   		const { showSideBar } = this.state;
+   		return (
+   			<div style={{ display: "flex" }}>
+   				<Sidebar
+   					temporaryDock={temporaryDock}
+   					signOut={signOut}
+   					showSideBar={showSideBar}
+   					toggleSideBar={this.toggleSideBar}
+   					{...this.props}
+   				/>
+   				<button onClick={this.toggleSideBar}>Toggle Sidebar</button>
+   			</div>
+   		);
+   	}
+   }
+
+   Authenticated = componentQueries({
+   	queries: [
+   		({ width }) => ({
+   			temporaryDock: width < 800,
+   		}),
+   	],
+   	config: { pure: false },
+   })(Authenticated);
+
+   export { Authenticated };
+   ```
+
+4. Open `main/index.js` and replace `return "Main"` in the render function with:
+
+   ```
+   return <Authenticated signOut={this.signOut} authenticate={authenticate} />;
+   ```
+
+5. You should now be able to logout, toggle the sidebar and see how it behaves differently on smaller screens. None of the links change anything but we'll fix that soon.
+
+### User List
 
 
 

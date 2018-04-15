@@ -66,4 +66,6 @@ class Sidebar extends Component {
 	}
 }
 
-export default withRouter(Sidebar);
+Sidebar = withRouter(Sidebar);
+
+export { Sidebar };
