@@ -1468,9 +1468,7 @@ I'm not the best at tests but I think I like this approach.
 
    That should open a working react app in your browser, how easy was that!
 
-4. Open the file `package.json` and remove the `^` (caret) from the start of the version numbers. This will ensure that our dependency version won't change unless we change them.
-
-5. Add this line before the dependencies.
+4. Add this line before the dependencies.
 
    This will route any unkown urls to our API.
 
@@ -1478,17 +1476,17 @@ I'm not the best at tests but I think I like this approach.
    "proxy": "http://localhost:8080",
    ```
 
-6. Stop the front end development server using Control + c
+5. Stop the front end development server using Control + c
 
-7. Run yarn. This will produce a new lockfile
+6. Run yarn. This will produce a new lockfile
 
    ```
    yarn
    ```
 
-8. Commit your work.
+7. Commit your work.
 
-9. create a `.env` file at `ui/`. 
+8. create a `.env` file at `ui/`. 
 
    This will allow us to import the folders inside the src folder absolutely instead of  relatively which is more robust when moving stuff around. Its always a good idea to link any relative issues in code that help you come to a solution.
 
@@ -1497,69 +1495,67 @@ I'm not the best at tests but I think I like this approach.
    NODE_PATH=src/
    ```
 
-10. Create a `.prettierrc.yaml` file.
+9. Create a `.prettierrc.yaml` file.
 
-   This will specify how we want the prettier to format our code, including the prettier VSCode plugin we installed.
+  This will specify how we want the prettier to format our code, including the prettier VSCode plugin we installed.
+
+  ```
+  useTabs: true
+  trailingComma: es5
+  ```
+
+10. Create a `tsconfig.json` file.
+
+   This will let VSCode understand our project. Tt will make the autocompletes, called Intellisense in VSCode, a lot more helpful.
 
    ```
-   useTabs: true
-   trailingComma: es5
+   {
+   	"compilerOptions": {
+   		"allowJs": true,
+   		"baseUrl": "src/"
+   	}
+   }
    ```
 
-11. Create a `tsconfig.json` file.
-
-    This will let VSCode understand our project. Tt will make the autocompletes, called Intellisense in VSCode, a lot more helpful.
-
-    ```
-    {
-    	"compilerOptions": {
-    		"allowJs": true,
-    		"baseUrl": "src/"
-    	}
-    }
-    ```
-
-12. Commit your changes
+11. Commit your changes
 
 ### Add Libraries
 
 We're going to add some Libraries to our project mainly in the form of dependencies. Just like in Java we're going to have a file that holds our library names and versions so that we can download them all instead of putting them in our project. When we run `yarn add` it will download the library from `NPM` and add it to our `package.json`.
-
-The `-E` option uses exact version - it doesn't add the `^` (caret) we removed from the `package.json`.
 
 1. Open a terminal window and cd into the ui directory
 
 2. [React Router](https://github.com/ReactTraining/react-router) (and friends). This is for Routing which is about mapping the url in the address bar to different pages in our app.
 
    ```
-   yarn add -E react-router-dom
-   yarn add -E history
-   yarn add -E query-string
+   yarn add react-router-dom
+   yarn add history
+   yarn add query-string
    ```
 
 3. [Axios](https://github.com/axios/axios) is a small library that makes netwrok requests just that much easier.
 
    ```
-   yarn add -E axios
+   yarn add axios
    ```
 
 4. [Material UI Beta](https://material-ui-next.com/). Material UI is the most popular material design library for `React`. This library is going to heavily influence the design of our app using the popular [Material Design](https://material.io/guidelines/) specifications. Their previous version had some pretty big limitations once you got into it but they've learned a lot and delivered a fantastic beta version. Being a Beta they tend to `Move Fast and Break Things` (and that's a good thing) so we're going to use the exact version I know works.
 
    ```
-   yarn add -E material-ui@1.0.0-beta.23
-   yarn add -E material-ui-icons@1.0.0-beta.17
+   yarn add material-ui@1.0.0-beta.23
+   yarn add material-ui-icons@1.0.0-beta.17
    ```
 
 5. [Bootstrap](https://getbootstrap.com/). Okay, we definitely shouldn't need this but I know the utilities fairly well so it helped me get the ui working quickly but I will definitely be removing this eventually.
 
    ```
-   yarn add -E bootstrap
+   yarn add bootstrap
    ```
 
 6. [React Component Queries](https://github.com/ctrlplusb/react-component-queries) allows us to detect the sizes of components so that we can keep our app responsive and working nicely on mobile devices.
 
    ```
-   yarn add -E react-sizeme react-component-queries
+   yarn add react-sizeme react-component-queries
    ```
 
 7. Okay this next step is a bit of a cop out. Its the re-usable code I've developed while creating the frontend. I really should be explaining each peice but I think i'll come back and do that later. Sorry!
@@ -2271,7 +2267,11 @@ Notice how our Signup Here link doesn't work. Let's fix that.
 
 5. You should now be able to logout, toggle the sidebar and see how it behaves differently on smaller screens. None of the links change anything but we'll fix that soon.
 
+6. Commit your changes.
+
 ### User List
+
+
 
 
 
