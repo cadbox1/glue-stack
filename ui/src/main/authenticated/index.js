@@ -3,8 +3,8 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import componentQueries from "react-component-queries";
 import { Sidebar } from "./sidebar";
 import { Me } from "./me";
-import Task from "./task";
-import User from "./user";
+import { Task } from "./task";
+import { User } from "./user";
 
 class Authenticated extends Component {
 	constructor(props) {

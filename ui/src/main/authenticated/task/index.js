@@ -18,7 +18,7 @@ import { Search } from "./search";
 import { List, connectConfig } from "./list";
 import { Create, Edit } from "./form";
 
-class TaskIndex extends Component {
+class Task extends Component {
 	state = { showFilters: false };
 
 	toggleShowFilters = () => {
@@ -103,11 +103,13 @@ class TaskIndex extends Component {
 	}
 }
 
-export default componentQueries({
+Task = componentQueries({
 	queries: [
 		({ width }) => ({
 			singleView: width < 1000,
 		}),
 	],
 	config: { pure: false },
-})(urlStateHolder(connect(connectConfig)(TaskIndex)));
+})(urlStateHolder(connect(connectConfig)(Task)));
+
+export { Task };

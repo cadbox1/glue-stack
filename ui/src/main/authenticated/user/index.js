@@ -15,7 +15,7 @@ import { urlStateHolder } from "common/stateHolder";
 import { connectConfig, List } from "./list";
 import { Create, Edit } from "./form";
 
-class UserIndex extends Component {
+class User extends Component {
 	render() {
 		const { match, findAll, singleView, toggleSideBar } = this.props;
 
@@ -85,11 +85,13 @@ class UserIndex extends Component {
 	}
 }
 
-export default componentQueries({
+User = componentQueries({
 	queries: [
 		({ width }) => ({
 			singleView: width < 1000,
 		}),
 	],
 	config: { pure: false },
-})(urlStateHolder(connect(connectConfig)(UserIndex)));
+})(urlStateHolder(connect(connectConfig)(User)));
+
+export { User };

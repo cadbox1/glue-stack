@@ -2170,16 +2170,6 @@ Notice how our Signup Here link doesn't work. Let's fix that.
    						</List>
    					</Collapse>
    					<Divider />
-   					<Link to="/me">
-   						<ListItem button>
-   							<ListItemText primary="Me" />
-   						</ListItem>
-   					</Link>
-   					<Link to="/tasks">
-   						<ListItem button>
-   							<ListItemText primary="Tasks" />
-   						</ListItem>
-   					</Link>
    					<Link to="/users">
    						<ListItem button>
    							<ListItemText primary="Users" />
@@ -2269,10 +2259,398 @@ Notice how our Signup Here link doesn't work. Let's fix that.
 
 6. Commit your changes.
 
-### User List
+### Users
 
+1. Create the `list.js` file at `ui/src/main/authenticated/user/`.
 
+   ```
+   import React, { Component } from "react";
+   import { Link } from "react-router-dom";
+   import Table, {
+   	TableBody,
+   	TableHead,
+   	TableRow,
+   	TableFooter,
+   } from "material-ui/Table";
+   import { TableCell } from "common/components/tableCell";
+   import Radio from "material-ui/Radio";
+   import { parseURL } from "common/parseURL";
+   import { TableSortLabel } from "common/components/tableSortLabel";
+   import { TablePagination } from "common/components/tablePagination";
+   import { findAll } from "api/user";
 
+   export class List extends Component {
+   	render() {
+   		const { findAll, listURL, onSelect, selected } = this.props;
+   		return (
+   			<Table>
+   				<TableHead>
+   					<TableRow>
+   						{onSelect && <TableCell padding="checkbox" />}
+   						<TableCell>
+   							<TableSortLabel findAll={findAll} property="firstName">
+   								Name
+   							</TableSortLabel>
+   						</TableCell>
+   						<TableCell>
+   							<TableSortLabel findAll={findAll} property="email">
+   								Email
+   							</TableSortLabel>
+   						</TableCell>
+   					</TableRow>
+   				</TableHead>
+   				<TableBody>
+   					{findAll.rejected && (
+   						<TableRow>
+   							<TableCell colSpan={2}>
+   								{findAll.reason ? (
+   									<div>
+   										<p>{findAll.reason.error}</p>
+   										<p>{findAll.reason.exception}</p>
+   										<p>{findAll.reason.message}</p>
+   									</div>
+   								) : (
+   									<p>Error</p>
+   								)}
+   							</TableCell>
+   						</TableRow>
+   					)}
+   					{findAll.value &&
+   						findAll.value.data.content.map(row => {
+   							const name = `${row.firstName} ${row.lastName}`;
+   							return (
+   								<TableRow
+   									key={row.id}
+   									onClick={onSelect && onSelect.bind(null, row)}
+   									hover={onSelect}
+   									style={{ cursor: onSelect ? "pointer" : "default" }}
+   									selected={selected && selected.includes(row.id)}
+   								>
+   									{onSelect && (
+   										<TableCell padding="checkbox">
+   											<Radio checked={selected && selected.includes(row.id)} />
+   										</TableCell>
+   									)}
+   									<TableCell>
+   										{listURL ? (
+   											<Link to={`${listURL}/${row.id}`}>{name}</Link>
+   										) : (
+   											name
+   										)}
+   									</TableCell>
+   									<TableCell>{row.email}</TableCell>
+   								</TableRow>
+   							);
+   						})}
+   				</TableBody>
+   				{findAll.fulfilled && (
+   					<TableFooter>
+   						<TableRow>
+   							<TablePagination findAll={findAll} />
+   						</TableRow>
+   					</TableFooter>
+   				)}
+   			</Table>
+   		);
+   	}
+   }
 
+   export const connectConfig = {
+   	findAll: {
+   		params: props => parseURL(props),
+   		promise: findAll,
+   	},
+   };
+   ```
 
+2. Create the `form.js` file in the same folder.
 
+   ```
+   import React, { Component } from "react";
+   import { Link } from "react-router-dom";
+   import AppBar from "material-ui/AppBar";
+   import IconButton from "material-ui/IconButton";
+   import Close from "material-ui-icons/Close";
+   import TextField from "common/components/TextField";
+   import Button from "material-ui/Button";
+   import Paper from "material-ui/Paper";
+   import Toolbar from "material-ui/Toolbar";
+   import Typography from "material-ui/Typography";
+   import { CircularProgress } from "material-ui/Progress";
+   import { findOne, save } from "api/user";
+   import { connect } from "common/connector";
+
+   class Form extends Component {
+   	constructor(props) {
+   		super(props);
+   		this.state = this.defaultState;
+   		if (props.match.params.id) {
+   			// eslint-disable-next-line
+   			this.state.password = undefined;
+   		}
+   	}
+
+   	defaultState = {
+   		id: null,
+   		firstName: "",
+   		lastName: "",
+   		email: "",
+   		password: "",
+   	};
+
+   	componentDidMount() {
+   		if (this.props.findOne) {
+   			this.props.findOne.subscribe(value => {
+   				const { id, firstName, lastName, email } = value.data;
+   				this.setState({ id, firstName, lastName, email });
+   			});
+   		}
+   	}
+
+   	handleSubmit = evt => {
+   		evt.preventDefault();
+   		const { save, refreshList, history } = this.props;
+   		save.call(this.state).then(result => {
+   			if (refreshList) {
+   				refreshList();
+   			}
+   			if (!this.state.id) {
+   				history.push(`/users/${result.data.id}`);
+   			}
+   		});
+   	};
+
+   	handleFormInput = evt => {
+   		this.setState({ [evt.target.name]: evt.target.value });
+   	};
+
+   	handleResetPassword = evt => {
+   		this.setState({ password: "" });
+   	};
+
+   	render() {
+   		const { id, firstName, lastName, email, password } = this.state;
+   		const { className } = this.props;
+   		return (
+   			<Paper className={className} elevation={1}>
+   				<AppBar position="static">
+   					<Toolbar>
+   						<Typography type="title" color="inherit" className="mr-auto">
+   							{id ? `${firstName} ${lastName}` : "Create"}
+   						</Typography>
+   						<Link to={`/users`}>
+   							<IconButton color="contrast">
+   								<Close />
+   							</IconButton>
+   						</Link>
+   					</Toolbar>
+   				</AppBar>
+   				<form onSubmit={this.handleSubmit} className="container-fluid">
+   					<TextField
+   						name="firstName"
+   						value={firstName}
+   						onChange={this.handleFormInput}
+   						label="First Name"
+   						required
+   					/>
+   					<TextField
+   						name="lastName"
+   						value={lastName}
+   						onChange={this.handleFormInput}
+   						label="Last Name"
+   						required
+   					/>
+   					<TextField
+   						name="email"
+   						value={email}
+   						onChange={this.handleFormInput}
+   						label="Email"
+   						required
+   					/>
+   					{password !== undefined ? (
+   						<TextField
+   							name="password"
+   							type="password"
+   							value={password}
+   							onChange={this.handleFormInput}
+   							label="Password"
+   							required
+   						/>
+   					) : (
+   						<Button type="button" onClick={this.handleResetPassword}>
+   							Reset Password
+   						</Button>
+   					)}
+   					<Button raised className="d-block" type="submit" color="primary">
+   						{save.pending ? (
+   							<CircularProgress size={15} />
+   						) : id ? (
+   							"Save"
+   						) : (
+   							"Create"
+   						)}
+   					</Button>
+   				</form>
+   			</Paper>
+   		);
+   	}
+   }
+
+   export default Form;
+
+   export const Create = connect({ save: { promise: save } })(Form);
+
+   export const Edit = connect({
+   	findOne: {
+   		params: props => props.match.params.id,
+   		promise: findOne,
+   	},
+   })(Create);
+   ```
+
+3. Create the `index.js` file.
+
+   ```
+   import React, { Component } from "react";
+   import { Link, Route, Switch } from "react-router-dom";
+   import componentQueries from "react-component-queries";
+   import AppBar from "material-ui/AppBar";
+   import Toolbar from "material-ui/Toolbar";
+   import Typography from "material-ui/Typography";
+   import IconButton from "material-ui/IconButton";
+   import MenuIcon from "material-ui-icons/Menu";
+   import Add from "material-ui-icons/Add";
+   import Refresh from "material-ui-icons/Refresh";
+   import { CircularProgress } from "material-ui/Progress";
+   import { connect } from "common/connector";
+   import { urlStateHolder } from "common/stateHolder";
+
+   import { connectConfig, List } from "./list";
+   import { Create, Edit } from "./form";
+
+   class User extends Component {
+   	render() {
+   		const { match, findAll, singleView, toggleSideBar } = this.props;
+
+   		return (
+   			<div className="row no-gutters w-100">
+   				<Route
+   					path={`${match.path}`}
+   					exact={singleView}
+   					render={props => (
+   						<div className="col h-100vh">
+   							<AppBar position="static">
+   								<Toolbar>
+   									<IconButton
+   										onClick={toggleSideBar}
+   										color="contrast"
+   										aria-label="Menu"
+   									>
+   										<MenuIcon />
+   									</IconButton>
+   									<Typography color="inherit" type="title" className="mr-auto">
+   										Users
+   									</Typography>
+   									<IconButton color="contrast" onClick={findAll.refresh}>
+   										{findAll.pending ? (
+   											<span>
+   												<CircularProgress color="inherit" size={14} />
+   											</span>
+   										) : (
+   											<Refresh />
+   										)}
+   									</IconButton>
+   									<Link to={`${match.path}/create`}>
+   										<IconButton color="contrast">
+   											<Add />
+   										</IconButton>
+   									</Link>
+   								</Toolbar>
+   							</AppBar>
+   							<List listURL={match.path} findAll={findAll} />
+   						</div>
+   					)}
+   				/>
+   				<Switch>
+   					<Route
+   						path={`${match.path}/create`}
+   						render={props => (
+   							<Create
+   								{...props}
+   								className="col h-100vh"
+   								refreshList={singleView ? undefined : findAll.refresh}
+   							/>
+   						)}
+   					/>
+   					<Route
+   						path={`${match.path}/:id`}
+   						render={props => (
+   							<Edit
+   								{...props}
+   								className="col h-100vh"
+   								refreshList={singleView ? undefined : findAll.refresh}
+   							/>
+   						)}
+   					/>
+   				</Switch>
+   			</div>
+   		);
+   	}
+   }
+
+   User = componentQueries({
+   	queries: [
+   		({ width }) => ({
+   			singleView: width < 1000,
+   		}),
+   	],
+   	config: { pure: false },
+   })(urlStateHolder(connect(connectConfig)(User)));
+
+   export { User };
+   ```
+
+4. Replace the button in the `authenticated/index.js` file with these routes.
+
+   ```
+   <Switch>
+   	<Route
+   		path="/me"
+   		render={props => (
+   			<Me
+   				{...props}
+   				{...this.props}
+   				toggleSideBar={this.toggleSideBar}
+   			/>
+   		)}
+   	/>
+   	<Route
+   		path="/tasks"
+   		render={props => (
+   			<Task
+   				{...props}
+   				{...this.props}
+   				toggleSideBar={this.toggleSideBar}
+   			/>
+   		)}
+   	/>
+   	<Route
+   		path="/users"
+   		render={props => (
+   			<User
+   				{...props}
+   				{...this.props}
+   				toggleSideBar={this.toggleSideBar}
+   			/>
+   		)}
+   	/>
+   	<Route exactly path="/" render={() => <Redirect to="/users" />} />
+   </Switch>
+   ```
+
+5. Add the `react-router` imports and use the auto import for the User component
+
+   ```
+   import { Switch, Route, Redirect } from "react-router-dom"
+   ```
+6. Commit your work.
