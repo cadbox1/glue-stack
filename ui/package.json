@@ -10,9 +10,9 @@
 		"material-ui": "1.0.0-beta.23",
 		"material-ui-icons": "1.0.0-beta.17",
 		"query-string": "5.0.1",
-		"react": "16.1.1",
+		"react": "16.3.1",
 		"react-component-queries": "2.2.0",
-		"react-dom": "16.1.1",
+		"react-dom": "16.3.1",
 		"react-router-dom": "4.2.2",
 		"react-sizeme": "2.3.6"
 	},
@@ -31,7 +31,7 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test --env=jsdom",
 		"precommit": "lint-staged",
-		"update": "yarn upgrade-interactive --exact"
+		"update": "yarn upgrade-interactive --latest"
 	},
 	"lint-staged": {
 		"gitDir": "../",
