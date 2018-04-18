@@ -1,4 +1,4 @@
-# Building Glue Stack
+# Making Glue Stack
 
 1. Create a file to write down any questions you have or anything that's unclear in this document so that we can improve it to make it easier for the next person.
 
