@@ -5,7 +5,7 @@ My favourite tools and practises glued together to make a multi-tenant todo appl
 If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook.io/glue-stack/).
 
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/glue-stack)
-![Waffle.io - Columns and their card count](https://badge.waffle.io/cadbox1/glue-stack.png?columns=all)
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/cadbox1/glue-stack.svg?columns=all)](https://waffle.io/cadbox1/glue-stack)
 
 ![Screeshot](.gitbook/assets/screenshot.png)
 
