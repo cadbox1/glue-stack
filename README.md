@@ -11,20 +11,20 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 
 ## Table of Contents
 
-* [Running Locally](./#running-locally)
-* [Why](./#why)
-* [Architecture](./#architecture)
-* [Application Features](./#application-features)
-* [Common Features](./#common-features)
-  * [Managing Resources](./#managing-resources)
-* [Tier Responsibilities](./#tier-responsibilities)
-* [Tools](./#tools)
-  * [Stack Tools](./#stack-tools)
-  * [Development Tools](./#development-tools)
-* [Setup Development Tools](./#setup-development-tools)
-  * [Setup Sequel Pro \(Database\)](./#setup-sequel-pro-database)
-  * [Setup Visual Studio Code \(vscode\)](./#setup-visual-studio-code-vscode)
-* [Developing Documentation](./#developing-documentation)
+* [Running Locally](#running-locally)
+* [Why](#why)
+* [Architecture](#architecture)
+* [Application Features](#application-features)
+* [Common Features](#common-features)
+  * [Managing Resources](#managing-resources)
+* [Tier Responsibilities](#tier-responsibilities)
+* [Tools](#tools)
+  * [Stack Tools](#stack-tools)
+  * [Development Tools](#development-tools)
+* [Setup Development Tools](#setup-development-tools)
+  * [Setup Sequel Pro \(Database\)](#setup-sequel-pro-database)
+  * [Setup Visual Studio Code \(vscode\)](#setup-visual-studio-code-vscode)
+* [Developing Documentation](#developing-documentation)
 
 ## Running Locally
 
