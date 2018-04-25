@@ -7,7 +7,7 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/glue-stack)
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/cadbox1/glue-stack.svg?columns=all)](https://waffle.io/cadbox1/glue-stack)
 
-![Screeshot](.gitbook/assets/screenshot.png)
+![Screeshot](./screenshot.png)
 
 ## Table of Contents
 
