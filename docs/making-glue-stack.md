@@ -774,6 +774,7 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
           </dependencies>
       </plugin>
       ```
+
 2. Add this plugin so VSCode finds the classes that Querydsl generates.
 
    ```text
@@ -823,8 +824,6 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
     public interface OrganisationRepository extends BaseRepository<Organisation> {
     }
    ```
-
-   ​
 
 5. Create the `UserRepository.java`. The findOneByEmail method will allow us to find a User in the database by their email and the EntityGraph annotation will load their Organisation in the same query. This will be useful for authentication. This is where Spring Data JPA is pretty cool, its an interface that automagically implements itself!
 
@@ -1831,6 +1830,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
 
     export { Login };
     ```
+
 2. Create the `index.js` at `ui/src/main/unauthenticated`.
 
     ```text
@@ -1846,6 +1846,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
 
     export { Unauthenticated };
     ```
+
 3. Open the `main/index.js` by hitting Command + p then start typing `main` then type `/`.
 
 4. Add this between the start of the render function and the return.
@@ -1856,6 +1857,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
         return <Unauthenticated authenticate={authenticate} />; 
     }
     ```
+
     So it looks like this.
 
     ```
@@ -1867,6 +1869,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
         return <p>Main</p>; 
     }
     ```
+
 5. Put yor cursor at the end of `Unauthenticated` word then hit Control + space to bring up the autocomplete. Select the option to import the Unauthenticated component, it should be the second option.
 
 6. The browser should now be showing a login form.
@@ -2009,6 +2012,7 @@ Notice how our Signup Here link doesn't work. Let's fix that.
 
     export { Signup };
     ```
+
 2. Open `unauthenticated/index.js` using Command + p.
 
 3. Before the `<Route>`, create a route for the signup component.
@@ -2035,6 +2039,7 @@ Notice how our Signup Here link doesn't work. Let's fix that.
         ```text
         docker-compose up
         ```
+        
 1. API.
 
     ```text
