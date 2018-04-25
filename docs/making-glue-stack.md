@@ -1730,6 +1730,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
 ### Login Component
 
 1. Create the `index.js` file at `ui/src/main/unauthenticated/login`.
+
     ```
     import React, { Component } from "react"; 
     import { Link, withRouter } from "react-router-dom"; 
@@ -1831,6 +1832,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
     export { Login };
     ```
 2. Create the `index.js` at `ui/src/main/unauthenticated`.
+
     ```text
     import React, { Component } from "react"; 
     import { Route, Switch } from "react-router-dom"; 
@@ -1847,13 +1849,15 @@ We're going to add some Libraries to our project mainly in the form of dependenc
 3. Open the `main/index.js` by hitting Command + p then start typing `main` then type `/`.
 
 4. Add this between the start of the render function and the return.
+
     ```
     const { authenticate } = this.props; 
     if (!authenticate.fulfilled) { 
         return <Unauthenticated authenticate={authenticate} />; 
     }
     ```
-   So it looks like this.
+    So it looks like this.
+
     ```
     render() { 
         const { authenticate } = this.props; 
@@ -1872,6 +1876,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
 Notice how our Signup Here link doesn't work. Let's fix that.
 
 1. Create the `index.js` file at `ui/src/main/unauthenticated/signup`.
+
     ```
     import React, { Component } from "react"; 
     import { Link, withRouter } from "react-router-dom"; 
@@ -2007,6 +2012,7 @@ Notice how our Signup Here link doesn't work. Let's fix that.
 2. Open `unauthenticated/index.js` using Command + p.
 
 3. Before the `<Route>`, create a route for the signup component.
+
     ```text
     <Route
         path="/signup"
@@ -2031,10 +2037,10 @@ Notice how our Signup Here link doesn't work. Let's fix that.
         ```
 1. API.
 
-        ```text
-        cd api
-        mvn spring-boot:run
-        ```
+    ```text
+    cd api
+    mvn spring-boot:run
+    ```
 
 2. Fill in the signup form and click signup. You should now see the word "Main" which means you are logged in.
 
