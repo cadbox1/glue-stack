@@ -293,4 +293,4 @@ The alternative path is Teacher writes a brief document then the process continu
 
 Documentation is code for humans; its always accessible, easy to review and easy to improve. Being easily accessible means less dependency on people which means more people can do more of the work with less variation in results. And when there are issues, documentation can be reviewed and updated to address them. So instead of the process getting worse over time because people naturally forget things it actually gets better, imagine if production code improved itself every time it ran! Less knowledgeable people actually have more to contribute because they are more aware of all the tiny details it takes to make something work whereas experienced people are often unconciously doing things. All of this creates a better culture where everyone can focus on improving process and helping the team instead of playing blame games for poor results.
 
-Checkout our [GitBook](https://cadbox1.gitbook.io/glue-stack/) for our documentation.
+Our documentation is available in our [GitBook](https://cadbox1.gitbook.io/glue-stack/).
