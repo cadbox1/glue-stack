@@ -4,7 +4,7 @@
 2. Run the setup.sh as part of the [Running Locally](../README.md#running-locally) process. This will install some of the tools we're going to need.
 3. Make a development folder in your home folder. This is for all your development stuff.
    1. Open terminal \(Command+Space then type terminal - this is called spotlight\)
-   2. It will open your home folder by default, you can tell by the tilde \(~\) which is the home folde symbol
+   2. It will open your home folder by default, you can tell by the tilde \(~\) which is the home folder symbol
 
       ```text
       cd ~
@@ -1730,128 +1730,140 @@ We're going to add some Libraries to our project mainly in the form of dependenc
 ### Login Component
 
 1. Create the `index.js` file at `ui/src/main/unauthenticated/login`.
+    ```
+    import React, { Component } from "react"; 
+    import { Link, withRouter } from "react-router-dom"; 
+    import Card, { CardActions, CardContent } from "material-ui/Card"; 
+    import Typography from "material-ui/Typography"; 
+    import TextField from "common/components/TextField"; 
+    import { CircularProgress } from "material-ui/Progress"; 
+    import Button from "material-ui/Button";
 
-   \`\`\` import React, { Component } from "react"; import { Link, withRouter } from "react-router-dom"; import Card, { CardActions, CardContent } from "material-ui/Card"; import Typography from "material-ui/Typography"; import TextField from "common/components/TextField"; import { CircularProgress } from "material-ui/Progress"; import Button from "material-ui/Button";
+   class Login extends Component { 
+       constructor(props) { 
+           super(props); 
+           this.state = { email: "", password: "" }; 
+        }
 
-   class Login extends Component { constructor\(props\) { super\(props\); this.state = { email: "", password: "" }; }
+        handleInput = evt => {
+            this.setState({text
+                [evt.target.name]: evt.target.value,
+            });
+            const { authenticate } = this.props;
+            if (authenticate.rejected) {
+                authenticate.reset();
+            }
+        };
 
-   ```text
-   handleInput = evt => {
-       this.setState({
-   ```
+        handleSubmit = evt => {
+            evt.preventDefault();
+            const { email, password } = this.state;
+            const { authenticate } = this.props;
+            authenticate.call({ username: email, password });
+        };
 
-```text
-           [evt.target.name]: evt.target.value,
-       });
-       const { authenticate } = this.props;
-       if (authenticate.rejected) {
-           authenticate.reset();
-       }
-   };
+        render() {
+            const { email, password } = this.state;
+            const { authenticate } = this.props;
 
-   handleSubmit = evt => {
-       evt.preventDefault();
-       const { email, password } = this.state;
-       const { authenticate } = this.props;
-       authenticate.call({ username: email, password });
-   };
+            const invalidLogin =
+                authenticate.rejected &&
+                authenticate.reason &&
+                authenticate.reason.response &&
+                authenticate.reason.response.status === 401;
 
-   render() {
-       const { email, password } = this.state;
-       const { authenticate } = this.props;
+            return (
+                <div
+                    className="d-flex align-items-md-center justify-content-center"
+                    style={{ height: "100vh" }}
+                >
+                    <div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
+                        <Card>
+                            <form onSubmit={this.handleSubmit}>
+                                <CardContent>
+                                    <Typography type="headline" component="h2">
+                                        Login
+                                    </Typography>
+                                    <Typography type="body1">
+                                        <Link to="/signup">or Signup Here</Link>
+                                    </Typography>
+                                    <TextField
+                                        label="Email"
+                                        name="email"
+                                        value={email}
+                                        error={authenticate.rejected}
+                                        onChange={this.handleInput}
+                                        required
+                                    />
+                                    <TextField
+                                        label="Password"
+                                        type="password"
+                                        name="password"
+                                        value={password}
+                                        error={authenticate.rejected}
+                                        helperText={
+                                            (invalidLogin && "Invalid Username or Password") ||
+                                            (authenticate.reason && authenticate.reason.message)
+                                        }
+                                        onChange={this.handleInput}
+                                        required
+                                    />
+                                </CardContent>
+                                <CardActions>
+                                    <Button raised color="primary" type="submit">
+                                        {authenticate.pending ? (
+                                            <CircularProgress size={15} />
+                                        ) : (
+                                            "Login"
+                                        )}
+                                    </Button>
+                                </CardActions>
+                            </form>
+                        </Card>
+                    </div>
+                </div>
+            );
+        }
+    }
 
-       const invalidLogin =
-           authenticate.rejected &&
-           authenticate.reason &&
-           authenticate.reason.response &&
-           authenticate.reason.response.status === 401;
+    Login = withRouter(Login);
 
-       return (
-           <div
-               className="d-flex align-items-md-center justify-content-center"
-               style={{ height: "100vh" }}
-           >
-               <div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
-                   <Card>
-                       <form onSubmit={this.handleSubmit}>
-                           <CardContent>
-                               <Typography type="headline" component="h2">
-                                   Login
-                               </Typography>
-                               <Typography type="body1">
-                                   <Link to="/signup">or Signup Here</Link>
-                               </Typography>
-                               <TextField
-                                   label="Email"
-                                   name="email"
-                                   value={email}
-                                   error={authenticate.rejected}
-                                   onChange={this.handleInput}
-                                   required
-                               />
-                               <TextField
-                                   label="Password"
-                                   type="password"
-                                   name="password"
-                                   value={password}
-                                   error={authenticate.rejected}
-                                   helperText={
-                                       (invalidLogin && "Invalid Username or Password") ||
-                                       (authenticate.reason && authenticate.reason.message)
-                                   }
-                                   onChange={this.handleInput}
-                                   required
-                               />
-                           </CardContent>
-                           <CardActions>
-                               <Button raised color="primary" type="submit">
-                                   {authenticate.pending ? (
-                                       <CircularProgress size={15} />
-                                   ) : (
-                                       "Login"
-                                   )}
-                               </Button>
-                           </CardActions>
-                       </form>
-                   </Card>
-               </div>
-           </div>
-       );
-   }
-```
-
-}
-
-Login = withRouter\(Login\);
-
-export { Login };
-
-```text
+    export { Login };
+    ```
 2. Create the `index.js` at `ui/src/main/unauthenticated`.
-```
+    ```text
+    import React, { Component } from "react"; 
+    import { Route, Switch } from "react-router-dom"; 
+    import { Login } from "./login";
 
-import React, { Component } from "react"; import { Route, Switch } from "react-router-dom"; import { Login } from "./login";
+    class Unauthenticated extends Component { 
+        render() { 
+            return <Login />; 
+        } 
+    }
 
-class Unauthenticated extends Component { render\(\) { return \( } /&gt; \); } }
-
-export { Unauthenticated };
-
-```text
+    export { Unauthenticated };
+    ```
 3. Open the `main/index.js` by hitting Command + p then start typing `main` then type `/`.
 
-4. Add this between the start of the render function and the return function.
-```
-
-const { authenticate } = this.props; if \(!authenticate.fulfilled\) { return ; }
-
-```text
+4. Add this between the start of the render function and the return.
+    ```
+    const { authenticate } = this.props; 
+    if (!authenticate.fulfilled) { 
+        return <Unauthenticated authenticate={authenticate} />; 
+    }
+    ```
    So it looks like this.
-```
-
-render\(\) { const { authenticate } = this.props; if \(!authenticate.fulfilled\) { return ; } return Main; }
-
-```text
-5. put yor cursor at the end of `Unauthenticated` word then hit Control + space to bring up the autocomplete. Select the option to import the Unauthenticated component, it should be the second option.
+    ```
+    render() { 
+        const { authenticate } = this.props; 
+        if (!authenticate.fulfilled) { 
+            return <Unauthenticated authenticate={authenticate} />; 
+        } 
+        return <p>Main</p>; 
+    }
+    ```
+5. Put yor cursor at the end of `Unauthenticated` word then hit Control + space to bring up the autocomplete. Select the option to import the Unauthenticated component, it should be the second option.
 
 6. The browser should now be showing a login form.
 
@@ -1860,131 +1872,148 @@ render\(\) { const { authenticate } = this.props; if \(!authenticate.fulfilled\)
 Notice how our Signup Here link doesn't work. Let's fix that.
 
 1. Create the `index.js` file at `ui/src/main/unauthenticated/signup`.
-```
+    ```
+    import React, { Component } from "react"; 
+    import { Link, withRouter } from "react-router-dom"; 
+    import { connect } from "common/connector"; 
+    import Card, { CardActions, CardContent } from "material-ui/Card"; 
+    import Typography from "material-ui/Typography"; 
+    import { CircularProgress } from "material-ui/Progress"; 
+    import TextField from "common/components/TextField"; 
+    import Button from "material-ui/Button"; 
+    import { save } from "api/organisation";
 
-import React, { Component } from "react"; import { Link, withRouter } from "react-router-dom"; import { connect } from "common/connector"; import Card, { CardActions, CardContent } from "material-ui/Card"; import Typography from "material-ui/Typography"; import { CircularProgress } from "material-ui/Progress"; import TextField from "common/components/TextField"; import Button from "material-ui/Button"; import { save } from "api/organisation";
+    class Signup extends Component { 
+        constructor(props) { 
+            super(props); 
+            this.state = { 
+                name: "", 
+                firstName: "", 
+                lastName: "", 
+                email: "", 
+                password: "", 
+            }; 
+        }
 
-class Signup extends Component { constructor\(props\) { super\(props\); this.state = { name: "", firstName: "", lastName: "", email: "", password: "", }; }
+    handleFormInput = evt => {
+        this.setState({
+            [evt.target.name]: evt.target.value,
+        });
+        const { save } = this.props;
+        if (save.rejected) {
+            this.props.save.reset();
+        }
+    };
 
-```text
-   handleFormInput = evt => {
-       this.setState({
-           [evt.target.name]: evt.target.value,
-       });
-       const { save } = this.props;
-       if (save.rejected) {
-           this.props.save.reset();
-       }
-   };
+    handleSubmit = evt => {
+        evt.preventDefault();
+        const { save } = this.props;
+        const { name, firstName, lastName, email, password } = this.state;
+        const body = { name, users: [{ firstName, lastName, email, password }] };
+        save
+            .call(body)
+            .then(() => this.props.authenticate.call({ username: email, password }))
+            .then(() => this.props.history.push("/"));
+    };
 
-   handleSubmit = evt => {
-       evt.preventDefault();
-       const { save } = this.props;
-       const { name, firstName, lastName, email, password } = this.state;
-       const body = { name, users: [{ firstName, lastName, email, password }] };
-       save
-           .call(body)
-           .then(() => this.props.authenticate.call({ username: email, password }))
-           .then(() => this.props.history.push("/"));
-   };
+    render() {
+        const { save } = this.props;
+        const { name, firstName, lastName, email, password } = this.state;
 
-   render() {
-       const { save } = this.props;
-       const { name, firstName, lastName, email, password } = this.state;
+        console.log(JSON.stringify(save));
 
-       console.log(JSON.stringify(save));
+        const emailNotUnique =
+            save.rejected &&
+            save.reason.response &&
+            save.reason.response.data.errors &&
+            Array.isArray(save.reason.response.data.errors) &&
+            save.reason.response.data.errors.some(
+                error => error.code === "UniqueEmailConstraint"
+            );
 
-       const emailNotUnique =
-           save.rejected &&
-           save.reason.response &&
-           save.reason.response.data.errors &&
-           Array.isArray(save.reason.response.data.errors) &&
-           save.reason.response.data.errors.some(
-               error => error.code === "UniqueEmailConstraint"
-           );
+        return (
+            <div
+                className="d-flex align-items-md-center justify-content-center"
+                style={{ height: "100vh" }}
+            >
+                <div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
+                    <Card>
+                        <form onSubmit={this.handleSubmit}>
+                            <CardContent>
+                                <Typography type="headline" component="h2">
+                                    Signup
+                                </Typography>
+                                <Typography type="body1">
+                                    <Link to="/">or Login Here</Link>
+                                </Typography>
+                                <TextField
+                                    name="name"
+                                    value={name}
+                                    onChange={this.handleFormInput}
+                                    label="Organisation"
+                                    required
+                                />
+                                <TextField
+                                    name="firstName"
+                                    value={firstName}
+                                    onChange={this.handleFormInput}
+                                    label="First Name"
+                                    required
+                                />
+                                <TextField
+                                    name="lastName"
+                                    value={lastName}
+                                    onChange={this.handleFormInput}
+                                    label="Last Name"
+                                    required
+                                />
+                                <TextField
+                                    name="email"
+                                    value={email}
+                                    onChange={this.handleFormInput}
+                                    label="Email"
+                                    error={emailNotUnique}
+                                    helperText={emailNotUnique && "That email is already taken"}
+                                    required
+                                />
+                                <TextField
+                                    name="password"
+                                    value={password}
+                                    onChange={this.handleFormInput}
+                                    label="Password"
+                                    type="password"
+                                    required
+                                />
+                            </CardContent>
+                            <CardActions>
+                                <Button raised color="primary" type="submit">
+                                    {save.pending ? <CircularProgress size={15} /> : "Signup"}
+                                </Button>
+                            </CardActions>
+                        </form>
+                    </Card>
+                </div>
+            </div>
+        );
+    }
+    }
 
-       return (
-           <div
-               className="d-flex align-items-md-center justify-content-center"
-               style={{ height: "100vh" }}
-           >
-               <div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
-                   <Card>
-                       <form onSubmit={this.handleSubmit}>
-                           <CardContent>
-                               <Typography type="headline" component="h2">
-                                   Signup
-                               </Typography>
-                               <Typography type="body1">
-                                   <Link to="/">or Login Here</Link>
-                               </Typography>
-                               <TextField
-                                   name="name"
-                                   value={name}
-                                   onChange={this.handleFormInput}
-                                   label="Organisation"
-                                   required
-                               />
-                               <TextField
-                                   name="firstName"
-                                   value={firstName}
-                                   onChange={this.handleFormInput}
-                                   label="First Name"
-                                   required
-                               />
-                               <TextField
-                                   name="lastName"
-                                   value={lastName}
-                                   onChange={this.handleFormInput}
-                                   label="Last Name"
-                                   required
-                               />
-                               <TextField
-                                   name="email"
-                                   value={email}
-                                   onChange={this.handleFormInput}
-                                   label="Email"
-                                   error={emailNotUnique}
-                                   helperText={emailNotUnique && "That email is already taken"}
-                                   required
-                               />
-                               <TextField
-                                   name="password"
-                                   value={password}
-                                   onChange={this.handleFormInput}
-                                   label="Password"
-                                   type="password"
-                                   required
-                               />
-                           </CardContent>
-                           <CardActions>
-                               <Button raised color="primary" type="submit">
-                                   {save.pending ? <CircularProgress size={15} /> : "Signup"}
-                               </Button>
-                           </CardActions>
-                       </form>
-                   </Card>
-               </div>
-           </div>
-       );
-   }
-```
+    Signup = connect({ 
+        save: { promise: save, }, 
+    })(withRouter(Signup));
 
-}
-
-Signup = connect\({ save: { promise: save, }, }\)\(withRouter\(Signup\)\);
-
-export { Signup };
-
-```text
+    export { Signup };
+    ```
 2. Open `unauthenticated/index.js` using Command + p.
 
 3. Before the `<Route>`, create a route for the signup component.
-```
+    ```text
+    <Route
+        path="/signup"
+        render={props => <Signup {...props} {...this.props} />}
+    />
+    ```
 
- } /&gt;
-
-```text
 4. Again, use autocomplete to import the signup component. I'm not going to say this anymore you can just do it for new stuff.
 
 5. The signup link should now work as well as the login here link on the signup page.
@@ -1996,19 +2025,16 @@ export { Signup };
    1. In separate tabs in VSCode.
 
    2. Database.
-```
 
-```text
-  docker-compose up
-  ```
-```
-
+        ```text
+        docker-compose up
+        ```
 1. API.
 
-   ```text
-   cd api
-   mvn spring-boot:run
-   ```
+        ```text
+        cd api
+        mvn spring-boot:run
+        ```
 
 2. Fill in the signup form and click signup. You should now see the word "Main" which means you are logged in.
 
@@ -2083,7 +2109,31 @@ export { Signup };
 2. Create a `drawer.js` file in the same folder.
 
    ```text
+    import React from "react";
+    import Drawer from "material-ui/Drawer";
+    import { withStyles } from "material-ui/styles";
 
+    const styles = {
+        paper: {
+            position: "static",
+            width: "256px",
+        },
+    };
+
+    function OverridesClasses({ classes, children, ...props }) {
+        return (
+            <Drawer
+                classes={{
+                    paper: classes.paper,
+                }}
+                {...props}
+            >
+                {children}
+            </Drawer>
+        );
+    }
+
+    export default withStyles(styles)(OverridesClasses);
    ```
 
 3. Create `index.js` at `ui/src/main/authenticated`.
