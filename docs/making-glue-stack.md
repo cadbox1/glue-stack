@@ -101,9 +101,9 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
 
    Name: organisation \(its considered good practice to make sure table names aren't plurals; they're singular\)
 
-   Table Encoding: UTF-8 Unicode \(utf8\) \(Unicode let's you store characters from all different languages\)
+   Table Encoding: UTF-8 Unicode \(utf8mb4\) \(Unicode let's you store characters from all different languages\)
 
-   Table Collation: Default \(utf8\_general\_ci\)
+   Table Collation: Default \(utf8mb4\_general\_ci\)
 
 2. Click Add
 3. That should bring up the Structure tab where you can manage the Fields of the table
@@ -153,7 +153,7 @@ CREATE TABLE `organisation` (
   `createdDate` datetime NOT NULL,
   `modifedDate` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
 Alternatively, you can click the console button on the top right to see the SQL statements Sequel Pro has ran then you can filter for "create" and "alter table" statements. This is useful if you've modified an existing table.
@@ -162,7 +162,7 @@ Alternatively, you can click the console button on the top right to see the SQL 
 
 Each user belongs to a single organisation. We call this a Many-To-One relationship from a user to an organisation \(or a One-To-Many relationship from an organisation to users\). We model this relationship in relational databases using a foreign key. I like to think of relationships as associations as in a user is associated with an organisation and an organisation has users associated with it. The user table also has unique email addresses - no two users can have the same email.
 
-1. Click the plus on the bottom left again, name the table "user" with utf8 again.
+1. Click the plus on the bottom left again, name the table "user" with utf8mb4 again.
 2. Add the organisation field
 
    The type of this column is going to match the type of the id of the organisation table. To keep things consistent all id columns are the same type.
@@ -279,7 +279,7 @@ CREATE TABLE `task` (
   KEY `userId` (`userId`),
   CONSTRAINT `task_ibfk_1` FOREIGN KEY (`organisationId`) REFERENCES `organisation` (`id`),
   CONSTRAINT `task_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 ```
 
 That's it! Have a play with the content tab on the tables to enter data if you're keen.
