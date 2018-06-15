@@ -1,6 +1,6 @@
 # Glue Stack
 
-My favourite tools and practises glued together to make a multi-tenant todo application where organisations can sign up and manage their users' tasks.
+My stack of favourite tools and practises glued together to make a multi-tenant todo application where organisations can manage their tasks.
 
 If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook.io/glue-stack/).
 
