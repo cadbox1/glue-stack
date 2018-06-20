@@ -1734,10 +1734,10 @@ We're going to add some Libraries to our project mainly in the form of dependenc
    ```
 
 3. Open `App.js`.
-   1. Delete the `<p>App</p>` line and start typing the word `<Main`. Then hit enter on the first autocomplete result that says "import main". This will automatically add the import for the `Main` component.
-   2. Close the `Main` component tag with `/>` so it says `<Main />`.
-4. The browser window should now show "Main".
-5. Commit your work.
+4. Delete the `<p>App</p>` line and start typing the word `<Main`. Then hit enter on the first autocomplete result that says "import main". This will automatically add the import for the `Main` component.
+5. Close the `Main` component tag with `/>` so it says `<Main />`.
+6. The browser window should now show "Main".
+7. Commit your work.
 
 ### Login Component
 
