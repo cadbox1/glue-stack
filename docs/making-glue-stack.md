@@ -1,7 +1,7 @@
 # Making Glue Stack
 
 1. Create a file to write down any questions you have or anything that's unclear in this document so that we can improve it to make it easier for the next person.
-2. Run the setup.sh as part of the [Running Locally](../README.md#running-locally) process. This will install some of the tools we're going to need.
+2. Run the `setup.sh` as part of the [Running Locally](./README.md#running-locally) process. This will install some of the tools we're going to need.
 3. Make a development folder in your home folder. This is for all your development stuff.
 
    1. Open terminal. `Command + Space` \(Spotlight\) then type terminal.
