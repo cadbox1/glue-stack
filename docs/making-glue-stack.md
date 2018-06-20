@@ -59,7 +59,7 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
    5. Save and quit using `:wq` \(colon then w then q, not all at once\).
 
       The standard port for MySQL is 3306 but I've chosen to map it to 3307 so it doesn't clash if you already have a MySQL database running - you can't have two applications listening to the same port.
-      
+   
 2. Start the database.
 
    ```text
@@ -169,7 +169,7 @@ Alternatively, you can click the console button on the top right to see the SQL 
 
 Each user belongs to a single organisation. We call this a Many-To-One relationship from a user to an organisation \(or a One-To-Many relationship from an organisation to users\). We model this relationship in relational databases using a foreign key. I like to think of relationships as associations as in a user is associated with an organisation and an organisation has users associated with it. The user table also has unique email addresses - no two users can have the same email.
 
-1. Click the plus on the bottom left again, name the table "user" with utf8mb4 again.
+1. Click the plus on the bottom left again, name the table `task` with utf8mb4 again.
 2. Add the organisation field.
 
    The type of this column is going to match the type of the id of the organisation table. To keep things consistent all id columns are the same type.
@@ -191,7 +191,7 @@ Each user belongs to a single organisation. We call this a Many-To-One relations
 
       ```text
        Name: (leave blank)
-       Column: id
+       Column: organisationId
        References
        Table: organisation
        Column: id
@@ -266,29 +266,6 @@ ALTER TABLE `user` ADD `modifiedDate` DATETIME  NOT NULL;
 ```
 
 Highlight them all then hit Command+r to run them.
-
-### Task Table
-
-The task table has a Many-To-One relationship to an organisation \(just like the user table\) and a Many-To-One relationship to a user. That means a task can be associated with a user and a user can have tasks associated with them.
-
-```text
-CREATE TABLE `task` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `organisationId` int(11) unsigned NOT NULL,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `notes` varchar(255) DEFAULT NULL,
-  `userId` int(11) unsigned DEFAULT NULL,
-  `statusId` int(11) unsigned DEFAULT NULL,
-  `active` bit(1) NOT NULL,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `organisationId` (`organisationId`),
-  KEY `userId` (`userId`),
-  CONSTRAINT `task_ibfk_1` FOREIGN KEY (`organisationId`) REFERENCES `organisation` (`id`),
-  CONSTRAINT `task_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
-```
 
 That's it! Have a play with the content tab on the tables to enter data if you're keen.
 
@@ -444,7 +421,7 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
    ```text
    package org.gluestack.api.domain.entity;
-
+   
    import java.util.Date;
    import javax.persistence.Access;
    import javax.persistence.AccessType;
@@ -458,28 +435,28 @@ I'm going to walk you through making the abstractions first becuase it makes thi
    import javax.validation.constraints.NotNull;
    import org.hibernate.annotations.CreationTimestamp;
    import org.hibernate.annotations.UpdateTimestamp;
-
+   
    @MappedSuperclass
    public abstract class BaseEntity {
-
+   
        @Id
        @Access(AccessType.PROPERTY)
        @GeneratedValue(strategy = GenerationType.IDENTITY)
        @Column(unique = true, nullable = false)
        protected Integer id;
-
+   
        @NotNull
        @Column(nullable = false)
        protected Boolean active = true;
-
+   
        @CreationTimestamp
        @Temporal(TemporalType.TIMESTAMP)
        protected Date createdDate;
-
+   
        @UpdateTimestamp
        @Temporal(TemporalType.TIMESTAMP)
        protected Date modifiedDate;
-
+   
    }
    ```
 
@@ -489,31 +466,31 @@ I'm going to walk you through making the abstractions first becuase it makes thi
    public Integer getId() {
        return id;
    }
-
+   
    public void setId(Integer id) {
        this.id = id;
    }
-
+   
    public Boolean getActive() {
        return active;
    }
-
+   
    public void setActive(Boolean active) {
        this.active = active;
    }
-
+   
    public Date getCreatedDate() {
        return createdDate;
    }
-
+   
    public void setCreatedDate(Date createdDate) {
        this.createdDate = createdDate;
    }
-
+   
    public Date getModifiedDate() {
        return modifiedDate;
    }
-
+   
    public void setModifiedDate(Date modifiedDate) {
        this.modifiedDate = modifiedDate;
    }
@@ -523,19 +500,19 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
    ```text
    package org.gluestack.api.domain.entity;
-
+   
    import javax.persistence.FetchType;
    import javax.persistence.JoinColumn;
    import javax.persistence.ManyToOne;
    import javax.persistence.MappedSuperclass;
-
+   
    @MappedSuperclass
    public abstract class BaseOrganisedEntity extends BaseEntity {
-
+   
        @ManyToOne(fetch = FetchType.LAZY)
        @JoinColumn(name = "organisationId", nullable = false)
        protected Organisation organisation;
-
+   
    }
    ```
 
@@ -543,7 +520,7 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
    ```text
    package org.gluestack.api.domain.entity;
-
+   
    import java.util.ArrayList;
    import java.util.List;
    import javax.persistence.Column;
@@ -553,25 +530,25 @@ I'm going to walk you through making the abstractions first becuase it makes thi
    import javax.validation.Valid;
    import org.hibernate.annotations.Cascade;
    import org.hibernate.annotations.CascadeType;
-
+   
    @Entity
    @Table(name = "organisation")
    public class Organisation extends BaseEntity {
-
+   
        @Column(nullable = false, length = 255)
        private String name;
-
+   
        @OneToMany(mappedBy = "organisation")
        private List<Task> tasks = new ArrayList<>();
-
+   
        @Valid
        @Cascade(CascadeType.ALL)
        @OneToMany(mappedBy = "organisation")
        private List<User> users = new ArrayList<>();
-
+   
        public Organisation() {
        }
-
+   
    }
    ```
 
@@ -579,7 +556,7 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
    ```text
    package org.gluestack.api.domain.entity;
-
+   
    import com.fasterxml.jackson.annotation.JsonProperty;
    import java.util.ArrayList;
    import java.util.Collection;
@@ -591,148 +568,114 @@ I'm going to walk you through making the abstractions first becuase it makes thi
    import javax.validation.constraints.NotBlank;
    import org.springframework.security.core.GrantedAuthority;
    import org.springframework.security.core.userdetails.UserDetails;
-
+   
    @Entity
    @Table(name = "user")
    public class User extends BaseOrganisedEntity implements UserDetails {
-
+   
        @NotBlank
        @Column(nullable = false, unique = true, length = 255)
        private String email;
-
+   
        @NotBlank
        @Column(nullable = false, length = 255)
        private String firstName;
-
+   
        @Column(nullable = false, length = 255)
        private String lastName;
-
+   
        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
        @NotBlank
        @Column(nullable = false, length = 60, columnDefinition = "CHAR(60)")
        private String password;
-
+   
        @OneToMany(mappedBy = "user")
        private List<Task> tasks = new ArrayList<>();
-
+   
        public User() {
        }
-
+   
        public String getEmail() {
            return this.email;
        }
-
+   
        public void setEmail(String email) {
            this.email = email;
        }
-
+   
        public String getFirstName() {
            return this.firstName;
        }
-
+   
        public void setFirstName(String firstName) {
            this.firstName = firstName;
        }
-
+   
        public String getLastName() {
            return this.lastName;
        }
-
+   
        public void setLastName(String lastName) {
            this.lastName = lastName;
        }
-
+   
        @Override
        public String getPassword() {
            return this.password;
        }
-
+   
        public void setPassword(String password) {
            this.password = password;
        }
-
+   
        public List<Task> getTasks() {
            return tasks;
        }
-
+   
        public void setTasks(List<Task> tasks) {
            this.tasks = tasks;
        }
-
+   
        @Override
        public Collection<? extends GrantedAuthority> getAuthorities() {
            return null;
        }
-
+   
        @Override
        public String getUsername() {
            return email;
        }
-
+   
        @Override
        public boolean isAccountNonExpired() {
            return true;
        }
-
+   
        @Override
        public boolean isAccountNonLocked() {
            return true;
        }
-
+   
        @Override
        public boolean isCredentialsNonExpired() {
            return true;
        }
-
+   
        @Override
        public boolean isEnabled() {
            return active;
        }
-
+   
    }
    ```
 
-5. Create `Task.java`.
-
-   ```text
-   package org.gluestack.api.domain.entity;
-
-   import javax.persistence.Column;
-   import javax.persistence.Entity;
-   import javax.persistence.FetchType;
-   import javax.persistence.JoinColumn;
-   import javax.persistence.ManyToOne;
-   import javax.persistence.Table;
-
-   @Entity
-   @Table(name = "task")
-   public class Task extends BaseOrganisedEntity {
-
-       @Column(nullable = false, length = 255)
-       private String name;
-
-       @Column(length = 255)
-       private String notes;
-
-       @ManyToOne(fetch = FetchType.LAZY)
-       @JoinColumn(name = "userId")
-       private User user;
-
-       @Column(nullable = false)
-       private Integer statusId;
-
-       public Task() {
-       }
-   }
-   ```
-
-6. Start the application. Hibernate will validate that your data classes match your database and will fail to start if they don't.
+5. Start the application. Hibernate will validate that your data classes match your database and will fail to start if they don't.
 
    ```text
     mvn spring-boot:run
    ```
 
-7. Commit your work; "created entities".
+6. Commit your work; "created entities".
 
 ### Create the Repository Layer
 
@@ -813,15 +756,15 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
 
    ```text
     package org.gluestack.api.repository;
-
+   
     import org.springframework.data.querydsl.QuerydslPredicateExecutor;
     import org.springframework.data.repository.CrudRepository;
     import org.springframework.data.repository.NoRepositoryBean;
-
+   
     @NoRepositoryBean
     public interface BaseRepository<T>
                     extends CrudRepository<T, Integer>, QuerydslPredicateExecutor<T> {
-
+   
     }
    ```
 
@@ -829,9 +772,9 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
 
    ```text
     package org.gluestack.api.repository;
-
+   
     import org.gluestack.api.domain.entity.Organisation;
-
+   
     public interface OrganisationRepository extends BaseRepository<Organisation> {
     }
    ```
@@ -840,30 +783,20 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
 
    ```text
     package org.gluestack.api.repository;
-
+   
     import org.gluestack.api.domain.entity.User;
     import org.springframework.data.jpa.repository.EntityGraph;
-
+   
     public interface UserRepository extends BaseRepository<User> {
-
+   
         @EntityGraph(attributePaths = { "organisation" })
         User findOneByEmail(String email);
     }
    ```
 
-6. Create the `TaskRepository.java`.
+6. Restart the application to make sure its all correct.
 
-   ```text
-    package org.gluestack.api.repository;
-
-    import org.gluestack.api.domain.entity.Task;
-
-    public interface TaskRepository extends BaseRepository<Task> {
-    }
-   ```
-
-7. Restart the application to make sure its all correct.
-8. Commit your work; "created repository layer".
+7. Commit your work; "created repository layer".
 
 ### Create the Service Layer
 
@@ -880,7 +813,7 @@ The service layer is where most of your API logic lives. Some people choose to s
 
    ```text
    package org.gluestack.api.service;
-
+   
    import org.gluestack.api.domain.entity.Organisation;
    import org.gluestack.api.domain.entity.QOrganisation;
    import org.gluestack.api.domain.entity.User;
@@ -888,20 +821,20 @@ The service layer is where most of your API logic lives. Some people choose to s
    import com.querydsl.core.types.Predicate;
    import org.springframework.beans.factory.annotation.Autowired;
    import org.springframework.stereotype.Service;
-
+   
    @Service
    public class OrganisationService extends BaseService<Organisation> {
-
+   
        @Autowired
        private OrganisationRepository organisationRepository;
        @Autowired
        private UserService userService;
-
+   
        @Override
        public Predicate getReadPermissionPredicate(User principalUser) {
            return QOrganisation.organisation.id.eq(principalUser.getOrganisation().getId());
        }
-
+   
        public Organisation create(Organisation organisation) {
            User user = organisation.getUsers().get(0);
            user.setOrganisation(organisation);
@@ -919,31 +852,31 @@ The service layer is where most of your API logic lives. Some people choose to s
 
    ```text
    package org.gluestack.api.service;
-
+   
    import org.gluestack.api.domain.entity.QUser;
    import org.gluestack.api.domain.entity.User;
    import com.querydsl.core.types.Predicate;
    import org.springframework.beans.factory.annotation.Autowired;
    import org.springframework.security.crypto.password.PasswordEncoder;
    import org.springframework.stereotype.Service;
-
+   
    @Service
    public class UserService extends BaseService<User> {
-
+   
        @Autowired
        private PasswordEncoder passwordEncoder;
-
+   
        @Override
        public Predicate getReadPermissionPredicate(User principalUser) {
            return QUser.user.organisation.id.eq(principalUser.getOrganisation().getId());
        }
-
+   
        @Override
        public void prepareSaveData(User principalUser, User newEntity, User oldEntity) {
            preparePassword(newEntity, oldEntity);
            super.prepareSaveData(principalUser, newEntity, oldEntity);
        }
-
+   
        public void preparePassword(User newUser, User oldUser) {
            if (oldUser == null || !oldUser.getPassword().equals(newUser.getPassword())) {
                newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
@@ -952,40 +885,8 @@ The service layer is where most of your API logic lives. Some people choose to s
    }
    ```
 
-4. Create the `TaskService.java`.
+4. As always, start the appliation to make sure it works then commit your changes.
 
-   In this case the TaskService wants to return related entities to the user \(the user details of the assigned user\) so we use hibernate to load those details and the `jackson-datatype-hibernate5` we'll be adding later will automatically handle the serialisation \(in our case its converting java objects to JSON\).
-
-   ```text
-   package org.gluestack.api.service;
-
-   import org.gluestack.api.domain.entity.QTask;
-   import org.gluestack.api.domain.entity.Task;
-   import org.gluestack.api.domain.entity.User;
-   import com.querydsl.core.types.Predicate;
-   import org.hibernate.Hibernate;
-   import org.springframework.data.domain.Page;
-   import org.springframework.data.domain.Pageable;
-   import org.springframework.stereotype.Service;
-
-   @Service
-   public class TaskService extends BaseService<Task> {
-
-       @Override
-       public Predicate getReadPermissionPredicate(User principalUser) {
-           return QTask.task.organisation.id.eq(principalUser.getOrganisation().getId());
-       }
-
-       @Override
-       public Page<Task> findAll(User principalUser, Predicate predicate, Pageable pageRequest) {
-           Page<Task> tasks = super.findAll(principalUser, predicate, pageRequest);
-           tasks.getContent().forEach(task -> Hibernate.initialize(task.getUser()));
-           return tasks;
-       }
-   }
-   ```
-
-5. As always, start the appliation to make sure it works then commit your changes.
 
 ### Create the Controller layer
 
@@ -996,7 +897,7 @@ The controller layer is what connects our application to the internet. It define
 
    ```text
    package org.gluestack.api.controller;
-
+   
    import org.gluestack.api.domain.entity.Organisation;
    import org.gluestack.api.service.OrganisationService;
    import javax.validation.Valid;
@@ -1006,14 +907,14 @@ The controller layer is what connects our application to the internet. It define
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RequestMethod;
    import org.springframework.web.bind.annotation.RestController;
-
+   
    @RestController
    @RequestMapping("api/organisations")
    public class OrganisationController extends BaseController<Organisation> {
-
+   
        @Autowired
        private OrganisationService organisationService;
-
+   
        @Override
        @RequestMapping(method = RequestMethod.POST)
        public Organisation create(Authentication authentication, @RequestBody @Valid Organisation entity) {
@@ -1028,7 +929,7 @@ The controller layer is what connects our application to the internet. It define
 
    ```text
    package org.gluestack.api.controller;
-
+   
    import org.gluestack.api.domain.entity.User;
    import org.gluestack.api.service.UserService;
    import com.querydsl.core.types.Predicate;
@@ -1040,74 +941,39 @@ The controller layer is what connects our application to the internet. It define
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RequestMethod;
    import org.springframework.web.bind.annotation.RestController;
-
+   
    @RestController
    @RequestMapping("api/users")
    public class UserController extends BaseController<User> {
-
+   
        @Autowired
        private UserService userService;
-
+   
        @RequestMapping(method = RequestMethod.GET)
        public Page<User> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
                Pageable pageRequest) {
            User principalUser = (User) authentication.getPrincipal();
            return userService.findAll(principalUser, predicate, pageRequest);
        }
-
+   
    }
    ```
 
-4. Create the `TaskController.java`.
+4. Create the `AuthenticationController.java`. This is what the frontend will call to login and if authentication is successful it will return the details of the current user.
 
    ```text
    package org.gluestack.api.controller;
-
-   import org.gluestack.api.domain.entity.Task;
-   import org.gluestack.api.domain.entity.User;
-   import org.gluestack.api.service.TaskService;
-   import com.querydsl.core.types.Predicate;
-   import org.springframework.beans.factory.annotation.Autowired;
-   import org.springframework.data.domain.Page;
-   import org.springframework.data.domain.Pageable;
-   import org.springframework.data.querydsl.binding.QuerydslPredicate;
-   import org.springframework.security.core.Authentication;
-   import org.springframework.web.bind.annotation.RequestMapping;
-   import org.springframework.web.bind.annotation.RequestMethod;
-   import org.springframework.web.bind.annotation.RestController;
-
-   @RestController
-   @RequestMapping("api/tasks")
-   public class TaskController extends BaseController<Task> {
-
-       @Autowired
-       private TaskService taskService;
-
-       @RequestMapping(method = RequestMethod.GET)
-       public Page<Task> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
-               Pageable pageRequest) {
-           User principalUser = (User) authentication.getPrincipal();
-           return taskService.findAll(principalUser, predicate, pageRequest);
-       }
-
-   }
-   ```
-
-5. Create the `AuthenticationController.java`. This is what the frontend will call to login and if authentication is successful it will return the details of the current user.
-
-   ```text
-   package org.gluestack.api.controller;
-
+   
    import org.gluestack.api.domain.entity.User;
    import org.springframework.security.core.Authentication;
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RequestMethod;
    import org.springframework.web.bind.annotation.RestController;
-
+   
    @RestController
    @RequestMapping("api/authenticate")
    public class AuthenticationController {
-
+   
        @RequestMapping(method = RequestMethod.GET)
        public User authenticate(Authentication authentication) {
            return (User) authentication.getPrincipal();
@@ -1115,7 +981,7 @@ The controller layer is what connects our application to the internet. It define
    }
    ```
 
-6. Run the application and commit your work.
+5. Run the application and commit your work.
 
 ### Final Configuration
 
@@ -1751,6 +1617,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
     import TextField from "common/components/TextField"; 
     import { CircularProgress } from "material-ui/Progress"; 
     import Button from "material-ui/Button";
+    ```
 
    class Login extends Component { 
        constructor(props) { 
@@ -1767,24 +1634,24 @@ We're going to add some Libraries to our project mainly in the form of dependenc
                 authenticate.reset();
             }
         };
-
+    
         handleSubmit = evt => {
             evt.preventDefault();
             const { email, password } = this.state;
             const { authenticate } = this.props;
             authenticate.call({ username: email, password });
         };
-
+    
         render() {
             const { email, password } = this.state;
             const { authenticate } = this.props;
-
+    
             const invalidLogin =
                 authenticate.rejected &&
                 authenticate.reason &&
                 authenticate.reason.response &&
                 authenticate.reason.response.status === 401;
-
+    
             return (
                 <div
                     className="d-flex align-items-md-center justify-content-center"
@@ -1838,9 +1705,9 @@ We're going to add some Libraries to our project mainly in the form of dependenc
             );
         }
     }
-
+    
     Login = withRouter(Login);
-
+    
     export { Login };
     ```
 
@@ -2052,7 +1919,7 @@ Notice how our Signup Here link doesn't work. Let's fix that.
         ```text
         docker-compose up
         ```
-        
+   
 1. API.
 
     ```text
