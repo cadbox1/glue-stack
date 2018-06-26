@@ -1,7 +1,11 @@
 # Making Glue Stack
 
+This covers how to create an application that manages users from a blank folder. It won't be kept quite as up to date as the [Development Process Document](./DevelopmentProcess-Tasks.md) because its a lot longer. It was interesting to go through and rewrite the application I just wrote and clarify some of the stranger parts. I think it would be really cool to show new team members how to build the core framework of the existing application from scratch but you can judge how useful it is. 
+
 1. Create a file to write down any questions you have or anything that's unclear in this document so that we can improve it to make it easier for the next person.
+
 2. Run the `setup.sh` as part of the [Running Locally](./README.md#running-locally) process. This will install some of the tools we're going to need.
+
 3. Make a development folder in your home folder. This is for all your development stuff.
 
    1. Open terminal. `Command + Space` \(Spotlight\) then type terminal.
@@ -12,6 +16,7 @@
       mkdir development
       cd development
       ```
+
 4. Create a folder for our app.
 
    ```text
@@ -1134,6 +1139,7 @@ I'm not the best at tests but I think I like this approach.
    ```
 
 3. Delete the `ApiApplication.java` file from `api/src/test/java/org/gluestack/api`.
+
 4. In that same directory, create the `BaseTest.java`.
 
    My current testing strategy is to have a decent amount of test data available so that you don't have to setup a lot of data for new tests. This might not scale in the long run so I may have to break it up a bit but I think the concept of making it really easy to setup data or not having to do it at all is a good.
@@ -1142,17 +1148,15 @@ I'm not the best at tests but I think I like this approach.
 
    ```text
    package org.gluestack.api;
-
+   
+   import com.fasterxml.jackson.databind.ObjectMapper;
+   import javax.transaction.Transactional;
    import org.gluestack.api.domain.entity.Organisation;
    import org.gluestack.api.domain.entity.Task;
    import org.gluestack.api.domain.entity.User;
    import org.gluestack.api.repository.OrganisationRepository;
    import org.gluestack.api.repository.TaskRepository;
    import org.gluestack.api.repository.UserRepository;
-
-   import javax.transaction.Transactional;
-
-   import com.fasterxml.jackson.databind.ObjectMapper;
    import org.junit.Before;
    import org.junit.runner.RunWith;
    import org.springframework.beans.factory.annotation.Autowired;
@@ -1162,111 +1166,213 @@ I'm not the best at tests but I think I like this approach.
    import org.springframework.test.context.TestPropertySource;
    import org.springframework.test.context.junit4.SpringRunner;
    import org.springframework.test.web.servlet.MockMvc;
-
+   
    @RunWith(SpringRunner.class)
    @AutoConfigureMockMvc
    @SpringBootTest
    @Transactional
    @TestPropertySource(locations = "classpath:application-test.properties")
    public abstract class BaseTest {
+   
+   	@Autowired
+   	protected MockMvc mvc;
+   
+   	@Autowired
+   	protected ObjectMapper objectMapper;
+   
+   	@Autowired
+   	private TestOrganisationService testOrganisationService;
+   }
+   ```
 
-       @Autowired
-       protected MockMvc mvc;
+5. In that same folder create `TestOrganisation.java`. This is the object to pass around test data.
 
-       @Autowired
-       protected ObjectMapper objectMapper;
+   ```
+   package org.gluestack.api;
+   
+   import org.gluestack.api.domain.entity.Organisation;
+   import org.gluestack.api.domain.entity.Task;
+   import org.gluestack.api.domain.entity.User;
+   
+   public class TestOrganisation {
+   
+       public Organisation organisation;
+   
+       public User actingUser;
+       public User otherUser;
+   
+   }
+   ```
 
+6. Create `TestOrganisationService.java`. This creates the test data.
+
+   ```
+   package org.gluestack.api;
+   
+   import org.gluestack.api.domain.entity.Organisation;
+   import org.gluestack.api.domain.entity.Task;
+   import org.gluestack.api.domain.entity.User;
+   import org.gluestack.api.repository.OrganisationRepository;
+   import org.gluestack.api.repository.TaskRepository;
+   import org.gluestack.api.repository.UserRepository;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.security.crypto.password.PasswordEncoder;
+   import org.springframework.stereotype.Service;
+   
+   @Service
+   public class TestOrganisationService {
+   
        @Autowired
        private OrganisationRepository organisationRepository;
-
+   
        @Autowired
        private UserRepository userRepository;
-
-       @Autowired
-       private TaskRepository taskRepository;
-
+   
        @Autowired
        private PasswordEncoder passwordEncoder;
-
-       protected User user;
-       protected Task task;
-
-       @Before
-       public void setup() {
+   
+       public TestOrganisation createTestOrganisiation() {
+           TestOrganisation testOrganisation = new TestOrganisation();
+   
            Organisation organisation = new Organisation();
            organisation.setName("organisation");
            organisationRepository.save(organisation);
-
-           user = new User();
-           user.setEmail("email");
-           user.setPassword(passwordEncoder.encode("password"));
-           user.setFirstName("test");
-           user.setLastName("user");
-           user.setOrganisation(organisation);
-           userRepository.save(user);
-
-           task = new Task();
-           task.setName("task");
-           task.setNotes("notes");
-           task.setStatusId(1);
-           task.setUser(user);
-           task.setOrganisation(organisation);
-           taskRepository.save(task);
+           testOrganisation.organisation = organisation;
+   
+           User actingUser = new User();
+           actingUser.setEmail(organisation.getId() + "actingUser");
+           actingUser.setPassword(passwordEncoder.encode("password"));
+           actingUser.setFirstName("Acting");
+           actingUser.setLastName("User");
+           actingUser.setOrganisation(organisation);
+           userRepository.save(actingUser);
+           testOrganisation.actingUser = actingUser;
+   
+           User otherUser = new User();
+           otherUser.setEmail(organisation.getId() + "otherUser");
+           otherUser.setPassword(passwordEncoder.encode("password"));
+           otherUser.setFirstName("Other");
+           otherUser.setLastName("User");
+           otherUser.setOrganisation(organisation);
+           userRepository.save(otherUser);
+           testOrganisation.otherUser = otherUser;
+   
+           return testOrganisation;
        }
    }
    ```
 
-5. Create a `POJO` for the `PageResponse` the list views return. I'm not 100% sure why we have to do this but its not terribly hard. Copy it from [https://github.com/cadbox1/glue-stack/blob/master/api/src/test/java/com/api/PageResponse.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/test/java/com/api/PageResponse.java)
-6. Create a `FindAllTest.java` in a folder/package called `task`.
+7. Open `BaseTest.java` and add the following to the bottom of the class. This will setup two organisations and their data so that we can reference it for our tests.
 
-   Its important to end your class with the name test because that's how maven finds tests by default.
+   ```
+   protected TestOrganisation testOrganisation;
+   protected TestOrganisation otherTestOrganisation;
+   
+   @Before
+   public void setup() {
+       testOrganisation = testOrganisationService.createTestOrganisiation();
+       otherTestOrganisation = testOrganisationService.createTestOrganisiation();
+   }
+   ```
 
-   ```text
-   package org.gluestack.api.task;
+8. Create a `POJO` for the `PageResponse` the list views return. I'm not 100% sure why we have to do this but its not terribly hard. Copy it from [https://github.com/cadbox1/glue-stack/blob/master/api/src/test/java/com/api/PageResponse.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/test/java/com/api/PageResponse.java)
 
+9. Create `CreateTest.java` at  `api/src/test/java/org/gluestack/api/organisation`
+
+   ```
+   package org.gluestack.api.organisation;
+   
+   import org.assertj.core.util.Arrays;
+   import org.gluestack.api.BaseTest;
+   import org.gluestack.api.domain.entity.Organisation;
+   import org.gluestack.api.domain.entity.User;
+   import org.junit.Test;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.http.MediaType;
+   import org.springframework.test.web.servlet.MvcResult;
+   import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+   import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+   import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+   
+   import java.util.ArrayList;
+   import java.util.List;
+   
+   public class CreateTest extends BaseTest {
+   
+       @Test
+       public void createTest() throws Exception {
+           User user = new User();
+           user.setFirstName("Create");
+           user.setLastName("Test");
+           user.setEmail("CreateTest");
+           user.setPassword("CreateTest");
+   
+           Organisation organisation = new Organisation();
+           organisation.setName("Create Test Organisation");
+           List<User> users = new ArrayList<>();
+           users.add(user);
+           organisation.setUsers(users);
+   
+           mvc.perform(post("/api/organisations").contentType(MediaType.APPLICATION_JSON)
+                   .content(objectMapper.writeValueAsString(organisation))).andReturn();
+   
+           mvc.perform(get("/api/authenticate").with(httpBasic(user.getUsername(), user.getPassword()))).andReturn();
+   
+       }
+   
+   }
+   ```
+
+10. Create `FindAllTest.java` at  `api/src/test/java/org/gluestack/api/user`
+
+   ```
+   package org.gluestack.api.user;
+   
    import org.gluestack.api.BaseTest;
    import org.gluestack.api.PageResponse;
    import org.gluestack.api.domain.entity.Task;
+   import org.gluestack.api.domain.entity.User;
+   
    import static org.hamcrest.MatcherAssert.assertThat;
    import static org.hamcrest.Matchers.equalTo;
    import static org.hamcrest.Matchers.hasSize;
    import static org.junit.Assert.assertEquals;
    import org.junit.Test;
-   import org.springframework.http.MediaType;
    import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
    import org.springframework.test.web.servlet.MvcResult;
    import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
+   
    public class FindAllTest extends BaseTest {
-
+   
        @Test
        public void findAllUsersTest() throws Exception {
-           MvcResult mvcResult = mvc.perform(get("/api/tasks").contentType(MediaType.APPLICATION_JSON)
-                   .with(httpBasic(user.getUsername(), "password"))).andReturn();
-           PageResponse<Task> page = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-                   objectMapper.getTypeFactory().constructParametricType(PageResponse.class, Task.class));
-
-           assertEquals(1, page.getNumberOfElements());
-           assertEquals(1, page.getTotalElements());
-           assertThat(page.getContent(), hasSize(1));
-
-           Task result = page.getContent().get(0);
-
-           assertThat(result.getName(), equalTo(task.getName()));
-           assertThat(result.getNotes(), equalTo(task.getNotes()));
-           assertThat(result.getStatusId(), equalTo(task.getStatusId()));
-           assertThat(result.getUser().getId(), equalTo(task.getUser().getId()));
+           MvcResult mvcResult = mvc
+                   .perform(get("/api/users").with(httpBasic(testOrganisation.actingUser.getUsername(), "password")))
+                   .andReturn();
+           PageResponse<User> page = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                   objectMapper.getTypeFactory().constructParametricType(PageResponse.class, User.class));
+   
+           int resultSize = 2;
+           assertEquals(resultSize, page.getNumberOfElements());
+           assertEquals(resultSize, page.getTotalElements());
+           assertThat(page.getContent(), hasSize(resultSize));
+   
+           User result = page.getContent().get(0);
+   
+           assertThat(result.getFirstName(), equalTo(testOrganisation.actingUser.getFirstName()));
+           assertThat(result.getLastName(), equalTo(testOrganisation.actingUser.getLastName()));
+           assertThat(result.getEmail(), equalTo(testOrganisation.actingUser.getEmail()));
        }
    }
    ```
 
-7. At the command line, inside the api folder, run this command to run all the tests.
+11. At the command line, inside the api folder, run this command to run all the tests.
 
-   ```text
-   mvn test
-   ```
+    ```text
+    mvn test
+    ```
 
-8. Commit your work.
+12. Commit your work.
 
 ## UI
 
