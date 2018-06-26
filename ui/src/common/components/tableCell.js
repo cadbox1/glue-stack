@@ -1,5 +1,5 @@
 import React from "react";
-import { TableCell } from "material-ui/Table";
+import TableCell from "@material-ui/core/TableCell";
 
 const MyTableCell = props => <TableCell padding="dense" {...props} />;
 

@@ -1,6 +1,6 @@
 import React from "react";
-import Drawer from "material-ui/Drawer";
-import { withStyles } from "material-ui/styles";
+import Drawer from "@material-ui/core/Drawer";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
 	paper: {

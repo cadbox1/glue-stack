@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import AppBar from "material-ui/AppBar";
-import Toolbar from "material-ui/Toolbar";
-import Typography from "material-ui/Typography";
-import IconButton from "material-ui/IconButton";
-import MenuIcon from "material-ui-icons/Menu";
-import Refresh from "material-ui-icons/Refresh";
-import { CircularProgress } from "material-ui/Progress";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Refresh from "@material-ui/icons/Refresh";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { urlStateHolder } from "common/stateHolder";
 import { parseURL } from "common/parseURL";
 import { findAll } from "api/task";
@@ -21,7 +21,7 @@ class Me extends Component {
 					<Toolbar>
 						<IconButton
 							onClick={toggleSideBar}
-							color="contrast"
+							color="inherit"
 							aria-label="Menu"
 						>
 							<MenuIcon />
@@ -29,10 +29,10 @@ class Me extends Component {
 						<Typography type="title" color="inherit" className="mr-auto">
 							Me
 						</Typography>
-						<IconButton color="contrast" onClick={findAll.refresh}>
+						<IconButton color="inherit" onClick={findAll.refresh}>
 							{findAll.pending ? (
 								<span>
-									<CircularProgress color="inherit" size={14} />
+									<CircularProgress color="inherit" size={20} />
 								</span>
 							) : (
 								<Refresh />

@@ -1,8 +1,8 @@
 import React from "react";
 import { Router } from "react-router-dom";
-import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { history } from "common/history";
-import blue from "material-ui/colors/blue";
+import blue from "@material-ui/core/colors/blue";
 import { Main } from "./main";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";

@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import Card, { CardActions, CardContent } from "material-ui/Card";
-import Typography from "material-ui/Typography";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
 import TextField from "common/components/TextField";
-import { CircularProgress } from "material-ui/Progress";
-import Button from "material-ui/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 
 class Login extends Component {
 	constructor(props) {
@@ -77,7 +79,7 @@ class Login extends Component {
 								/>
 							</CardContent>
 							<CardActions>
-								<Button raised color="primary" type="submit">
+								<Button variant="contained" color="primary" type="submit">
 									{authenticate.pending ? (
 										<CircularProgress size={15} />
 									) : (

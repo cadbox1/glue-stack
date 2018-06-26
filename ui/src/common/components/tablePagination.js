@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TablePagination } from "material-ui/Table";
+import TablePagination from "@material-ui/core/TablePagination";
 
 class MyTablePagination extends Component {
 	handleChangePage = page => {

@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import { findOne, save } from "api/task";
 import { connect } from "common/connector";
 import { Link, Route, Switch } from "react-router-dom";
-import AppBar from "material-ui/AppBar";
-import IconButton from "material-ui/IconButton";
-import Close from "material-ui-icons/Close";
+import AppBar from "@material-ui/core/AppBar";
+import IconButton from "@material-ui/core/IconButton";
+import Close from "@material-ui/icons/Close";
 import TextField from "common/components/TextField";
-import Button from "material-ui/Button";
-import Paper from "material-ui/Paper";
-import Toolbar from "material-ui/Toolbar";
-import Typography from "material-ui/Typography";
-import { CircularProgress } from "material-ui/Progress";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { TaskStatus } from "api/task";
 import { stateHolder } from "common/stateHolder";
 import { List, connectConfig } from "../user/list";
@@ -86,7 +86,7 @@ class Form extends Component {
 											{`${id ? name : "Create"} > Assign`}
 										</Typography>
 										<Link to={match.url}>
-											<IconButton color="contrast">
+											<IconButton color="inherit">
 												<Close />
 											</IconButton>
 										</Link>
@@ -112,7 +112,7 @@ class Form extends Component {
 											{id ? name : "Create"}
 										</Typography>
 										<Link to={`/tasks`}>
-											<IconButton color="contrast">
+											<IconButton color="inherit">
 												<Close />
 											</IconButton>
 										</Link>
@@ -143,7 +143,7 @@ class Form extends Component {
 									/>
 									<Link to={`${match.url}/assign`}>Assign</Link>
 									<Button
-										raised
+										variant="contained"
 										className="d-block"
 										type="submit"
 										color="primary"

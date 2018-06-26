@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "common/connector";
-import Card, { CardActions, CardContent } from "material-ui/Card";
-import Typography from "material-ui/Typography";
-import { CircularProgress } from "material-ui/Progress";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "common/components/TextField";
-import Button from "material-ui/Button";
+import Button from "@material-ui/core/Button";
 import { save } from "api/organisation";
 
 class Signup extends Component {
@@ -111,7 +113,7 @@ class Signup extends Component {
 								/>
 							</CardContent>
 							<CardActions>
-								<Button raised color="primary" type="submit">
+								<Button variant="contained" color="primary" type="submit">
 									{save.pending ? <CircularProgress size={15} /> : "Signup"}
 								</Button>
 							</CardActions>

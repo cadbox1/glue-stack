@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TableSortLabel } from "material-ui/Table";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 
 class MyTableSortLabel extends Component {
 	split = findAll => {
