@@ -32,40 +32,14 @@ public abstract class BaseTest {
 	protected ObjectMapper objectMapper;
 
 	@Autowired
-	private OrganisationRepository organisationRepository;
+	private TestOrganisationService testOrganisationService;
 
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private TaskRepository taskRepository;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	protected User user;
-	protected Task task;
+	protected TestOrganisation testOrganisation;
+	protected TestOrganisation otherTestOrganisation;
 
 	@Before
 	public void setup() {
-		Organisation organisation = new Organisation();
-		organisation.setName("organisation");
-		organisationRepository.save(organisation);
-
-		user = new User();
-		user.setEmail("email");
-		user.setPassword(passwordEncoder.encode("password"));
-		user.setFirstName("test");
-		user.setLastName("user");
-		user.setOrganisation(organisation);
-		userRepository.save(user);
-
-		task = new Task();
-		task.setName("task");
-		task.setNotes("notes");
-		task.setStatusId(1);
-		task.setUser(user);
-		task.setOrganisation(organisation);
-		taskRepository.save(task);
+		testOrganisation = testOrganisationService.createTestOrganisiation();
+		otherTestOrganisation = testOrganisationService.createTestOrganisiation();
 	}
 }
