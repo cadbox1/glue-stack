@@ -70,11 +70,9 @@ class Form extends Component {
 						<Typography type="title" color="inherit" className="mr-auto">
 							{id ? `${firstName} ${lastName}` : "Create"}
 						</Typography>
-						<Link to={`/users`}>
-							<IconButton color="inherit">
-								<Close />
-							</IconButton>
-						</Link>
+						<IconButton component={Link} to="/users" color="inherit">
+							<Close />
+						</IconButton>
 					</Toolbar>
 				</AppBar>
 				<form onSubmit={this.handleSubmit} className="container-fluid">

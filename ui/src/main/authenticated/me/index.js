@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Refresh from "@material-ui/icons/Refresh";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
 import { urlStateHolder } from "common/stateHolder";
 import { parseURL } from "common/parseURL";
 import { findAll } from "api/task";
@@ -16,7 +17,7 @@ class Me extends Component {
 	render() {
 		const { findAll, toggleSideBar } = this.props;
 		return (
-			<div className="w-100">
+			<Grid container>
 				<AppBar position="static">
 					<Toolbar>
 						<IconButton
@@ -26,7 +27,7 @@ class Me extends Component {
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography type="title" color="inherit" className="mr-auto">
+						<Typography type="title" color="inherit">
 							Me
 						</Typography>
 						<IconButton color="inherit" onClick={findAll.refresh}>
@@ -41,7 +42,7 @@ class Me extends Component {
 					</Toolbar>
 				</AppBar>
 				<List findAll={findAll} />
-			</div>
+			</Grid>
 		);
 	}
 }

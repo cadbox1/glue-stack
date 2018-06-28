@@ -64,11 +64,13 @@ class Task extends Component {
 											<Refresh />
 										)}
 									</IconButton>
-									<Link to={`${match.path}/create`}>
-										<IconButton color="inherit">
-											<Add />
-										</IconButton>
-									</Link>
+									<IconButton
+										component={Link}
+										to={`${match.path}/create`}
+										color="inherit"
+									>
+										<Add />
+									</IconButton>
 								</Toolbar>
 							</AppBar>
 							{showFilters && <Search {...props} findAll={findAll} />}

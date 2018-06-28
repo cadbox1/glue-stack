@@ -85,11 +85,9 @@ class Form extends Component {
 										>
 											{`${id ? name : "Create"} > Assign`}
 										</Typography>
-										<Link to={match.url}>
-											<IconButton color="inherit">
-												<Close />
-											</IconButton>
-										</Link>
+										<IconButton component={Link} to={match.url} color="inherit">
+											<Close />
+										</IconButton>
 									</Toolbar>
 								</AppBar>
 								<ConnectedUserList
@@ -111,11 +109,9 @@ class Form extends Component {
 										>
 											{id ? name : "Create"}
 										</Typography>
-										<Link to={`/tasks`}>
-											<IconButton color="inherit">
-												<Close />
-											</IconButton>
-										</Link>
+										<IconButton component={Link} to="/tasks" color="inherit">
+											<Close />
+										</IconButton>
 									</Toolbar>
 								</AppBar>
 								<form onSubmit={this.handleSubmit} className="container-fluid">
