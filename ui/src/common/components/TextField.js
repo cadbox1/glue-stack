@@ -1,10 +1,10 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
-const CustomTextField = props => {
+const CustomTextField = ({ inputProps, dBlock = true, ...props }) => {
 	return (
 		<TextField
-			className={props.className || "d-block"}
+			style={dBlock ? { display: "block" } : undefined}
 			margin="normal"
 			InputLabelProps={{
 				shrink: true,
