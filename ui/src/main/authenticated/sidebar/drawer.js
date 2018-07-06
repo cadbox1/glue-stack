@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
 	paper: {
-		position: "static",
+		position: "relative",
 		width: "256px",
 	},
 };

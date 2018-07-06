@@ -12,7 +12,7 @@ class Page extends Component {
 	render() {
 		const { children, classes, ...props } = this.props;
 		return (
-			<Paper className={classes.root} {...props}>
+			<Paper className={classes.root} square={true} {...props}>
 				{children}
 			</Paper>
 		);

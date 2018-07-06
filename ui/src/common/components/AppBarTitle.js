@@ -13,9 +13,9 @@ class AppBarTitle extends Component {
 		const { children, classes, ...props } = this.props;
 		return (
 			<Typography
+				className={classes.root}
 				type="title"
 				color="inherit"
-				className={classes.root}
 				{...props}
 			>
 				{children}
