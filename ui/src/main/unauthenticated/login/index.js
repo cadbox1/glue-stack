@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -41,44 +40,40 @@ class Login extends Component {
 			authenticate.reason.response.status === 401;
 
 		return (
-			<Card
-				style={{ maxWidth: "350px", marginRight: "auto", marginLeft: "auto" }}
-			>
-				<form onSubmit={this.handleSubmit}>
-					<CardContent>
-						<Typography type="headline" component="h2">
-							Login
-						</Typography>
-						<Typography type="body1">
-							<Link to="/signup">or Signup Here</Link>
-						</Typography>
-						<TextField
-							label="Email"
-							name="email"
-							value={email}
-							error={authenticate.rejected}
-							onChange={this.handleInput}
-							required
-						/>
-						<TextField
-							label="Password"
-							type="password"
-							name="password"
-							value={password}
-							error={authenticate.rejected}
-							helperText={
-								(invalidLogin && "Invalid Username or Password") ||
-								(authenticate.reason && authenticate.reason.message)
-							}
-							onChange={this.handleInput}
-							required
-						/>
-					</CardContent>
-					<CardActions>
-						<SaveButton save={authenticate}>Login</SaveButton>
-					</CardActions>
-				</form>
-			</Card>
+			<form onSubmit={this.handleSubmit}>
+				<CardContent>
+					<Typography type="headline" component="h2">
+						Login
+					</Typography>
+					<Typography type="body1">
+						<Link to="/signup">or Signup Here</Link>
+					</Typography>
+					<TextField
+						label="Email"
+						name="email"
+						value={email}
+						error={authenticate.rejected}
+						onChange={this.handleInput}
+						required
+					/>
+					<TextField
+						label="Password"
+						type="password"
+						name="password"
+						value={password}
+						error={authenticate.rejected}
+						helperText={
+							(invalidLogin && "Invalid Username or Password") ||
+							(authenticate.reason && authenticate.reason.message)
+						}
+						onChange={this.handleInput}
+						required
+					/>
+				</CardContent>
+				<CardActions>
+					<SaveButton save={authenticate}>Login</SaveButton>
+				</CardActions>
+			</form>
 		);
 	}
 }

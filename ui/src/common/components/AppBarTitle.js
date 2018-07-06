@@ -1,15 +1,29 @@
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+	root: {
+		marginRight: "auto",
+	},
+});
 
 class AppBarTitle extends Component {
 	render() {
-		const { children } = this.props;
+		const { children, classes, ...props } = this.props;
 		return (
-			<Typography type="title" color="inherit" style={{ marginRight: "auto" }}>
+			<Typography
+				type="title"
+				color="inherit"
+				className={classes.root}
+				{...props}
+			>
 				{children}
 			</Typography>
 		);
 	}
 }
+
+AppBarTitle = withStyles(styles)(AppBarTitle);
 
 export { AppBarTitle };
