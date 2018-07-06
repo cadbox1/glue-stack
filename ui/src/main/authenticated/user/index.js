@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import componentQueries from "react-component-queries";
-import AppBar from "material-ui/AppBar";
-import Toolbar from "material-ui/Toolbar";
-import Typography from "material-ui/Typography";
-import IconButton from "material-ui/IconButton";
-import MenuIcon from "material-ui-icons/Menu";
-import Add from "material-ui-icons/Add";
-import Refresh from "material-ui-icons/Refresh";
-import { CircularProgress } from "material-ui/Progress";
+import IconButton from "@material-ui/core/IconButton";
+import { Container } from "common/components/Container";
+import { Page } from "common/components/Page";
+import { AppBar } from "common/components/AppBar";
+import { MenuButton } from "common/components/MenuButton";
+import { AppBarTitle } from "common/components/AppBarTitle";
+import { RefreshButton } from "common/components/RefreshButton";
+import Add from "@material-ui/icons/Add";
 import { connect } from "common/connector";
 import { urlStateHolder } from "common/stateHolder";
 
@@ -18,44 +18,27 @@ import { Create, Edit } from "./form";
 class User extends Component {
 	render() {
 		const { match, findAll, singleView, toggleSideBar } = this.props;
-
 		return (
-			<div className="row no-gutters w-100">
+			<Container>
 				<Route
 					path={`${match.path}`}
 					exact={singleView}
 					render={props => (
-						<div className="col h-100vh">
+						<Page>
 							<AppBar position="static">
-								<Toolbar>
-									<IconButton
-										onClick={toggleSideBar}
-										color="contrast"
-										aria-label="Menu"
-									>
-										<MenuIcon />
-									</IconButton>
-									<Typography color="inherit" type="title" className="mr-auto">
-										Users
-									</Typography>
-									<IconButton color="contrast" onClick={findAll.refresh}>
-										{findAll.pending ? (
-											<span>
-												<CircularProgress color="inherit" size={14} />
-											</span>
-										) : (
-											<Refresh />
-										)}
-									</IconButton>
-									<Link to={`${match.path}/create`}>
-										<IconButton color="contrast">
-											<Add />
-										</IconButton>
-									</Link>
-								</Toolbar>
+								<MenuButton toggleSideBar={toggleSideBar} />
+								<AppBarTitle>Users</AppBarTitle>
+								<RefreshButton findAll={findAll} />
+								<IconButton
+									component={Link}
+									to={`${match.path}/create`}
+									color="inherit"
+								>
+									<Add />
+								</IconButton>
 							</AppBar>
 							<List listURL={match.path} findAll={findAll} />
-						</div>
+						</Page>
 					)}
 				/>
 				<Switch>
@@ -80,7 +63,7 @@ class User extends Component {
 						)}
 					/>
 				</Switch>
-			</div>
+			</Container>
 		);
 	}
 }

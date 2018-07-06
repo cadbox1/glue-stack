@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { TablePagination } from "material-ui/Table";
+import MaterialTablePagination from "@material-ui/core/TablePagination";
 
-class MyTablePagination extends Component {
+class TablePagination extends Component {
 	handleChangePage = page => {
 		this.props.findAll.handleUpdate({ page });
 	};
@@ -11,7 +11,7 @@ class MyTablePagination extends Component {
 	render() {
 		const { findAll } = this.props;
 		return (
-			<TablePagination
+			<MaterialTablePagination
 				count={findAll.value.data.totalElements}
 				rowsPerPage={findAll.params.size}
 				page={findAll.value.data.number}
@@ -23,4 +23,4 @@ class MyTablePagination extends Component {
 	}
 }
 
-export { MyTablePagination as TablePagination };
+export { TablePagination };

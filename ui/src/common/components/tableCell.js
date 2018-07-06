@@ -1,6 +1,6 @@
 import React from "react";
-import { TableCell } from "material-ui/Table";
+import MaterialTableCell from "@material-ui/core/TableCell";
 
-const MyTableCell = props => <TableCell padding="dense" {...props} />;
+const TableCell = props => <MaterialTableCell padding="dense" {...props} />;
 
-export { MyTableCell as TableCell };
+export { TableCell };

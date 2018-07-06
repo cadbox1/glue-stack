@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { TableCell, TableRow } from "material-ui/Table";
-import { CircularProgress } from "material-ui/Progress";
-import IconButton from "material-ui/IconButton";
-import Done from "material-ui-icons/Done";
-import Undo from "material-ui-icons/Undo";
-import Hidden from "material-ui/Hidden";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import IconButton from "@material-ui/core/IconButton";
+import Done from "@material-ui/icons/Done";
+import Undo from "@material-ui/icons/Undo";
+import Hidden from "@material-ui/core/Hidden";
 import { patch } from "api/task";
 import { connect } from "common/connector";
 import { TaskStatus } from "api/task";
@@ -56,7 +57,7 @@ class ListRow extends Component {
 					>
 						{patch.pending ? (
 							<span>
-								<CircularProgress size={15} />
+								<CircularProgress size={20} />
 							</span>
 						) : data.statusId === TaskStatus.TODO ? (
 							<Done />

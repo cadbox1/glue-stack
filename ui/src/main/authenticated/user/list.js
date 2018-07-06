@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Table, {
-	TableBody,
-	TableHead,
-	TableRow,
-	TableFooter,
-} from "material-ui/Table";
-import { TableCell } from "common/components/tableCell";
-import Radio from "material-ui/Radio";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableFooter from "@material-ui/core/TableFooter";
+import { TableCell } from "common/components/TableCell";
+import Radio from "@material-ui/core/Radio";
 import { parseURL } from "common/parseURL";
-import { TableSortLabel } from "common/components/tableSortLabel";
-import { TablePagination } from "common/components/tablePagination";
+import { TableSortLabel } from "common/components/TableSortLabel";
+import { TablePagination } from "common/components/TablePagination";
 import { findAll } from "api/user";
 
 export class List extends Component {
@@ -56,7 +55,7 @@ export class List extends Component {
 								<TableRow
 									key={row.id}
 									onClick={onSelect && onSelect.bind(null, row)}
-									hover={onSelect}
+									hover={onSelect != null}
 									style={{ cursor: onSelect ? "pointer" : "default" }}
 									selected={selected && selected.includes(row.id)}
 								>

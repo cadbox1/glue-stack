@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import componentQueries from "react-component-queries";
-import AppBar from "material-ui/AppBar";
-import Toolbar from "material-ui/Toolbar";
-import Typography from "material-ui/Typography";
-import IconButton from "material-ui/IconButton";
-import MenuIcon from "material-ui-icons/Menu";
-import SearchIcon from "material-ui-icons/Search";
-import FilterListIcon from "material-ui-icons/FilterList";
-import Add from "material-ui-icons/Add";
-import Refresh from "material-ui-icons/Refresh";
-import { CircularProgress } from "material-ui/Progress";
+import IconButton from "@material-ui/core/IconButton";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import Add from "@material-ui/icons/Add";
+import { Container } from "common/components/Container";
+import { Page } from "common/components/Page";
+import { AppBar } from "common/components/AppBar";
+import { MenuButton } from "common/components/MenuButton";
+import { AppBarTitle } from "common/components/AppBarTitle";
+import { RefreshButton } from "common/components/RefreshButton";
 import { connect } from "common/connector";
 import { urlStateHolder } from "common/stateHolder";
-
 import { Search } from "./search";
 import { List, connectConfig } from "./list";
 import { Create, Edit } from "./form";
@@ -29,51 +27,35 @@ class Task extends Component {
 		const { match, findAll, toggleSideBar, singleView } = this.props;
 		const { showFilters } = this.state;
 		return (
-			<div className="row no-gutters w-100" style={{ flexWrap: "nowrap" }}>
+			<Container>
 				<Route
 					path={`${match.path}`}
 					exact={singleView}
 					render={props => (
-						<div className="col h-100vh">
-							<AppBar position="static">
-								<Toolbar>
-									<IconButton
-										onClick={toggleSideBar}
-										color="contrast"
-										aria-label="Menu"
-									>
-										<MenuIcon />
-									</IconButton>
-									<Typography type="title" color="inherit" className="mr-auto">
-										Tasks
-									</Typography>
-									{/* <Link to={`${match.path}/search`}>
-										<IconButton color="contrast">
+						<Page>
+							<AppBar>
+								<MenuButton toggleSideBar={toggleSideBar} />
+								<AppBarTitle>Tasks</AppBarTitle>
+								{/* <Link to={`${match.path}/search`}>
+										<IconButton color="inherit">
 											<SearchIcon />
 										</IconButton>
 									</Link> */}
-									<IconButton onClick={this.toggleShowFilters} color="contrast">
-										<FilterListIcon />
-									</IconButton>
-									<IconButton onClick={findAll.refresh} color="contrast">
-										{findAll.pending ? (
-											<span>
-												<CircularProgress color="inherit" size={14} />
-											</span>
-										) : (
-											<Refresh />
-										)}
-									</IconButton>
-									<Link to={`${match.path}/create`}>
-										<IconButton color="contrast">
-											<Add />
-										</IconButton>
-									</Link>
-								</Toolbar>
+								<IconButton onClick={this.toggleShowFilters} color="inherit">
+									<FilterListIcon />
+								</IconButton>
+								<RefreshButton findAll={findAll} />
+								<IconButton
+									component={Link}
+									to={`${match.path}/create`}
+									color="inherit"
+								>
+									<Add />
+								</IconButton>
 							</AppBar>
 							{showFilters && <Search {...props} findAll={findAll} />}
 							<List {...props} listURL={match.path} findAll={findAll} />
-						</div>
+						</Page>
 					)}
 				/>
 				<Switch>
@@ -82,7 +64,6 @@ class Task extends Component {
 						render={props => (
 							<Create
 								{...props}
-								className="col h-100vh"
 								refreshList={singleView ? undefined : findAll.call}
 							/>
 						)}
@@ -92,13 +73,12 @@ class Task extends Component {
 						render={props => (
 							<Edit
 								{...props}
-								className="col h-100vh"
 								refreshList={singleView ? undefined : findAll.call}
 							/>
 						)}
 					/>
 				</Switch>
-			</div>
+			</Container>
 		);
 	}
 }

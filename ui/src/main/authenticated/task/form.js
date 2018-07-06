@@ -1,23 +1,22 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { findOne, save } from "api/task";
-import { connect } from "common/connector";
 import { Link, Route, Switch } from "react-router-dom";
-import AppBar from "material-ui/AppBar";
-import IconButton from "material-ui/IconButton";
-import Close from "material-ui-icons/Close";
-import TextField from "common/components/TextField";
-import Button from "material-ui/Button";
-import Paper from "material-ui/Paper";
-import Toolbar from "material-ui/Toolbar";
-import Typography from "material-ui/Typography";
-import { CircularProgress } from "material-ui/Progress";
-import { TaskStatus } from "api/task";
+import IconButton from "@material-ui/core/IconButton";
+import Close from "@material-ui/icons/Close";
+import { Page } from "common/components/Page";
+import { AppBar } from "common/components/AppBar";
+import { AppBarTitle } from "common/components/AppBarTitle";
+import { Form } from "common/components/Form";
+import { TextField } from "common/components/TextField";
+import { SaveButton } from "common/components/SaveButton";
+import { connect } from "common/connector";
 import { stateHolder } from "common/stateHolder";
+import { TaskStatus } from "api/task";
 import { List, connectConfig } from "../user/list";
 
 const ConnectedUserList = stateHolder(connect(connectConfig)(List));
 
-class Form extends Component {
+class FormPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = this.defaultState;
@@ -68,57 +67,40 @@ class Form extends Component {
 
 	render() {
 		const { id, name, notes, user } = this.state;
-		const { className, match } = this.props;
+		const { match } = this.props;
 		return (
-			<Paper className={className} elevation={1}>
+			<Page>
 				<Switch>
 					<Route
 						path={`${match.url}/assign`}
 						render={props => (
-							<div>
-								<AppBar position="static">
-									<Toolbar>
-										<Typography
-											type="title"
-											color="inherit"
-											className="mr-auto"
-										>
-											{`${id ? name : "Create"} > Assign`}
-										</Typography>
-										<Link to={match.url}>
-											<IconButton color="contrast">
-												<Close />
-											</IconButton>
-										</Link>
-									</Toolbar>
+							<Fragment>
+								<AppBar>
+									<AppBarTitle>{`${
+										id ? name : "Create"
+									} > Assign`}</AppBarTitle>
+									<IconButton component={Link} to={match.url} color="inherit">
+										<Close />
+									</IconButton>
 								</AppBar>
 								<ConnectedUserList
 									{...props}
 									onSelect={this.handleSelectUser}
 								/>
-							</div>
+							</Fragment>
 						)}
 					/>
 					<Route
 						render={props => (
-							<div>
-								<AppBar position="static">
-									<Toolbar>
-										<Typography
-											type="title"
-											color="inherit"
-											className="mr-auto"
-										>
-											{id ? name : "Create"}
-										</Typography>
-										<Link to={`/tasks`}>
-											<IconButton color="contrast">
-												<Close />
-											</IconButton>
-										</Link>
-									</Toolbar>
+							<Fragment>
+								<AppBar>
+									<AppBarTitle>{id ? name : "Create"}</AppBarTitle>
+									<IconButton component={Link} to="/tasks" color="inherit">
+										<Close />
+									</IconButton>
 								</AppBar>
-								<form onSubmit={this.handleSubmit} className="container-fluid">
+
+								<Form onSubmit={this.handleSubmit}>
 									<TextField
 										name="name"
 										value={name}
@@ -132,43 +114,32 @@ class Form extends Component {
 										onChange={this.handleFormInput}
 										label="Notes"
 									/>
-
-									<TextField
-										value={
-											user ? `${user.firstName} ${user.lastName}`.trim() : ""
-										}
-										label="Assigned"
-										className=""
-										disabled
-									/>
-									<Link to={`${match.url}/assign`}>Assign</Link>
-									<Button
-										raised
-										className="d-block"
-										type="submit"
-										color="primary"
-									>
-										{save.pending ? (
-											<CircularProgress size={15} />
-										) : id ? (
-											"Save"
-										) : (
-											"Create"
-										)}
-									</Button>
-								</form>
-							</div>
+									<div>
+										<TextField
+											value={
+												user ? `${user.firstName} ${user.lastName}`.trim() : ""
+											}
+											label="Assigned"
+											className=""
+											disabled
+											dBlock={false}
+										/>
+										<Link to={`${match.url}/assign`}>Assign</Link>
+									</div>
+									<SaveButton save={save}>{id ? "Save" : "Create"}</SaveButton>
+								</Form>
+							</Fragment>
 						)}
 					/>
 				</Switch>
-			</Paper>
+			</Page>
 		);
 	}
 }
 
-export default Form;
+export default FormPage;
 
-export const Create = connect({ save: { promise: save } })(Form);
+export const Create = connect({ save: { promise: save } })(FormPage);
 
 export const Edit = connect({
 	findOne: {

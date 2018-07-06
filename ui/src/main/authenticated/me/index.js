@@ -1,47 +1,27 @@
 import React, { Component } from "react";
-import AppBar from "material-ui/AppBar";
-import Toolbar from "material-ui/Toolbar";
-import Typography from "material-ui/Typography";
-import IconButton from "material-ui/IconButton";
-import MenuIcon from "material-ui-icons/Menu";
-import Refresh from "material-ui-icons/Refresh";
-import { CircularProgress } from "material-ui/Progress";
+import { Page } from "common/components/Page";
+import { AppBar } from "common/components/AppBar";
+import { MenuButton } from "common/components/MenuButton";
+import { AppBarTitle } from "common/components/AppBarTitle";
+import { RefreshButton } from "common/components/RefreshButton";
 import { urlStateHolder } from "common/stateHolder";
 import { parseURL } from "common/parseURL";
-import { findAll } from "api/task";
 import { connect } from "common/connector";
+import { findAll } from "api/task";
 import { List } from "../task/list";
 
 class Me extends Component {
 	render() {
 		const { findAll, toggleSideBar } = this.props;
 		return (
-			<div className="w-100">
-				<AppBar position="static">
-					<Toolbar>
-						<IconButton
-							onClick={toggleSideBar}
-							color="contrast"
-							aria-label="Menu"
-						>
-							<MenuIcon />
-						</IconButton>
-						<Typography type="title" color="inherit" className="mr-auto">
-							Me
-						</Typography>
-						<IconButton color="contrast" onClick={findAll.refresh}>
-							{findAll.pending ? (
-								<span>
-									<CircularProgress color="inherit" size={14} />
-								</span>
-							) : (
-								<Refresh />
-							)}
-						</IconButton>
-					</Toolbar>
+			<Page>
+				<AppBar>
+					<MenuButton toggleSideBar={toggleSideBar} />
+					<AppBarTitle>Me</AppBarTitle>
+					<RefreshButton findAll={findAll} />
 				</AppBar>
 				<List findAll={findAll} />
-			</div>
+			</Page>
 		);
 	}
 }

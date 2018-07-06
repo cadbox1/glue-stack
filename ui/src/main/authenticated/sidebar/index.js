@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Drawer from "./drawer";
-import List, { ListItem, ListItemText } from "material-ui/List";
-import Avatar from "material-ui/Avatar";
-import Collapse from "material-ui/transitions/Collapse";
-import ExpandLess from "material-ui-icons/ExpandLess";
-import ExpandMore from "material-ui-icons/ExpandMore";
-import Divider from "material-ui/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Avatar from "@material-ui/core/Avatar";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import Divider from "@material-ui/core/Divider";
 
 class Sidebar extends Component {
 	constructor(props) {
@@ -22,12 +24,13 @@ class Sidebar extends Component {
 		const { authenticate, showSideBar, signOut, temporaryDock } = this.props;
 		const { userMenuOpen } = this.state;
 		const user = authenticate.value.data;
+
 		return (
 			<Drawer
 				open={showSideBar}
-				type={temporaryDock ? "temporary" : "persistent"}
+				variant={temporaryDock ? "temporary" : "persistent"}
 				style={{ width: showSideBar ? "256px" : "0px" }}
-				onRequestClose={this.props.toggleSideBar}
+				onClose={this.props.toggleSideBar}
 			>
 				<List style={{ padding: 0 }}>
 					<ListItem button onClick={this.handleClick}>
@@ -45,21 +48,15 @@ class Sidebar extends Component {
 						</List>
 					</Collapse>
 					<Divider />
-					<Link to="/me">
-						<ListItem button>
-							<ListItemText primary="Me" />
-						</ListItem>
-					</Link>
-					<Link to="/tasks">
-						<ListItem button>
-							<ListItemText primary="Tasks" />
-						</ListItem>
-					</Link>
-					<Link to="/users">
-						<ListItem button>
-							<ListItemText primary="Users" />
-						</ListItem>
-					</Link>
+					<ListItem component={Link} to="/me" button>
+						<ListItemText primary="Me" />
+					</ListItem>
+					<ListItem component={Link} to="/tasks" button>
+						<ListItemText primary="Tasks" />
+					</ListItem>
+					<ListItem component={Link} to="/users" button>
+						<ListItemText primary="Users" />
+					</ListItem>
 				</List>
 			</Drawer>
 		);
