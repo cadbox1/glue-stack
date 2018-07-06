@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
-import TextField from "common/components/TextField";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { Page } from "common/components/Page";
+import { AppBar } from "common/components/AppBar";
+import { AppBarTitle } from "common/components/AppBarTitle";
+import { Form } from "common/components/Form";
+import { TextField } from "common/components/TextField";
+import { SaveButton } from "common/components/SaveButton";
 import { findOne, save } from "api/user";
 import { connect } from "common/connector";
 
-class Form extends Component {
+class FormPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = this.defaultState;
@@ -61,21 +61,19 @@ class Form extends Component {
 	};
 
 	render() {
+		const { save } = this.props;
 		const { id, firstName, lastName, email, password } = this.state;
-		const { className } = this.props;
 		return (
-			<Paper className={className} elevation={1}>
-				<AppBar position="static">
-					<Toolbar>
-						<Typography type="title" color="inherit" className="mr-auto">
-							{id ? `${firstName} ${lastName}` : "Create"}
-						</Typography>
-						<IconButton component={Link} to="/users" color="inherit">
-							<Close />
-						</IconButton>
-					</Toolbar>
+			<Page>
+				<AppBar>
+					<AppBarTitle>
+						{id ? `${firstName} ${lastName}` : "Create"}
+					</AppBarTitle>
+					<IconButton component={Link} to="/users" color="inherit">
+						<Close />
+					</IconButton>
 				</AppBar>
-				<form onSubmit={this.handleSubmit} className="container-fluid">
+				<Form onSubmit={this.handleSubmit}>
 					<TextField
 						name="firstName"
 						value={firstName}
@@ -107,33 +105,22 @@ class Form extends Component {
 							required
 						/>
 					) : (
-						<Button type="button" onClick={this.handleResetPassword}>
-							Reset Password
-						</Button>
+						<div>
+							<Button type="button" onClick={this.handleResetPassword}>
+								Reset Password
+							</Button>
+						</div>
 					)}
-					<Button
-						variant="contained"
-						className="d-block"
-						type="submit"
-						color="primary"
-					>
-						{save.pending ? (
-							<CircularProgress size={15} />
-						) : id ? (
-							"Save"
-						) : (
-							"Create"
-						)}
-					</Button>
-				</form>
-			</Paper>
+					<SaveButton save={save}>{id ? "Save" : "Create"}</SaveButton>
+				</Form>
+			</Page>
 		);
 	}
 }
 
-export default Form;
+export default FormPage;
 
-export const Create = connect({ save: { promise: save } })(Form);
+export const Create = connect({ save: { promise: save } })(FormPage);
 
 export const Edit = connect({
 	findOne: {

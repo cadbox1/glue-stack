@@ -4,9 +4,8 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import TextField from "common/components/TextField";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
+import { TextField } from "common/components/TextField";
+import { SaveButton } from "common/components/SaveButton";
 
 class Login extends Component {
 	constructor(props) {
@@ -42,55 +41,44 @@ class Login extends Component {
 			authenticate.reason.response.status === 401;
 
 		return (
-			<div
-				className="d-flex align-items-md-center justify-content-center"
-				style={{ height: "100vh" }}
+			<Card
+				style={{ maxWidth: "350px", marginRight: "auto", marginLeft: "auto" }}
 			>
-				<div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
-					<Card>
-						<form onSubmit={this.handleSubmit}>
-							<CardContent>
-								<Typography type="headline" component="h2">
-									Login
-								</Typography>
-								<Typography type="body1">
-									<Link to="/signup">or Signup Here</Link>
-								</Typography>
-								<TextField
-									label="Email"
-									name="email"
-									value={email}
-									error={authenticate.rejected}
-									onChange={this.handleInput}
-									required
-								/>
-								<TextField
-									label="Password"
-									type="password"
-									name="password"
-									value={password}
-									error={authenticate.rejected}
-									helperText={
-										(invalidLogin && "Invalid Username or Password") ||
-										(authenticate.reason && authenticate.reason.message)
-									}
-									onChange={this.handleInput}
-									required
-								/>
-							</CardContent>
-							<CardActions>
-								<Button variant="contained" color="primary" type="submit">
-									{authenticate.pending ? (
-										<CircularProgress size={15} />
-									) : (
-										"Login"
-									)}
-								</Button>
-							</CardActions>
-						</form>
-					</Card>
-				</div>
-			</div>
+				<form onSubmit={this.handleSubmit}>
+					<CardContent>
+						<Typography type="headline" component="h2">
+							Login
+						</Typography>
+						<Typography type="body1">
+							<Link to="/signup">or Signup Here</Link>
+						</Typography>
+						<TextField
+							label="Email"
+							name="email"
+							value={email}
+							error={authenticate.rejected}
+							onChange={this.handleInput}
+							required
+						/>
+						<TextField
+							label="Password"
+							type="password"
+							name="password"
+							value={password}
+							error={authenticate.rejected}
+							helperText={
+								(invalidLogin && "Invalid Username or Password") ||
+								(authenticate.reason && authenticate.reason.message)
+							}
+							onChange={this.handleInput}
+							required
+						/>
+					</CardContent>
+					<CardActions>
+						<SaveButton save={authenticate}>Login</SaveButton>
+					</CardActions>
+				</form>
+			</Card>
 		);
 	}
 }

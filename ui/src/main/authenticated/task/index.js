@@ -4,11 +4,12 @@ import componentQueries from "react-component-queries";
 import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Add from "@material-ui/icons/Add";
-import { GluePage } from "common/components/gluePage";
-import { GlueAppBar, GlueTitle } from "common/components/glueAppBar";
-import { MenuButton } from "common/components/menuButton";
-import { RefreshButton } from "common/components/refreshButton";
-import { GlueContainer } from "common/components/glueContainer";
+import { Container } from "common/components/Container";
+import { Page } from "common/components/Page";
+import { AppBar } from "common/components/AppBar";
+import { MenuButton } from "common/components/MenuButton";
+import { AppBarTitle } from "common/components/AppBarTitle";
+import { RefreshButton } from "common/components/RefreshButton";
 import { connect } from "common/connector";
 import { urlStateHolder } from "common/stateHolder";
 import { Search } from "./search";
@@ -26,15 +27,15 @@ class Task extends Component {
 		const { match, findAll, toggleSideBar, singleView } = this.props;
 		const { showFilters } = this.state;
 		return (
-			<GlueContainer>
+			<Container>
 				<Route
 					path={`${match.path}`}
 					exact={singleView}
 					render={props => (
-						<GluePage>
-							<GlueAppBar>
+						<Page>
+							<AppBar>
 								<MenuButton toggleSideBar={toggleSideBar} />
-								<GlueTitle>Tasks</GlueTitle>
+								<AppBarTitle>Tasks</AppBarTitle>
 								{/* <Link to={`${match.path}/search`}>
 										<IconButton color="inherit">
 											<SearchIcon />
@@ -51,37 +52,33 @@ class Task extends Component {
 								>
 									<Add />
 								</IconButton>
-							</GlueAppBar>
+							</AppBar>
 							{showFilters && <Search {...props} findAll={findAll} />}
 							<List {...props} listURL={match.path} findAll={findAll} />
-						</GluePage>
+						</Page>
 					)}
 				/>
 				<Switch>
 					<Route
 						path={`${match.path}/create`}
 						render={props => (
-							<GluePage>
-								<Create
-									{...props}
-									refreshList={singleView ? undefined : findAll.call}
-								/>
-							</GluePage>
+							<Create
+								{...props}
+								refreshList={singleView ? undefined : findAll.call}
+							/>
 						)}
 					/>
 					<Route
 						path={`${match.path}/:id`}
 						render={props => (
-							<GluePage>
-								<Edit
-									{...props}
-									refreshList={singleView ? undefined : findAll.call}
-								/>
-							</GluePage>
+							<Edit
+								{...props}
+								refreshList={singleView ? undefined : findAll.call}
+							/>
 						)}
 					/>
 				</Switch>
-			</GlueContainer>
+			</Container>
 		);
 	}
 }

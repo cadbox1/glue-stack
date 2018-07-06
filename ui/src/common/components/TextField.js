@@ -1,9 +1,9 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
+import MaterialTextField from "@material-ui/core/TextField";
 
-const CustomTextField = ({ inputProps, dBlock = true, ...props }) => {
+const TextField = ({ inputProps, dBlock = true, ...props }) => {
 	return (
-		<TextField
+		<MaterialTextField
 			style={dBlock ? { display: "block" } : undefined}
 			margin="normal"
 			InputLabelProps={{
@@ -18,4 +18,4 @@ const CustomTextField = ({ inputProps, dBlock = true, ...props }) => {
 	);
 };
 
-export default CustomTextField;
+export { TextField };

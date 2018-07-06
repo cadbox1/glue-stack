@@ -5,10 +5,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import Hidden from "@material-ui/core/Hidden";
-import { TableCell } from "common/components/tableCell";
+import { TableCell } from "common/components/TableCell";
 import { parseURL } from "common/parseURL";
-import { TablePagination } from "common/components/tablePagination";
-import { TableSortLabel } from "common/components/tableSortLabel";
+import { TablePagination } from "common/components/TablePagination";
+import { TableSortLabel } from "common/components/TableSortLabel";
 import { findAll } from "api/task";
 import { ListRow } from "./listRow";
 

@@ -1,26 +1,27 @@
 import React, { Component } from "react";
-import { MenuButton } from "common/components/menuButton";
-import { GlueAppBar, GlueTitle } from "common/components/glueAppBar";
-import { RefreshButton } from "common/components/refreshButton";
+import { Page } from "common/components/Page";
+import { AppBar } from "common/components/AppBar";
+import { MenuButton } from "common/components/MenuButton";
+import { AppBarTitle } from "common/components/AppBarTitle";
+import { RefreshButton } from "common/components/RefreshButton";
 import { urlStateHolder } from "common/stateHolder";
 import { parseURL } from "common/parseURL";
 import { connect } from "common/connector";
 import { findAll } from "api/task";
 import { List } from "../task/list";
-import { GluePage } from "common/components/gluePage";
 
 class Me extends Component {
 	render() {
 		const { findAll, toggleSideBar } = this.props;
 		return (
-			<GluePage>
-				<GlueAppBar>
+			<Page>
+				<AppBar>
 					<MenuButton toggleSideBar={toggleSideBar} />
-					<GlueTitle>Me</GlueTitle>
+					<AppBarTitle>Me</AppBarTitle>
 					<RefreshButton findAll={findAll} />
-				</GlueAppBar>
+				</AppBar>
 				<List findAll={findAll} />
-			</GluePage>
+			</Page>
 		);
 	}
 }

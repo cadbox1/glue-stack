@@ -5,11 +5,11 @@ import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
-import { TableCell } from "common/components/tableCell";
+import { TableCell } from "common/components/TableCell";
 import Radio from "@material-ui/core/Radio";
 import { parseURL } from "common/parseURL";
-import { TableSortLabel } from "common/components/tableSortLabel";
-import { TablePagination } from "common/components/tablePagination";
+import { TableSortLabel } from "common/components/TableSortLabel";
+import { TablePagination } from "common/components/TablePagination";
 import { findAll } from "api/user";
 
 export class List extends Component {
