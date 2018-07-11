@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import componentQueries from "react-component-queries";
 import IconButton from "@material-ui/core/IconButton";
+import Badge from "@material-ui/core/Badge";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Add from "@material-ui/icons/Add";
 import { Container } from "common/components/Container";
@@ -10,6 +11,7 @@ import { AppBar } from "common/components/AppBar";
 import { MenuButton } from "common/components/MenuButton";
 import { AppBarTitle } from "common/components/AppBarTitle";
 import { RefreshButton } from "common/components/RefreshButton";
+import { Link } from "common/components/Link";
 import { connect } from "common/connector";
 import { urlStateHolder } from "common/stateHolder";
 import { Search } from "./search";
@@ -17,15 +19,11 @@ import { List, connectConfig } from "./list";
 import { Create, Edit } from "./form";
 
 class Task extends Component {
-	state = { showFilters: false };
-
-	toggleShowFilters = () => {
-		this.setState(({ showFilters }) => ({ showFilters: !showFilters }));
-	};
-
 	render() {
 		const { match, findAll, toggleSideBar, singleView } = this.props;
-		const { showFilters } = this.state;
+
+		const someActiveParams = Object.keys(findAll.getActiveParams()).length > 0;
+
 		return (
 			<Container>
 				<Route
@@ -41,8 +39,24 @@ class Task extends Component {
 											<SearchIcon />
 										</IconButton>
 									</Link> */}
-								<IconButton onClick={this.toggleShowFilters} color="inherit">
-									<FilterListIcon />
+
+								<IconButton
+									component={Link}
+									to={`${match.path}/filter`}
+									color="inherit"
+								>
+									{someActiveParams ? (
+										<Badge
+											badgeContent={
+												Object.keys(findAll.getActiveParams()).length
+											}
+											color="secondary"
+										>
+											<FilterListIcon />
+										</Badge>
+									) : (
+										<FilterListIcon />
+									)}
 								</IconButton>
 								<RefreshButton findAll={findAll} />
 								<IconButton
@@ -53,28 +67,39 @@ class Task extends Component {
 									<Add />
 								</IconButton>
 							</AppBar>
-							{showFilters && <Search {...props} findAll={findAll} />}
 							<List {...props} listURL={match.path} findAll={findAll} />
 						</Page>
 					)}
 				/>
 				<Switch>
 					<Route
+						path={`${match.path}/filter`}
+						render={props => (
+							<Page>
+								<Search {...props} findAll={findAll} />
+							</Page>
+						)}
+					/>
+					<Route
 						path={`${match.path}/create`}
 						render={props => (
-							<Create
-								{...props}
-								refreshList={singleView ? undefined : findAll.call}
-							/>
+							<Page>
+								<Create
+									{...props}
+									refreshList={singleView ? undefined : findAll.call}
+								/>
+							</Page>
 						)}
 					/>
 					<Route
 						path={`${match.path}/:id`}
 						render={props => (
-							<Edit
-								{...props}
-								refreshList={singleView ? undefined : findAll.call}
-							/>
+							<Page>
+								<Edit
+									{...props}
+									refreshList={singleView ? undefined : findAll.call}
+								/>
+							</Page>
 						)}
 					/>
 				</Switch>

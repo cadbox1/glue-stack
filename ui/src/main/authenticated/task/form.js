@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { findOne, save } from "api/task";
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
-import { Page } from "common/components/Page";
+import { Link } from "common/components/Link";
 import { AppBar } from "common/components/AppBar";
 import { AppBarTitle } from "common/components/AppBarTitle";
 import { Form } from "common/components/Form";
@@ -69,70 +69,63 @@ class FormPage extends Component {
 		const { id, name, notes, user } = this.state;
 		const { match } = this.props;
 		return (
-			<Page>
-				<Switch>
-					<Route
-						path={`${match.url}/assign`}
-						render={props => (
-							<Fragment>
-								<AppBar>
-									<AppBarTitle>{`${
-										id ? name : "Create"
-									} > Assign`}</AppBarTitle>
-									<IconButton component={Link} to={match.url} color="inherit">
-										<Close />
-									</IconButton>
-								</AppBar>
-								<ConnectedUserList
-									{...props}
-									onSelect={this.handleSelectUser}
-								/>
-							</Fragment>
-						)}
-					/>
-					<Route
-						render={props => (
-							<Fragment>
-								<AppBar>
-									<AppBarTitle>{id ? name : "Create"}</AppBarTitle>
-									<IconButton component={Link} to="/tasks" color="inherit">
-										<Close />
-									</IconButton>
-								</AppBar>
+			<Switch>
+				<Route
+					path={`${match.url}/assign`}
+					render={props => (
+						<Fragment>
+							<AppBar>
+								<AppBarTitle>{`${id ? name : "Create"} > Assign`}</AppBarTitle>
+								<IconButton component={Link} to={match.url} color="inherit">
+									<Close />
+								</IconButton>
+							</AppBar>
+							<ConnectedUserList {...props} onSelect={this.handleSelectUser} />
+						</Fragment>
+					)}
+				/>
+				<Route
+					render={props => (
+						<Fragment>
+							<AppBar>
+								<AppBarTitle>{id ? name : "Create"}</AppBarTitle>
+								<IconButton component={Link} to="/tasks" color="inherit">
+									<Close />
+								</IconButton>
+							</AppBar>
 
-								<Form onSubmit={this.handleSubmit}>
+							<Form onSubmit={this.handleSubmit}>
+								<TextField
+									name="name"
+									value={name}
+									onChange={this.handleFormInput}
+									label="Name"
+									required
+								/>
+								<TextField
+									name="notes"
+									value={notes}
+									onChange={this.handleFormInput}
+									label="Notes"
+								/>
+								<div>
 									<TextField
-										name="name"
-										value={name}
-										onChange={this.handleFormInput}
-										label="Name"
-										required
+										value={
+											user ? `${user.firstName} ${user.lastName}`.trim() : ""
+										}
+										label="Assigned"
+										className=""
+										disabled
+										dBlock={false}
 									/>
-									<TextField
-										name="notes"
-										value={notes}
-										onChange={this.handleFormInput}
-										label="Notes"
-									/>
-									<div>
-										<TextField
-											value={
-												user ? `${user.firstName} ${user.lastName}`.trim() : ""
-											}
-											label="Assigned"
-											className=""
-											disabled
-											dBlock={false}
-										/>
-										<Link to={`${match.url}/assign`}>Assign</Link>
-									</div>
-									<SaveButton save={save}>{id ? "Save" : "Create"}</SaveButton>
-								</Form>
-							</Fragment>
-						)}
-					/>
-				</Switch>
-			</Page>
+									<Link to={`${match.url}/assign`}>Assign</Link>
+								</div>
+								<SaveButton save={save}>{id ? "Save" : "Create"}</SaveButton>
+							</Form>
+						</Fragment>
+					)}
+				/>
+			</Switch>
 		);
 	}
 }

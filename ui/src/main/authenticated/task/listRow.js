@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
+import Hidden from "@material-ui/core/Hidden";
 import Done from "@material-ui/icons/Done";
 import Undo from "@material-ui/icons/Undo";
-import Hidden from "@material-ui/core/Hidden";
-import { patch } from "api/task";
+import { Link } from "common/components/Link";
 import { connect } from "common/connector";
-import { TaskStatus } from "api/task";
+import { patch, TaskStatus } from "api/task";
 
 class ListRow extends Component {
 	handleDone = () => {
@@ -41,7 +40,7 @@ class ListRow extends Component {
 					<TableCell>{data.notes}</TableCell>
 				</Hidden>
 				<TableCell>
-					{data.statusId === TaskStatus.TODO ? "To Do" : "Done"}
+					{data.statusId === TaskStatus.TODO ? "Todo" : "Done"}
 				</TableCell>
 				<TableCell>
 					{data.user ? `${data.user.firstName} ${data.user.lastName}` : ""}
