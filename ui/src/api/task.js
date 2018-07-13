@@ -2,9 +2,9 @@ import axios from "axios";
 
 const path = "tasks";
 
-export function findAll({ userId, statusId, page, size, sort } = {}) {
+export function findAll({ name, userId, statusId, page, size, sort } = {}) {
 	return axios.get(path, {
-		params: { "user.id": userId, statusId, page, size, sort },
+		params: { name, "user.id": userId, statusId, page, size, sort },
 	});
 }
 

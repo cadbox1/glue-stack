@@ -89,9 +89,10 @@ export { List };
 export const connectConfig = {
 	findAll: {
 		params: props => {
-			const { statusId, userId } = props.params;
+			const { search, statusId, userId } = props.params;
 			return {
 				...parseURL(props),
+				name: search,
 				statusId: statusId != null ? Number(statusId) : statusId,
 				userId: userId != null ? Number(userId) : userId,
 			};
