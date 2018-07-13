@@ -25,7 +25,7 @@ class User extends Component {
 					exact={singleView}
 					render={props => (
 						<Page>
-							<AppBar position="static">
+							<AppBar>
 								<MenuButton toggleSideBar={toggleSideBar} />
 								<AppBarTitle>Users</AppBarTitle>
 								<RefreshButton findAll={findAll} />
