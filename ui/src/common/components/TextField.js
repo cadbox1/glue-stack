@@ -1,17 +1,22 @@
 import React from "react";
 import MaterialTextField from "@material-ui/core/TextField";
 
-const TextField = ({ InputProps, dBlock = true, ...props }) => {
+const TextField = ({
+	InputProps,
+	InputLabelProps,
+	dBlock = true,
+	...props
+}) => {
 	return (
 		<MaterialTextField
 			style={dBlock ? { display: "block" } : undefined}
 			margin="normal"
 			InputLabelProps={{
-				...props.InputLabelProps,
+				...InputLabelProps,
 				shrink: true,
 			}}
 			InputProps={{
-				...props.InputProps,
+				...InputProps,
 				required: props.required,
 			}}
 			{...props}

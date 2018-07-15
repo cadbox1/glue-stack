@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
 import componentQueries from "react-component-queries";
+import debounce from "lodash/debounce";
+import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
-import Close from "@material-ui/icons/Close";
+import ArrowBack from "@material-ui/icons/ArrowBack";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import SearchIcon from "@material-ui/icons/Search";
 import Add from "@material-ui/icons/Add";
@@ -21,15 +23,37 @@ import { List, connectConfig } from "./list";
 import { Create, Edit } from "./form";
 import { TextField } from "common/components/TextField";
 
+const styles = theme => ({
+	inputRoot: {
+		color: "inherit",
+	},
+});
+
 class Task extends Component {
+	constructor(props) {
+		super();
+
+		this.state = {
+			search: props.location.query.search || "",
+		};
+
+		this.debouncedSearch = debounce(this.handleSearchUpdate, 300);
+	}
+
+	handleFormInput = evt => {
+		this.setState({ [evt.target.name]: evt.target.value });
+		this.debouncedSearch();
+	};
+
 	handleSearchButton = () => {
 		const { findAll } = this.props;
 		findAll.handleUpdate({ search: "" });
 	};
 
-	handleSearchInputChange = evt => {
+	handleSearchUpdate = evt => {
 		const { findAll } = this.props;
-		findAll.handleUpdate({ search: evt.target.value });
+		const { search } = this.state;
+		findAll.handleUpdate({ search });
 	};
 
 	handleSearchClose = () => {
@@ -38,7 +62,8 @@ class Task extends Component {
 	};
 
 	render() {
-		const { match, findAll, toggleSideBar, singleView } = this.props;
+		const { classes, match, findAll, toggleSideBar, singleView } = this.props;
+		const { search } = this.state;
 
 		const someActiveParams = Object.keys(findAll.getActiveParams()).length > 0;
 		const activeSearch = findAll.params.name !== undefined;
@@ -53,17 +78,25 @@ class Task extends Component {
 							<AppBar>
 								{activeSearch ? (
 									<Fragment>
-										<TextField
-											onChange={this.handleSearchInputChange}
-											autoFocus
-											fullWidth
-										/>
 										<IconButton
 											onClick={this.handleSearchClose}
 											color="inherit"
 										>
-											<Close />
+											<ArrowBack />
 										</IconButton>
+										<TextField
+											name="search"
+											value={search}
+											onChange={this.handleFormInput}
+											autoFocus
+											fullWidth
+											margin="none"
+											InputProps={{
+												classes: { root: classes.inputRoot },
+												disableUnderline: true,
+											}}
+										/>
+										<RefreshButton findAll={findAll} />
 									</Fragment>
 								) : (
 									<Fragment>
@@ -146,13 +179,15 @@ class Task extends Component {
 	}
 }
 
-Task = componentQueries({
-	queries: [
-		({ width }) => ({
-			singleView: width < 1000,
-		}),
-	],
-	config: { pure: false },
-})(urlStateHolder(connect(connectConfig)(Task)));
+Task = withStyles(styles)(
+	componentQueries({
+		queries: [
+			({ width }) => ({
+				singleView: width < 1000,
+			}),
+		],
+		config: { pure: false },
+	})(urlStateHolder(connect(connectConfig)(Task)))
+);
 
 export { Task };
