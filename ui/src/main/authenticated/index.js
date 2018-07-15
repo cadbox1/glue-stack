@@ -29,7 +29,7 @@ class Authenticated extends Component {
 		const { signOut, temporaryDock } = this.props;
 		const { showSideBar } = this.state;
 		return (
-			<div style={{ display: "flex" }}>
+			<div style={{ display: "flex", height: "100%" }}>
 				<Sidebar
 					temporaryDock={temporaryDock}
 					signOut={signOut}

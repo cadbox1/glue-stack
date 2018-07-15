@@ -1,20 +1,24 @@
-import React, { Component } from "react";
-import Paper from "@material-ui/core/Paper";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import React, { Component, Fragment } from "react";
+import { Route, Switch } from "react-router-dom";
 import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import Close from "@material-ui/icons/Close";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { Link } from "common/components/Link";
 import { connect } from "common/connector";
 import { stateHolder } from "common/stateHolder";
+import { AppBar } from "common/components/AppBar";
+import { AppBarTitle } from "common/components/AppBarTitle";
 import { TaskStatus } from "api/task";
-import { List, connectConfig } from "../user/list";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import { styles as expansionPanelStyles } from "@material-ui/core/ExpansionPanel/ExpansionPanel";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Select from "@material-ui/core/Select";
+import { List as UserList, connectConfig } from "../user/list";
 
-const ConnectedUserList = stateHolder(connect(connectConfig)(List));
+const ConnectedUserList = stateHolder(connect(connectConfig)(UserList));
 
 class Search extends Component {
 	handleSelectUser = user => {
@@ -31,31 +35,28 @@ class Search extends Component {
 	};
 
 	render() {
-		const { classes, findAll } = this.props;
-		return (
-			<div>
-				<ExpansionPanel>
-					<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-						<Typography>Filter By Users</Typography>
-					</ExpansionPanelSummary>
-					<ExpansionPanelDetails>
-						<ConnectedUserList
-							onSelect={this.handleSelectUser}
-							selected={[findAll.params.userId]}
-						/>
-					</ExpansionPanelDetails>
-				</ExpansionPanel>
+		const { findAll, match } = this.props;
 
-				<Paper
-					elevation={1}
-					className={classes.root}
-					style={{
-						display: "flex",
-						alignItems: "center",
-						padding: "12px 24px",
-					}}
-				>
-					<Typography style={{ width: "33.33%" }}>Status</Typography>
+		const activeParams = Object.keys(findAll.getActiveParams());
+		const someActiveParams = activeParams.length > 0;
+
+		const filters = [
+			{
+				name: "Assignee",
+				path: "assignee",
+				filterKey: "userId",
+				component: (
+					<ConnectedUserList
+						onSelect={this.handleSelectUser}
+						selected={[findAll.params.userId]}
+					/>
+				),
+			},
+			{
+				name: "Status",
+				path: "status",
+				filterKey: "statusId",
+				component: (
 					<Select
 						value={
 							findAll.params.statusId != null ? findAll.params.statusId : ""
@@ -67,12 +68,94 @@ class Search extends Component {
 						<MenuItem value={TaskStatus.TODO}>Todo</MenuItem>
 						<MenuItem value={TaskStatus.DONE}>Done</MenuItem>
 					</Select>
-				</Paper>
-			</div>
+				),
+			},
+		];
+
+		return (
+			<Switch>
+				{filters.map(filter => (
+					<Route
+						key={filter.path}
+						path={`${match.path}/${filter.path}`}
+						render={props => (
+							<Fragment>
+								<AppBar>
+									<AppBarTitle>Filters > {filter.name}</AppBarTitle>
+									<IconButton
+										component={Link}
+										to="/tasks/filter"
+										color="inherit"
+									>
+										<Close />
+									</IconButton>
+								</AppBar>
+								{filter.component}
+							</Fragment>
+						)}
+					/>
+				))}
+				<Route
+					render={props => (
+						<Fragment>
+							<AppBar>
+								<AppBarTitle>Filters</AppBarTitle>
+								<IconButton component={Link} to="/tasks" color="inherit">
+									<Close />
+								</IconButton>
+							</AppBar>
+							<List>
+								{someActiveParams && <ListSubheader>Selected</ListSubheader>}
+								{filters
+									.filter(filter => activeParams.includes(filter.filterKey))
+									.map(filter => (
+										<FilterListItem
+											key={filter.path}
+											filter={filter}
+											match={match}
+											handleUpdate={findAll.handleUpdate}
+										/>
+									))}
+								{someActiveParams && <ListSubheader>Available</ListSubheader>}
+								{filters
+									.filter(filter => !activeParams.includes(filter.filterKey))
+									.map(filter => (
+										<FilterListItem
+											key={filter.path}
+											filter={filter}
+											match={match}
+										/>
+									))}
+							</List>
+						</Fragment>
+					)}
+				/>
+			</Switch>
 		);
 	}
 }
 
-const StyledSearch = withStyles(expansionPanelStyles)(Search);
+class FilterListItem extends Component {
+	handleDelete = () => {
+		const { filter, handleUpdate } = this.props;
+		handleUpdate({ [filter.filterKey]: undefined });
+	};
 
-export { StyledSearch as Search };
+	render() {
+		const { filter, match, handleUpdate } = this.props;
+		return (
+			<ListItem component={Link} to={`${match.url}/${filter.path}`} button>
+				<ListItemText primary={filter.name} />
+				<ListItemSecondaryAction>
+					{handleUpdate != null && (
+						<IconButton onClick={this.handleDelete} aria-label="Delete">
+							<DeleteIcon />
+						</IconButton>
+					)}
+				</ListItemSecondaryAction>
+			</ListItem>
+		);
+	}
+}
+
+export { Search };

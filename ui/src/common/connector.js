@@ -12,6 +12,8 @@ class PromiseState {
 		this.paramsHash = null;
 		this.callback = null;
 
+		this.updateState = this.updateState.bind(this);
+		this.getActiveParams = this.getActiveParams.bind(this);
 		this.autoRun = this.autoRun.bind(this);
 		this.call = this.call.bind(this);
 		this.refresh = this.refresh.bind(this);
@@ -27,6 +29,16 @@ class PromiseState {
 
 	createHash(params) {
 		return JSON.stringify(params);
+	}
+
+	getActiveParams() {
+		const { params } = this;
+		const activeParams = {};
+		Object.keys(params)
+			.filter(key => !["page", "size", "sort"].includes(key))
+			.filter(key => params[key] != null)
+			.forEach(key => (activeParams[key] = params[key]));
+		return activeParams;
 	}
 
 	autoRun(props) {
