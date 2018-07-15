@@ -5,8 +5,8 @@ import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
+import Checkbox from "@material-ui/core/Checkbox";
 import { TableCell } from "common/components/TableCell";
-import Radio from "@material-ui/core/Radio";
 import { parseURL } from "common/parseURL";
 import { TableSortLabel } from "common/components/TableSortLabel";
 import { TablePagination } from "common/components/TablePagination";
@@ -61,7 +61,9 @@ export class List extends Component {
 								>
 									{onSelect && (
 										<TableCell padding="checkbox">
-											<Radio checked={selected && selected.includes(row.id)} />
+											<Checkbox
+												checked={selected && selected.includes(row.id)}
+											/>
 										</TableCell>
 									)}
 									<TableCell>
