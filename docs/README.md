@@ -30,13 +30,13 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 
 ## Getting Started
 
-* Check out the [App](https://d1if23x0agu0jj.cloudfront.net/)
-* We have a [pretty website](https://cadbox1.github.io/glue-stack/)
-* Check out our [development process](./Guides/DevelopmentProcess-Tasks.md)
-* Check out our [designs](./Design/README.md)
-* Check out our [guides](./Guides/README.md)
-* [Run locally](./Guides/RunningLocally.md)
-* If you're really keen then [build Glue Stack from an empty folder](./Guides/BuildingGlueStackFromAnEmptyFolder.md)
+* Check out the [app](https://d1if23x0agu0jj.cloudfront.net/).
+* We have a [pretty website](https://cadbox1.github.io/glue-stack/).
+* Check out our [development process](./Guides/DevelopmentProcess-Tasks.md).
+* Check out our [designs](./Design/README.md).
+* Check out our [guides](./Guides/README.md).
+* [Run locally](./Guides/RunningLocally.md).
+* If you're really keen then [build Glue Stack from an empty folder](./Guides/BuildingGlueStackFromAnEmptyFolder.md).
 
 
 ## Architecture
