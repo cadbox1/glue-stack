@@ -11,4 +11,4 @@
 
 
 
-Now you can follow [Setup AWS Cloud Infrastructure](./Setup AWS Cloud Infrastructure.md).
+Now you can follow [Setup AWS Cloud Infrastructure](./SetupAWSCloudInfrastructure.md).

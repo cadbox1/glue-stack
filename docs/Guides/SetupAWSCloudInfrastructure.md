@@ -1,6 +1,6 @@
 # Setup AWS Cloud Infrastructure 
 
-This document assumes you have followed [Setup AWS Account](./Setup AWS Account.md).
+This document assumes you have followed [Setup AWS Account](./SetupAWSAccount.md).
 
 ## Elastic Beanstalk (API)
 
