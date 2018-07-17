@@ -42,8 +42,16 @@ class Sidebar extends Component {
 					</ListItem>
 					<Collapse component="li" in={userMenuOpen} unmountOnExit>
 						<List disablePadding>
-							<ListItem button onClick={signOut}>
-								<ListItemText inset primary="Sign Out" />
+							<ListItem
+								component="a"
+								href="https://cadbox1.github.io/glue-stack"
+								target="_blank"
+								button
+							>
+								<ListItemText primary="Open Website" inset />
+							</ListItem>
+							<ListItem onClick={signOut} button>
+								<ListItemText primary="Sign Out" inset />
 							</ListItem>
 						</List>
 					</Collapse>

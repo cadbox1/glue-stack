@@ -1,6 +1,6 @@
-# Making Glue Stack
+# Building Glue Stack From an Empty Folder
 
-This covers how to create an application that manages users from a blank folder. It won't be kept quite as up to date as the [Development Process Document](./DevelopmentProcess-Tasks.md) because its a lot longer. It was interesting to go through and rewrite the application I just wrote and clarify some of the stranger parts. I think it would be really cool to show new team members how to build the core framework of the existing application from scratch but you can judge how useful it is. 
+This covers how to create an application that manages users from a blank folder. It won't be kept quite as up to date as the [Development Process Document](./DevelopmentProcess-Tasks.md) because its a lot longer. It was interesting to go through and rewrite the application I just wrote and clarify some of the stranger parts. I think it would be really cool to show new team members how to build the core framework of the existing application from scratch but the cost might outweigh the benefit. 
 
 1. Create a file to write down any questions you have or anything that's unclear in this document so that we can improve it to make it easier for the next person.
 
