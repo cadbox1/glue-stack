@@ -33,10 +33,12 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 * Check out the [app](https://d1if23x0agu0jj.cloudfront.net/).
 * We have a [pretty website](https://cadbox1.github.io/glue-stack/).
 * Check out our [development process](./Guides/DevelopmentProcess-Tasks.md).
+* Check out our [chat](https://spectrum.chat/glue-stack).
 * Check out our [designs](./Design/README.md).
 * Check out our [guides](./Guides/README.md).
 * [Run locally](./Guides/RunningLocally.md).
 * If you're really keen then [build Glue Stack from an empty folder](./Guides/BuildingGlueStackFromAnEmptyFolder.md).
+* Check out out [roadmap](https://github.com/cadbox1/glue-stack/projects/3).
 
 
 ## Architecture
@@ -92,19 +94,21 @@ The `Managing Resouces` pattern will be used over and over again in our app so i
 
 Tools that make our application work.
 
+SQL, Java, Javascript, HTML and CSS are still the most popular technologies among developers in 2018. [Most Popular Technologies, Developer Survey Results - Stack Overflow](https://insights.stackoverflow.com/survey/2018/#most-popular-technologies). Most of my programming has been done with these tools so I have a good idea of how they can work together.
+
 * Database
-  * MySQL
+  * [MySQL](https://en.wikipedia.org/wiki/MySQL)
 * API
-  * Java
-  * Spring-Boot
-  * Hibernate
-  * Spring-Security
-  * Spring-Data-JPA
+  * [Java](https://en.wikipedia.org/wiki/Java_(programming_language))
+  * [Spring Boot](https://spring.io/projects/spring-boot#overview)
+  * [Hibernate](http://hibernate.org/orm/)
+  * [Spring Security](https://spring.io/projects/spring-security)
+  * [Spring Data JPA](https://projects.spring.io/spring-data-jpa/)
 * UI
-  * React
-  * create-react-app
-  * Material-UI
-  * React-Router-V4
+  * [React](https://reactjs.org/)
+  * [Create React App](https://github.com/facebook/create-react-app)
+  * [Material-UI](https://material-ui.com/)
+  * [React Router V4](https://reacttraining.com/react-router/)
 
 ### Development Tools
 
@@ -113,15 +117,11 @@ Tools that we use to develop our application over time.
 * Version Control
   * Git
   * Monorepo
-  * Git Town: for branching strategy
+  * [Git Town](http://www.git-town.com/)
 * Editors
-  * Visual Studio Code \(vscode\)
-  * Sequel Pro
+  * [Visual Studio Code \(vscode\)](https://code.visualstudio.com/)
+  * [Sequel Pro](https://www.sequelpro.com/)
 * Documentation
-  * Environment setup
-  * How to develop core features given our current stack
-* Feature toggles
-* Testing
+  * Development process documentation
 * Deployment
-  * Deploy features as soon as they're ready.
-  * Flyway for automated database migrations.
+  * [Flyway](https://flywaydb.org/) for automated database migrations.
