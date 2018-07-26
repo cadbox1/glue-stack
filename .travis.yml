@@ -1,8 +1,5 @@
 jobs:
   include:
-
-matrix:
-  include:
     - stage: test
       name: API test
       language: java
