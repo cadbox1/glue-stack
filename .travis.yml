@@ -16,8 +16,17 @@ jobs:
       node_js: "8"
       before_install:
         - cd ui
+      install: yarn
+      script: yarn test
     - stage: deploy api
-      script: skip
+      language: java
+      jdk: oraclejdk8
+      services:
+        - docker
+      before_install:
+        - cd api
+      install: true
+      script: mvn package -DskipTests
       deploy:
         provider: elasticbeanstalk
         on:
@@ -31,7 +40,12 @@ jobs:
         bucket_name: elasticbeanstalk-ap-southeast-2-019794990741
         zip_file: api/target/api-0.0.1-SNAPSHOT.jar
     - stage: deploy ui
-      script: skip
+      language: node_js
+      node_js: "8"
+      before_install:
+        - cd ui
+      install: yarn
+      script: yarn build
       deploy:
         provider: s3
         on:
