@@ -1,6 +1,10 @@
+jobs:
+  include:
+
 matrix:
   include:
-    - name: API
+    - stage: test
+      name: API test
       language: java
       jdk: oraclejdk8
       services:
@@ -9,27 +13,29 @@ matrix:
         - cd api
       install: true
       script: mvn clean install
-    - name: UI
+    - stage: test
+      name: UI test
       language: node_js
       node_js: "8"
       before_install:
         - cd ui
-deploy:
-  - provider: elasticbeanstalk
-    access_key_id: access_key_id
-    secret_access_key:
-      secure: secret_access_key
-    region: ap-southeast-2  
-    app: "Glue Stack"
-    env: "GlueStack-env"
-    bucket_name: elasticbeanstalk-ap-southeast-2-019794990741
-    zip_file: api/target/api-0.0.1-SNAPSHOT.jar
-  - provider: s3
-    access_key_id: access_key_id
-    secret_access_key: secret_access_key
-    bucket: gluestack
-    region: ap-southeast-2
-    skip_cleanup: true
-    local_dir: ui/build
+    - stage: deploy API
+      provider: elasticbeanstalk
+      access_key_id: access_key_id
+      secret_access_key:
+        secure: secret_access_key
+      region: ap-southeast-2  
+      app: Glue Stack
+      env: GlueStack-env
+      bucket_name: elasticbeanstalk-ap-southeast-2-019794990741
+      zip_file: api/target/api-0.0.1-SNAPSHOT.jar
+    - stage: deploy UI
+      provider: s3
+      access_key_id: access_key_id
+      secret_access_key: secret_access_key
+      bucket: gluestack
+      region: ap-southeast-2
+      skip_cleanup: true
+      local_dir: ui/build
 notifications:
   email: false
