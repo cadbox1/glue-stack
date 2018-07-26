@@ -18,7 +18,7 @@ jobs:
         - cd ui
     - stage: deploy api
       script: skip
-      deploy: api
+      deploy:
         provider: elasticbeanstalk
         access_key_id: access_key_id
         secret_access_key:
@@ -30,7 +30,7 @@ jobs:
         zip_file: api/target/api-0.0.1-SNAPSHOT.jar
     - stage: deploy ui
       script: skip
-      deploy: ui
+      deploy:
         provider: s3
         access_key_id: access_key_id
         secret_access_key: secret_access_key
