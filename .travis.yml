@@ -38,7 +38,7 @@ jobs:
         app: Glue Stack
         env: GlueStack-env
         bucket_name: elasticbeanstalk-ap-southeast-2-019794990741
-        zip_file: api/target/api-0.0.1-SNAPSHOT.jar
+        zip_file: target/api-0.0.1-SNAPSHOT.jar
     - stage: deploy ui
       language: node_js
       node_js: "8"
@@ -55,6 +55,6 @@ jobs:
         bucket: gluestack
         region: ap-southeast-2
         skip_cleanup: true
-        local_dir: ui/build
+        local_dir: build
 notifications:
   email: false
