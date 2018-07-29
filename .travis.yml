@@ -32,9 +32,9 @@ jobs:
       skip_cleanup: true
       on:
         all_branches: true
-      access_key_id: access_key_id
+      access_key_id: $access_key_id
       secret_access_key:
-        secure: secret_access_key
+        secure: $secret_access_key
       region: ap-southeast-2
       app: Glue Stack
       env: GlueStack-env
@@ -52,8 +52,8 @@ jobs:
       skip_cleanup: true
       on:
         all_branches: true
-      access_key_id: access_key_id
-      secret_access_key: secret_access_key
+      access_key_id: $access_key_id
+      secret_access_key: $secret_access_key
       bucket: gluestack
       region: ap-southeast-2
       local_dir: build
