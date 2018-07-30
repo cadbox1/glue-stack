@@ -354,3 +354,4 @@ Our current test framework means you make it easy to reuse the test data you use
 
 ## UI
 
+[JavaScript fundamentals before learning React](https://news.ycombinator.com/item?id=17569848) is a good resource to understand Javascript while learning React.
