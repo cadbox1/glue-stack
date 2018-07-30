@@ -37,8 +37,8 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 * Check out our [designs](./Design/README.md).
 * Check out our [guides](./Guides/README.md).
 * [Run locally](./Guides/RunningLocally.md).
+* Check out our [roadmap](https://github.com/cadbox1/glue-stack/projects/3).
 * If you're really keen then [build Glue Stack from an empty folder](./Guides/BuildingGlueStackFromAnEmptyFolder.md).
-* Check out out [roadmap](https://github.com/cadbox1/glue-stack/projects/3).
 
 
 ## Architecture
