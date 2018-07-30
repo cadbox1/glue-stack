@@ -28,8 +28,6 @@
 
         p {
             max-width: 35rem;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .btn {
@@ -57,6 +55,10 @@
             display: flex;
             width: 100%;
             justify-content: center;
+        }
+
+        .page-title {
+            color: white;
         }
 
         aside a {
@@ -87,14 +89,6 @@
             padding: 4rem 1rem;
         }
 
-        section {
-            text-align: center;
-        }
-
-        .container {
-            text-align: left;
-        }
-
         .bg-1 {
             background-image: linear-gradient( var(--gradient-direction),
             hsl( var(--hue-1),
@@ -117,15 +111,22 @@
 
 <body>
     <aside>
-        <a href="#features" data-scroll>Features</a>
-        <a href="https://github.com/cadbox1/glue-stack">GitHub</a>
-        <a href="https://cadbox1.gitbook.io/glue-stack/">GitBook</a>
-        <a href="https://d1if23x0agu0jj.cloudfront.net/">Login</a>
+        <div class="container d-flex align-items-center">
+            <h3 class="page-title py-2 my-0 d-none d-smgit-block">Glue Stack</h3>
+            <div class="menu d-flex ml-auto">
+                <a href="#features" data-scroll>Features</a>
+                <a href="https://github.com/cadbox1/glue-stack">GitHub</a>
+                <a href="https://cadbox1.gitbook.io/glue-stack/">GitBook</a>
+                <a href="https://d1if23x0agu0jj.cloudfront.net/">Login</a>
+            </div>
+        </div>
     </aside>
     <section id="home" class="hero bg-1">
-        <h1>How I make web apps</h1>
-        <p class="lead">Glue Stack is a todo application where I share my knowledge on developing web applications.</p>
-        <a href="https://d1if23x0agu0jj.cloudfront.net/#/signup" class="btn">Signup for Free!</a>
+        <div class="container">
+            <h1>How I make web apps</h1>
+            <p class="lead">Glue Stack is a todo application where I share my knowledge on developing web applications.</p>
+            <a href="https://d1if23x0agu0jj.cloudfront.net/#/signup" class="btn">Signup for Free!</a>
+        </div>
     </section>
     <section id="features">
         <img src="Screenshot.png" alt="screenshot" role="presentation" style="border: 1px solid hsl(0, 0%, 92%); margin-bottom: 4rem"
