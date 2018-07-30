@@ -1,35 +1,65 @@
-matrix:
+jobs:
   include:
-    - name: API
-      language: java
-      jdk: oraclejdk8
-      services:
-        - docker
-      before_install:
-        - cd api
-      install: true
-      script: mvn clean install
-    - name: UI
-      language: node_js
-      node_js: "8"
-      before_install:
-        - cd ui
-deploy:
-  - provider: elasticbeanstalk
-    access_key_id: access_key_id
-    secret_access_key:
-      secure: secret_access_key
-    region: ap-southeast-2  
-    app: "Glue Stack"
-    env: "GlueStack-env"
-    bucket_name: elasticbeanstalk-ap-southeast-2-019794990741
-    zip_file: api/target/api-0.0.1-SNAPSHOT.jar
-  - provider: s3
-    access_key_id: access_key_id
-    secret_access_key: secret_access_key
-    bucket: gluestack
-    region: ap-southeast-2
-    skip_cleanup: true
-    local_dir: ui/build
+  - stage: test
+    name: api test
+    language: java
+    jdk: oraclejdk8
+    services:
+    - docker
+    before_install:
+    - cd api
+    install: true
+    script: mvn clean install
+  - stage: test
+    name: ui test
+    language: node_js
+    node_js: '8'
+    before_install:
+    - cd ui
+    install: yarn
+    script: yarn test
+  - stage: deploy api
+    language: java
+    jdk: oraclejdk8
+    services:
+    - docker
+    before_install:
+    - cd api
+    install: true
+    script: mvn package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+    deploy:
+      provider: elasticbeanstalk
+      skip_cleanup: true
+      on:
+        all_branches: true
+      access_key_id: $access_key_id
+      secret_access_key:
+        secure: $secret_access_key
+      region: ap-southeast-2
+      app: Glue Stack
+      env: GlueStack-env
+      bucket_name: elasticbeanstalk-ap-southeast-2-019794990741
+      zip_file: target/api-0.0.1-SNAPSHOT.jar
+  - stage: deploy ui
+    language: node_js
+    node_js: '8'
+    before_install:
+    - cd ui
+    install: yarn
+    script: yarn build
+    deploy:
+      provider: s3
+      skip_cleanup: true
+      on:
+        branch: master
+      access_key_id: $access_key_id
+      secret_access_key: $secret_access_key
+      bucket: gluestack
+      region: ap-southeast-2
+      local_dir: build
 notifications:
   email: false
+env:
+  global:
+  - secure: DReWDa3oU7EYYIyB0CmqfgoLRkevrtxZE6ILYB0T+qYXExq+KYFg8RPzR9uEq9Ej036ArQfBMeMX68SbizJ7gN93IQczXI8RcbGm8A2BqQTvo1jWMbi9ju+lLZyrMHi15TuRnEwSzBZjyr2DOziA1gDof/eNuTGrIlJg1ryRwfU0mscBuCuhpjOJKwBU9Dr/W7hbRQVUgPYMCyu3bUKGEFZWNeoCvpP4Z/edLAsnYOENrVFbh99NNj3gebl+QVVgxanmLKDPeU9KKyHX4qVKkTClCKRSU3v+1ummn3pmxm1R+5/jWYbgRTVVSXabz5K3HB8762jU36tKLnhC7r26RE+5bWHbKBDLfFOFzH1/GjdraaPxSBlCq7T/3HILW04HZf60rvWLhLYWNqvTMj8H/i1OPLgRwf68xvSKkCsvf3bG/KSUirTqTqLsSjrVyz1X1vnRo2UPHjrToVmbCNTxZ6RAL8LaLEUyyrMBZjVqMD2ZdzUW/HIjwKJWPci5qi9xixBooOxGpBpUm+NkH8MzT5hz+CrTzNriYsxE18dNctch1ItAgqGgZOgbxqBOIFWQSWvB3uazPyXNGVEC9+sCVzdtH0T6wSvWpPTAIM13snRSJ9V6xcGIAKnyft49sM3DEczJ+Vc9Rc0vQnewGSBx0KkiKYPvlyG/hQZNYdtdc8Y=
+  - secure: e8aTqhcKFNdhN1KxkQDYW7DcGfIcvEtTVdBJOP4ijzBOmMJ004C5u1SxHJYfTROExO+ZZeAPD+UP94GRx9bCyaqFPAp4ur+MfCuGTYSh/ZhQKn00mIsPp9tBSqPppT6tlmf/3N/Sv+k7J3SfgoKMcIOlrgyfXYTjFPpPmHCDkc7VpxPijGvqSP4TgrVPYvth3bvcCk/Zm7S3Eip3nDDbCchbGI4IE5/1iLsJW1ospLlZisegh9DAtbAou9s6JmZv92m1prZK+TdJ82XkA2f9QW3+p8bOJT1xzxS/iF4zP3mCu4A6eebOn71O7c+9rDOvLYK8reCyd6J8aHpF/noEloJHQW0/3K/hKABgREEvoGFvitsXV6Ij/+BikPQ+7x3TvSl+ZPQKaZJgZ3qjvVoPwwKyWbAa9bQcLf2qrEHIplYtkymoR48GPy//yBnP71Vla8gwqnprX0iqSrPh/zV2QcUL8bQsSn7panidaoPi4xzSU6T38jO0OlTmF4betVjgwAYgjini2/7uOYyeU5znmP7flUia6Zic8oau840jVuMxWnUVNKf9sFUQtD/VmQG/Nc3sJ2jyEB7i2o9hFpM20fWksTMNdQCcmMKb/I5GVDrAFpvnUH3USdFMKWjyA4gJNMFTWp+r9vr3P1qAsaHmNEVjIg+CuoZDxP5fTrCNuGk=

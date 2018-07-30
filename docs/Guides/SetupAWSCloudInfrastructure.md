@@ -127,68 +127,91 @@ This document assumes you have followed [Setup AWS Account](./SetupAWSAccount.md
 
 4. Select Next Again.
 
-   Manage public permissions: Grant public read access to this bucket
+   Leave the bucket as private
 
 5. Select Next.
 
 6. Select Create bucket.
 
 7. Select the gluestack bucket.
+8. Select Permissions.
+9. Select Bucket Policy.
+10. Paste the following.
+    
+    ```
+    {
+        "Id": "Policy1532945968718",
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+            "Sid": "Stmt1532945962582",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::gluestack/*",
+            "Principal": "*"
+            }
+        ]
+    }
+    ```
 
-8. Build the ui.
+11. Select Save.
+
+12. Build the ui.
 
     ```
     cd ui
     yarn buld
     ```
 
-8. Upload the contents of the `ui/build/`.
+13. Upload the contents of the `ui/build/`.
 
-9. Select Next.
+14. Select Next.
 
    Manage public permissions: Grant public read access to this bucket
 
-10. Select Next.
+12. Select Next.
 
-11. Select Upload.
+13. Select Upload.
 
-12. Select Properties.
+14. Select Properties.
 
-13. Select Static website hosting.
+15. Select Static website hosting.
 
-14. Select Use this bucket to host a website.
+16. Select Use this bucket to host a website.
 
     Index document: index.html
 
-15. Copy the Endpoint.
+17. Copy the Endpoint.
 
-16. Select Save.
+18. Select Save.
 
-17. Go to CloudFront.
+19. Go to CloudFront.
 
-18. Select Create distribution.
+20. Select Create distribution.
 
-19. Select Get Started under the Web distribution.
+21. Select Get Started under the Web distribution.
 
     Origin Domain Name: (endpoint you copied from s3)
 
     Viewer Protocol Policy: Redirect HTTP to HTTPS
 
-20. Select Create Distribution.
+22. Select Create Distribution.
 
-21. Select the distribution.
+23. Select the distribution.
 
-22. Select Origins.
+24. Select Origins.
 
-23. Select Create Origin.
+25. Select Create Origin.
 
     Origin Domain Name: (Elastic Beanstalk domain)
 
-24. Select Behaviours.
+26. Select Behaviours.
 
-25. Select Create.
+27. Select Create.
 
-26. Select Create Behaviours.
+28. Select Create Behaviours.
 
     Path pattern api/*
 
@@ -206,8 +229,8 @@ This document assumes you have followed [Setup AWS Account](./SetupAWSAccount.md
 
     Compress Objects Automatically: Yes
 
-27. Select Create.
+29. Select Create.
 
-28. Select General.
+30. Select General.
 
-29. Go to the Domain and see it all working!
+31. Go to the Domain and see it all working!
