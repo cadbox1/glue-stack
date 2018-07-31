@@ -13,6 +13,7 @@ Problems faced:
 - There's nothing on the environment variables page about how to use the variables in the .travis.yml file.
 - Testcontainers uses travis internally apparently but they don't have docs for it.
 - You have to specify not to delete the built files you want to deploy in the deploy section.
+- Only build prs and master branch [https://stackoverflow.com/questions/31882306/how-to-configure-travis-ci-to-build-pull-requests-merges-to-master-w-o-redunda#31882307](https://stackoverflow.com/questions/31882306/how-to-configure-travis-ci-to-build-pull-requests-merges-to-master-w-o-redunda#31882307)
 
 Following https://docs.travis-ci.com/user/getting-started/
 
@@ -29,10 +30,6 @@ Following https://docs.travis-ci.com/user/getting-started/
 6. Sign in with GitHub.
 
 7. Authorize travis-pro.
-
-8. Select your Repo.
-9. Select More Options, Settings.
-10. Turn off Build pushed branches.
 
 11. Open project in VSCode.
 
