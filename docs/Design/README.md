@@ -1,3 +1,0 @@
-# Design
-
-* [Architecture](./Architecture.md)

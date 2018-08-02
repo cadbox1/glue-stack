@@ -51,7 +51,7 @@ Multitenant, monolithic, 3-tier application with a MySQL database, Spring Boot H
 | API \(Application Programming Interface\) | JSON over HTTP                  | Java       | Spring Boot                      |
 | UI \(User Interface\)                     | SPA \(Single Page Application\) | Javascript | React                            |
 
-Continued at [Design/Architecture](./Architecture.md).
+Continued at [Architecture](./Architecture.md).
 
 ## Application Features
 
