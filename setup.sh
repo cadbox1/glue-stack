@@ -28,6 +28,10 @@ installPackages(){
         echo "Installing Docker..."
         brew cask install docker
         echo "\n"
+        echo "Installing Java8..."
+        brew tap caskroom/versions
+        brew cask install java8
+        echo "\n"
         echo "Installing Maven..."
         brew install maven
         echo "\n"
