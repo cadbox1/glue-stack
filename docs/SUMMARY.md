@@ -2,15 +2,16 @@
 
 * [Glue Stack](README.md)
 * [Read Me](README.md)
-* [Design](./Design/README.md)
-    * [Architecture](./Design/Architecture.md)
-* [Guides](./Guides/README.md)
-    * [Building Glue Stack From an Empty Folder](./Guides/BuildingGlueStackFromAnEmptyFolder.md)
-    * [Developing Process Documentation](./Guides/DevelopingProcessDocumentation.md)
-    * [Development Process - Tasks](./Guides/DevelopmentProcess-Tasks.md)
-    * [Running Locally](./Guides/RunningLocally.md)
-    * [Setup AWS Account](./Guides/SetupAWSAccount.md)
-    * [Setup AWS Cloud Infrastructure](./Guides/SetupAWSCloudInfrastructure.md)
-    * [Setup Database Connection In Sequel Pro](./Guides/SetupDatabaseConnectionInSequelPro.md)
-    * [Setup VSCode](./Guides/SetupVSCode.md)
+* [Architecture](./Architecture.md)
+* Development
+    * [Development Process - Tasks](./Development/DevelopmentProcess-Tasks.md)
+    * [Running Locally](./Development/RunningLocally.md)
+    * [Setup Database Connection In Sequel Pro](./Development/SetupDatabaseConnectionInSequelPro.md)
+    * [Developing Process Documentation](./Development/DevelopingProcessDocumentation.md)
+    * [Setup Visual Studio Code (vscode)](./Development/SetupVSCode.md)
+    * [Building Glue Stack From an Empty Folder](./Development/BuildingGlueStackFromAnEmptyFolder.md)
+* Infrastructure
+    * [Setup AWS Account](./Infrastructure/SetupAWSAccount.md)
+    * [Setup AWS Cloud Infrastructure](./Infrastructure/SetupAWSCloudInfrastructure.md)
+    * [Continuous Integration (CI): Travis CI](./Infrastructure/ContinuousIntegration-TravisCI.md)
 

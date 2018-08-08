@@ -1,6 +1,9 @@
 # Glue Stack
 
-My stack of favourite tools and practises glued together to make a multi-tenant todo application where organisations can manage their tasks.
+## What 
+* A mobile friendly web application to manage your organisation's tasks and assign them to users.
+* Built with a React, Java (Spring Boot) JSON web API, MySQL relational database in a monolithic architecture on AWS
+* Beginner friendly documentation for developing the application. 
 
 If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook.io/glue-stack/).
 
@@ -12,48 +15,37 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 ## Table of Contents
 
 - [Glue Stack](#glue-stack)
+  - [What](#what)
   - [Table of Contents](#table-of-contents)
-  - [Why](#why)
   - [Getting Started](#getting-started)
+  - [Why](#why)
+  - [Features](#features)
+    - [Managing Resources](#managing-resources)
   - [Architecture](#architecture)
-  - [Application Features](#application-features)
-  - [Managing Resources](#managing-resources)
-  - [Tools](#tools)
-    - [Stack Tools](#stack-tools)
+    - [Application Tools](#application-tools)
     - [Development Tools](#development-tools)
-
-## Why
-
-* To share how I build web applications, for both my future self and others.
-* Show why I think a monolithic SQL, Java application is still cool.
-* Demonstrate my idea of development process documentation.
 
 ## Getting Started
 
-* Check out the [app](https://d1if23x0agu0jj.cloudfront.net/).
+* Check out the [live app](https://d1if23x0agu0jj.cloudfront.net/).
 * We have a [pretty website](https://cadbox1.github.io/glue-stack/).
-* Check out our [development process](./Guides/DevelopmentProcess-Tasks.md).
-* Check out our [chat](https://spectrum.chat/glue-stack).
-* Check out our [designs](./Design/README.md).
-* Check out our [guides](./Guides/README.md).
-* [Run locally](./Guides/RunningLocally.md).
+* Check out our [Architecture](./Architecture.md).
+* Check out our [development process](./Development/DevelopmentProcess-Tasks.md).
+* [Run it locally](./Development/RunningLocally.md).
 * Check out our [roadmap](https://github.com/cadbox1/glue-stack/projects/3).
+* Check out our [chat](https://spectrum.chat/glue-stack).
 * If you're really keen then [build Glue Stack from an empty folder](./Guides/BuildingGlueStackFromAnEmptyFolder.md).
 
+## Why
+* Document how I currently build web applications.
+* Show why a monolithic application with SQL and Java is still cool.
+* Show how to create development process documentation.
+* A playground to experiment with new ideas.
+* To optimise for development speed without comprimising quality through continuous improvement.
 
-## Architecture
+## Features
 
-Multitenant, monolithic, 3-tier application with a MySQL database, Spring Boot HTTP API and React Single Page Application.
-
-| Tier/Component                            | Type                            | Language   | Implementation                   |
-| ----------------------------------------- | ------------------------------- | ---------- | -------------------------------- |
-| DB \(Database\)                           | Relational                      | SQL        | MySQL \(pronounced "my sequel"\) |
-| API \(Application Programming Interface\) | JSON over HTTP                  | Java       | Spring Boot                      |
-| UI \(User Interface\)                     | SPA \(Single Page Application\) | Javascript | React                            |
-
-Continued at [Design/Architecture](./Architecture.md).
-
-## Application Features
+Check out the [live app!](https://d1if23x0agu0jj.cloudfront.net/)
 
 * Sign up your organisation
 * Login and Logout
@@ -61,11 +53,11 @@ Continued at [Design/Architecture](./Architecture.md).
 * Manage your organisation's tasks
 * Manage your users
 
-## Managing Resources
+### Managing Resources
 
-The term `CRUD` (Create, Rertrieve, Update, Delete) often simplifies the problem. I prefer to think of it as `Managing Resources`
+The term `CRUD` (Create, Rertrieve, Update, Delete) is often used to describe a big part of a lot of applications. I think the word `CRUD` oversimplifies the problem and prefer to think about it in terms of `Managing Resources`.
 
-* Operations
+* Operations. Including mobile devices.
   * Retrieval
     * Viewing a single resource
     * Collections
@@ -84,44 +76,64 @@ The term `CRUD` (Create, Rertrieve, Update, Delete) often simplifies the problem
     * Permissions: different users can access different resources within their organisation
     * Feature toggles: developers can toggle different features or operations for an organisation
 
-AND Mobile friendly: all operations must work across devices.
+I believe by optimising and standardising the way we address `Managing Resources` will go a long way to increasing development speed without comprimising quality in an application. I have designed this application to address the pattern through both architecture and development process documentation.
 
-The `Managing Resouces` pattern will be used over and over again in our app so it is vital that we design our application to address it, especially the development process documentation.
 
-## Tools
+## Architecture
 
-### Stack Tools
+Multitenant, monolithic, 3-tier application with a MySQL database, Spring Boot HTTP API and React Single Page Application.
 
-Tools that make our application work.
+| Tier/Component                            | Type                            | Language   | Implementation                   |
+| ----------------------------------------- | ------------------------------- | ---------- | -------------------------------- |
+| DB \(Database\)                           | Relational                      | SQL        | MySQL \(pronounced "my sequel"\) |
+| API \(Application Programming Interface\) | JSON over HTTP                  | Java       | Spring Boot                      |
+| UI \(User Interface\)                     | SPA \(Single Page Application\) | Javascript | React                            |
 
-SQL, Java, Javascript, HTML and CSS are still the most popular technologies among developers in 2018. [Most Popular Technologies, Developer Survey Results - Stack Overflow](https://insights.stackoverflow.com/survey/2018/#most-popular-technologies). Most of my programming has been done with these tools so I have a good idea of how they can work together.
+Continued at [Architecture](./Architecture.md).
+
+### Application Tools 
+
+SQL, Java, Javascript, HTML and CSS are still the most popular technologies among developers in 2018. [Most Popular Technologies, Developer Survey Results - Stack Overflow](https://insights.stackoverflow.com/survey/2018/#most-popular-technologies). My programming career has put in me in close contact with all of them so I want to show you how cool they can be before some other technology becomes more popular.
 
 * Database
   * [MySQL](https://en.wikipedia.org/wiki/MySQL)
+    * An older, common relational database that I have the most experience with.
 * API
   * [Java](https://en.wikipedia.org/wiki/Java_(programming_language))
   * [Spring Boot](https://spring.io/projects/spring-boot#overview)
+    * An easy and opionated way to create Java applications.
   * [Hibernate](http://hibernate.org/orm/)
+    * A popular [ORM](https://stackoverflow.com/questions/1279613/what-is-an-orm-and-where-can-i-learn-more-about-it) for Java that maps objects to and from the database.
   * [Spring Security](https://spring.io/projects/spring-security)
+    * To authenticate users.
   * [Spring Data JPA](https://projects.spring.io/spring-data-jpa/)
+    * Helpful abstraction for doing CRUD.
 * UI
   * [React](https://reactjs.org/)
+    * Simple, powerful and popular.
   * [Create React App](https://github.com/facebook/create-react-app)
+    * For an opionated, zero-configuration build process. 
   * [Material-UI](https://material-ui.com/)
+    * Implementation of the popular [Google Material Design System](https://material.io/) in React.
   * [React Router V4](https://reacttraining.com/react-router/)
+    * URL management.
 
 ### Development Tools
 
-Tools that we use to develop our application over time.
+Our number 1 development tool is our [development process documentation!](./Development/DevelopmentProcess-Tasks.md)
 
-* Version Control
-  * Git
-  * Monorepo
+* [Version Control](https://www.atlassian.com/git/tutorials/what-is-version-control)
+  * [Git](https://git-scm.com/)
+    * Popular and works well.
+  * [Monorepo](https://danluu.com/monorepo/)
+    * For simplicity and synced changes across the application.
   * [Git Town](http://www.git-town.com/)
+    * An abstraction over git to make it easier to do common things.
 * Editors
   * [Visual Studio Code \(vscode\)](https://code.visualstudio.com/)
+    * Fast and popular editor.
   * [Sequel Pro](https://www.sequelpro.com/)
-* Documentation
-  * Development process documentation
+    * The best Mac app to connect to manage MySQL databases.
 * Deployment
-  * [Flyway](https://flywaydb.org/) for automated database migrations.
+  * [Flyway](https://flywaydb.org/)
+    * for automated database migrations.
