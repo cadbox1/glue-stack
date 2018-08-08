@@ -11,6 +11,8 @@ I guess that would be Continuous Deployment?
 Our pipeline (process) looks like this:
 1. Run the ui and api tests in parallel.
 2. When they are both complete and pass, deploy the api.
+    1. The api is deployed to AWS elastic beanstalk which is AWS' PaaS (platform as a service) offering. It can be configured to do rolling deploys for zero downtime deploys.
+    2. When the new api version starts up, [Flyway](https://flywaydb.org/) automatically runs database change scripts if required.
 3. When the api is deployed, deploy the ui.
 
 ## Execution
