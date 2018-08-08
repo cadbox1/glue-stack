@@ -29,6 +29,7 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 
 * Check out the [live app](https://d1if23x0agu0jj.cloudfront.net/).
 * We have a [pretty website](https://cadbox1.github.io/glue-stack/).
+* Check out our [Architecture](./Architecture.md).
 * Check out our [development process](./Development/DevelopmentProcess-Tasks.md).
 * [Run it locally](./Development/RunningLocally.md).
 * Check out our [roadmap](https://github.com/cadbox1/glue-stack/projects/3).
