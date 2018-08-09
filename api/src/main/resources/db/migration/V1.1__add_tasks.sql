@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.21)
 # Database: glue
-# Generation Time: 2018-08-09 10:13:09 +0000
+# Generation Time: 2018-08-09 10:14:33 +0000
 # ************************************************************
 
 
@@ -20,38 +20,24 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table organisation
+# Dump of table task
 # ------------------------------------------------------------
 
-CREATE TABLE `organisation` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `statusId` int(11) unsigned NOT NULL,
-  `active` bit(1) NOT NULL,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table user
-# ------------------------------------------------------------
-
-CREATE TABLE `user` (
+CREATE TABLE `task` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `organisationId` int(11) unsigned NOT NULL,
-  `email` varchar(255) NOT NULL DEFAULT '',
-  `password` char(60) NOT NULL DEFAULT '',
-  `firstName` varchar(255) NOT NULL DEFAULT '',
-  `lastName` varchar(255) NOT NULL DEFAULT '',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `notes` varchar(255) DEFAULT NULL,
+  `userId` int(11) unsigned DEFAULT NULL,
+  `statusId` int(11) unsigned DEFAULT NULL,
   `active` bit(1) NOT NULL,
   `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
+  `modifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
   KEY `organisationId` (`organisationId`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`organisationId`) REFERENCES `organisation` (`id`)
+  KEY `userId` (`userId`),
+  CONSTRAINT `task_ibfk_1` FOREIGN KEY (`organisationId`) REFERENCES `organisation` (`id`),
+  CONSTRAINT `task_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
