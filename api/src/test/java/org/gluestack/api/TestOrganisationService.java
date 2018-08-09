@@ -1,10 +1,8 @@
 package org.gluestack.api;
 
 import org.gluestack.api.domain.entity.Organisation;
-import org.gluestack.api.domain.entity.Task;
 import org.gluestack.api.domain.entity.User;
 import org.gluestack.api.repository.OrganisationRepository;
-import org.gluestack.api.repository.TaskRepository;
 import org.gluestack.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,9 +16,6 @@ public class TestOrganisationService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,15 +45,6 @@ public class TestOrganisationService {
         otherUser.setOrganisation(organisation);
         userRepository.save(otherUser);
         testOrganisation.otherUser = otherUser;
-
-        Task taskAssignedToActingUser = new Task();
-        taskAssignedToActingUser.setName("Assigned Task");
-        taskAssignedToActingUser.setNotes("Assigned To Acting User");
-        taskAssignedToActingUser.setStatusId(1);
-        taskAssignedToActingUser.setUser(actingUser);
-        taskAssignedToActingUser.setOrganisation(organisation);
-        taskRepository.save(taskAssignedToActingUser);
-        testOrganisation.taskAssignedToActingUser = taskAssignedToActingUser;
 
         return testOrganisation;
     }

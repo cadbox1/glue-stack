@@ -2,7 +2,6 @@ package org.gluestack.api.user;
 
 import org.gluestack.api.BaseTest;
 import org.gluestack.api.PageResponse;
-import org.gluestack.api.domain.entity.Task;
 import org.gluestack.api.domain.entity.User;
 
 import static org.hamcrest.MatcherAssert.assertThat;

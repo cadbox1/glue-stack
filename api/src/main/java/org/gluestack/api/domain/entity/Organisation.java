@@ -21,10 +21,6 @@ public class Organisation extends BaseEntity {
 	@Column(nullable = false)
 	private Integer statusId = 1;
 
-	//bi-directional many-to-one association to Task
-	@OneToMany(mappedBy = "organisation")
-	private List<Task> tasks = new ArrayList<>();
-
 	//bi-directional many-to-one association to User
 	@Valid
 	@Cascade(CascadeType.ALL)
@@ -48,28 +44,6 @@ public class Organisation extends BaseEntity {
 
 	public void setStatusId(Integer statusId) {
 		this.statusId = statusId;
-	}
-
-	public List<Task> getTasks() {
-		return this.tasks;
-	}
-
-	public void setTasks(List<Task> tasks) {
-		this.tasks = tasks;
-	}
-
-	public Task addTask(Task task) {
-		getTasks().add(task);
-		task.setOrganisation(this);
-
-		return task;
-	}
-
-	public Task removeTask(Task task) {
-		getTasks().remove(task);
-		task.setOrganisation(null);
-
-		return task;
 	}
 
 	public List<User> getUsers() {

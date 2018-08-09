@@ -35,10 +35,6 @@ public class User extends BaseOrganisedEntity implements UserDetails {
 	@Column(nullable = false, length = 60, columnDefinition = "CHAR(60)")
 	private String password;
 
-	//bi-directional many-to-one association to TaskSchedule
-	@OneToMany(mappedBy = "user")
-	private List<Task> tasks = new ArrayList<>();
-
 	public User() {
 	}
 
@@ -72,14 +68,6 @@ public class User extends BaseOrganisedEntity implements UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public List<Task> getTasks() {
-		return tasks;
-	}
-
-	public void setTasks(List<Task> tasks) {
-		this.tasks = tasks;
 	}
 
 	@Override
