@@ -29,6 +29,7 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 
 * Check out the [live app](https://d1if23x0agu0jj.cloudfront.net/).
 * We have a [pretty website](https://cadbox1.github.io/glue-stack/).
+* Our documentation looks great in our [GitBook](https://cadbox1.gitbook.io/glue-stack/)
 * Check out our [Architecture](architecture.md).
 * Check out our [development process](development/developmentprocess-tasks.md).
 * [Run it locally](development/runninglocally.md).
@@ -36,13 +37,15 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 * Check out our [chat](https://spectrum.chat/glue-stack).
 * If you're really keen then [build Glue Stack from an empty folder](https://github.com/cadbox1/glue-stack/tree/12fc1998a672e2ad8d987a9589a12cf37666fdd7/docs/Guides/BuildingGlueStackFromAnEmptyFolder.md).
 
+Please remember to star this project on GitHub if you think it is remotely cool!
+
 ## Why
 
 * Document how I currently build web applications.
 * Show why a monolithic application with SQL and Java is still cool.
-* Show how to create development process documentation.
+* Show how to create development process documentation. Tests aren't the only way to increase sotware quality.
 * A playground to experiment with new ideas.
-* To optimise for development speed without comprimising quality through continuous improvement.
+* To optimise for simplicity and development speed without comprimising quality.
 
 ## Features
 
