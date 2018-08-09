@@ -2,13 +2,37 @@
 
 This is the document I believe more teams need to write. How to develop a 'trivial' CRUD screen, in this case its the tasks part of our task management app.
 
-I assum you've followed the [Making Glue Stack Document](./making-glue-stack.md) to build the framework of our app to manage users, signup and authenticate. We're going to apply the same process to build tasks but its a separate document because we're going to use this process repeatedly throughout the life of the app but probably not rebuild the core over and over again in the same way. This is the app you show to new team members so they can smash out an entire section and get it right the first time. Its also the document the team can examine to come up with process improvements.
+This is a demonstration of the process documentation I describe [here](./DevelopingProcessDocumentation.md).
+
+In this document we will be building the entire tasks domain of our app, from database to Java API to React UI to Pull Request and finally Deployment.
+
+I've focused on getting the steps right for now but will be expanding on what we are actually doing in each step in the future.
+
+## Prerequisites
+
+[Setup Development Tools](./SetupDevelopmentTools.md).
 
 ## Design
 
-Process determines design. I will do this after I've established the process.
+Process determines design because it will create a lot of the constraints the design needs to address. I'll work on this in the future when our process has stabilised.
 
-## Database
+## Development
+
+1. Checkout our specially made branch without any tasks.
+
+   ```
+   git checkout no-tasks-do-not-merge
+   ```
+
+2. Open glue-stack in VSCode.
+
+3. Open the terminal using (Control + `).
+
+4. Follow the steps at [Running locally](./RunningLocally.md), using the plus button in VSCode's terminal to create a new tab.
+
+5. Take a look at the app without any tasks.
+
+### Database
 
 1. Open Glue Stack in VSCode.
 
@@ -18,7 +42,7 @@ Process determines design. I will do this after I've established the process.
    docker-compose up
    ```
 
-### Task Table
+#### Task Table
 
 The task table has a Many-To-One relationship to an organisation \(just like the user table\) and a Many-To-One relationship to a user. That means a task can be associated with a user and a user can have tasks associated with them.
 
@@ -148,9 +172,9 @@ The task table has a Many-To-One relationship to an organisation \(just like the
     mvn spring-boot:run
     ```
 
-# API
+### API
 
-### Entity
+#### Entity
 
 1. Create `Task.java` at ``api/src/main/java/org/gluestack/api/domain/entity`.
 
@@ -194,7 +218,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 5. Commit your work.
 
-### Repository
+#### Repository
 
 1. Create the `TaskRepository.java` at ``api/src/main/java/org/gluestack/api/repository`.
 
@@ -209,7 +233,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 2. Commit your work.
 
-### Service
+#### Service
 
 1. Create the `TaskService.java` at ``api/src/main/java/org/gluestack/api/service`.
 
@@ -246,7 +270,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 2. Commit your work.
 
-### Controller
+#### Controller
 
 1. Create the `TaskController.java` at ``api/src/main/java/org/gluestack/api/controller`.
 
@@ -285,7 +309,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 2. Commit your work.
 
-### Tests
+#### Tests
 
 Our current test framework means you make it easy to reuse the test data you use in your tests so there is lest time wasted setting up the same data scenarios over and over again.
 
@@ -352,6 +376,280 @@ Our current test framework means you make it easy to reuse the test data you use
 
 6. Commit your work.
 
-## UI
+### UI
 
 [JavaScript fundamentals before learning React](https://news.ycombinator.com/item?id=17569848) is a good resource to understand Javascript while learning React.
+
+1. Create a task folder at `ui/src/main/authenticated/task`.
+
+2. Create the `index.js` file inside that folder. This will be the root task page.
+
+   ```
+   import React, { Component } from 'react';
+   
+   class Task extends Component {
+       render() {
+           return (
+               <div>tasks</div>
+           );
+       }
+   }
+   
+   export { Task};
+   ```
+
+3. Save.
+
+4. Open `authenticated/index.js` (Using `Command+p` then typing `auth/ind`).
+
+5. Add the following below the "users" Route in the render function.
+
+   ```
+   <Route
+       path="/tasks"
+       render={props => (
+           <Task
+               {...props}
+               {...this.props}
+               toggleSideBar={this.toggleSideBar}
+           />
+       )}
+   />
+   ```
+
+6. Put your cursor at the end of the word `<Task`, hit `Control + Space` and select the Task that says auto import (mine was the second option). It should add the following to the top of the file.
+
+   ```
+   import { Task } from "./task";
+   ```
+
+7. Save.
+
+8. Open `sidebar/index.js` using the same hotkey and technique as before.
+
+9. Add the following below the "users" `<ListItem` in the render function.
+
+   ```
+   <ListItem component={Link} to="/tasks" button>
+   	<ListItemText primary="Tasks" />
+   </ListItem>
+   ```
+
+10. Save
+
+11. You should now be able to click the Tasks item in the side bottom and it should render a page saying "tasks".
+
+12. Create the `task.js` file at `ui/src/api/`.
+
+    ```
+    import axios from "axios";
+    
+    const path = "tasks";
+    
+    export function findAll({ name, userId, statusId, page, size, sort } = {}) {
+    	return axios.get(path, {
+    		params: { name, "user.id": userId, statusId, page, size, sort },
+    	});
+    }
+    
+    export function findOne(id) {
+    	return axios.get(`${path}/${id}`);
+    }
+    
+    export function patch(id, body) {
+    	return axios.patch(`${path}/${id}`, body);
+    }
+    
+    export function save(body) {
+    	if (body.id) {
+    		return patch(body.id, body);
+    	} else {
+    		return axios.post(path, body);
+    	}
+    }
+    
+    export const TaskStatus = {
+    	TODO: 0,
+    	IN_PROGRESS: 1,
+    	DONE: 2,
+    };
+    ```
+
+13. Create the list component. Create a new file in the`ui/src/main/authenticated/task/` folder called `list.js`.
+
+    ```
+    import React, { Component } from "react";
+    import Table from "@material-ui/core/Table";
+    import TableBody from "@material-ui/core/TableBody";
+    import TableHead from "@material-ui/core/TableHead";
+    import TableRow from "@material-ui/core/TableRow";
+    import TableFooter from "@material-ui/core/TableFooter";
+    import Hidden from "@material-ui/core/Hidden";
+    import { TableCell } from "common/components/TableCell";
+    import { parseURL } from "common/parseURL";
+    import { TablePagination } from "common/components/TablePagination";
+    import { TableSortLabel } from "common/components/TableSortLabel";
+    import { findAll } from "api/task";
+    
+    class List extends Component {
+    	render() {
+    		const { findAll } = this.props;
+    		return (
+    			<div style={{ width: "100%", overflow: "auto" }}>
+    				<Table>
+    					<TableHead>
+    						<TableRow>
+    							<TableCell>
+    								<TableSortLabel findAll={findAll} property="name">
+    									Name
+    								</TableSortLabel>
+    							</TableCell>
+    							<Hidden smDown>
+    								<TableCell>
+    									<TableSortLabel findAll={findAll} property="notes">
+    										Notes
+    									</TableSortLabel>
+    								</TableCell>
+    							</Hidden>
+    							<TableCell>
+    								<TableSortLabel findAll={findAll} property="statusId">
+    									Status
+    								</TableSortLabel>
+    							</TableCell>
+    							<TableCell>
+    								<TableSortLabel findAll={findAll} property="user.firstName">
+    									Assigned
+    								</TableSortLabel>
+    							</TableCell>
+    							<TableCell>Actions</TableCell>
+    						</TableRow>
+    					</TableHead>
+    					<TableBody>
+    						{findAll.rejected && (
+    							<TableRow>
+    								<TableCell colSpan="3">
+    									{findAll.reason ? (
+    										<div>
+    											<p>{findAll.reason.error}</p>
+    											<p>{findAll.reason.exception}</p>
+    											<p>{findAll.reason.message}</p>
+    										</div>
+    									) : (
+    										<p>Error</p>
+    									)}
+    								</TableCell>
+    							</TableRow>
+    						)}
+    						{findAll.value &&
+    							findAll.value.data.content.map(row => <div>{row.id}</div>)}
+    					</TableBody>
+    					{findAll.fulfilled && (
+    						<TableFooter>
+    							<TableRow>
+    								<TablePagination findAll={findAll} />
+    							</TableRow>
+    						</TableFooter>
+    					)}
+    				</Table>
+    			</div>
+    		);
+    	}
+    }
+    
+    export { List };
+    
+    export const connectConfig = {
+    	findAll: {
+    		params: props => {
+    			const { search, statusId, userId } = props.params;
+    			return {
+    				...parseURL(props),
+    				name: search,
+    				statusId: statusId != null ? Number(statusId) : statusId,
+    				userId: userId != null ? Number(userId) : userId,
+    			};
+    		},
+    		promise: findAll,
+    	},
+    };
+    ```
+
+14. Change the `index.js` to this:
+
+    ```
+    import React, { Component, Fragment } from "react";
+    import { Route } from "react-router-dom";
+    import componentQueries from "react-component-queries";
+    import { withStyles } from "@material-ui/core/styles";
+    import IconButton from "@material-ui/core/IconButton";
+    import Add from "@material-ui/icons/Add";
+    import { Container } from "common/components/Container";
+    import { Page } from "common/components/Page";
+    import { AppBar } from "common/components/AppBar";
+    import { MenuButton } from "common/components/MenuButton";
+    import { AppBarTitle } from "common/components/AppBarTitle";
+    import { RefreshButton } from "common/components/RefreshButton";
+    import { Link } from "common/components/Link";
+    import { connect } from "common/connector";
+    import { urlStateHolder } from "common/stateHolder";
+    import { List, connectConfig } from "./list";
+    
+    const styles = theme => ({
+    	inputRoot: {
+    		color: "inherit",
+    	},
+    });
+    
+    class Task extends Component {
+    	render() {
+    		const { match, findAll, toggleSideBar, singleView } = this.props;
+    
+    		return (
+    			<Container>
+    				<Route
+    					path={`${match.path}`}
+    					exact={singleView}
+    					render={props => (
+    						<Page>
+    							<AppBar>
+    								<Fragment>
+    									<MenuButton toggleSideBar={toggleSideBar} />
+    									<AppBarTitle>Tasks</AppBarTitle>
+    
+    									<RefreshButton findAll={findAll} />
+    									<IconButton
+    										component={Link}
+    										to={`${match.path}/create`}
+    										color="inherit"
+    									>
+    										<Add />
+    									</IconButton>
+    								</Fragment>
+    							</AppBar>
+    							<List {...props} listURL={match.path} findAll={findAll} />
+    						</Page>
+    					)}
+    				/>
+    			</Container>
+    		);
+    	}
+    }
+    
+    Task = withStyles(styles)(
+    	componentQueries({
+    		queries: [
+    			({ width }) => ({
+    				singleView: width < 1000,
+    			}),
+    		],
+    		config: { pure: false },
+    	})(urlStateHolder(connect(connectConfig)(Task)))
+    );
+    
+    export { Task };
+    ```
+
+15. The tasks page should now be starting to look more like the users page.
+
+16. Next we will work on Adding a task.
+

@@ -5,7 +5,7 @@
 * Built with a React, Java (Spring Boot) JSON web API, MySQL relational database in a monolithic architecture on AWS
 * Beginner friendly documentation for developing the application. 
 
-If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook.io/glue-stack/).
+If you're reading this on GitHub, then be aware that this same documentation is a lot nicer in our [GitBook](https://cadbox1.gitbook.io/glue-stack/).
 
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/glue-stack)
 [![Build Status](https://travis-ci.com/cadbox1/glue-stack.svg?branch=master)](https://travis-ci.com/cadbox1/glue-stack)
@@ -36,12 +36,16 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 * Check out our [chat](https://spectrum.chat/glue-stack).
 * If you're really keen then [build Glue Stack from an empty folder](./Guides/BuildingGlueStackFromAnEmptyFolder.md).
 
+
+
+Please don't forget to star us on GitHub if you think this is remotely cool!
+
 ## Why
 * Document how I currently build web applications.
 * Show why a monolithic application with SQL and Java is still cool.
-* Show how to create development process documentation.
+* Show how to create development process documentation. I look to process documentation for quality improvement when a lot of developers look only at tests.
 * A playground to experiment with new ideas.
-* To optimise for development speed without comprimising quality through continuous improvement.
+* To optimise for simplicity and development speed without comprimising quality.
 
 ## Features
 
