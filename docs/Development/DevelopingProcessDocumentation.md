@@ -1,10 +1,10 @@
 # Developing Process Documentation
 
-Sharing knowledge is something that I feel strongly about and its why I made this project in the first place. It's commonly overlooked because we often forget what it's like to struggle through something once we've completed it, saying how silly we are for not getting it sooner. I feel like this is especially common among developers since we are constantly learning, so much so that we're almost expected to struggle through tasks all in the name of learning something new. And okay, unless everyone else in your team is also struggling through the same stuff, solving the same problems with varying results.
+Sharing knowledge is something that I feel strongly about so much so that I made this project. It's commonly overlooked because we often forget what it's like to struggle through something once we've completed it, saying how silly we are for not getting it sooner. I feel like this theme is especially common among developers. But when you're working in a team its important to share the knowledge you've gained through solving problems so that your whole team can benefit. Otherwise the rest of your team will solve the same problems over and over again with varying results.
 
-If you learn something new you should be sharing that knowledge so the rest of your team can benefit. The more we share knowledge, the more we communicate with each other, the more we understand each other, the easier it is to identify team problems and solve together for the whole team.
+The more we share knowledge, the more we communicate with each other, the more we understand each other, the easier it is to identify and solve team problems.
 
-Documentation is one of the most efficient ways to share knowledge, let's demonstrate.
+Process documentation is one of the most efficient ways to share knowledge, let's demonstrate.
 
 Without documentation:
 
@@ -32,6 +32,10 @@ With documentation:
 
 The alternative path is Teacher writes a brief document then the process continues at step 3 with the teacher asking for review.
 
-Documentation is code for humans; its always accessible, easy to review and easy to improve. Being easily accessible means less dependency on people which means more people can do more of the work with less variation in results. And when there are issues, documentation can be reviewed and updated to address them. So instead of the process getting worse over time because people naturally forget things it actually gets better, imagine if production code improved itself every time it ran! Less knowledgeable people actually have more to contribute because they are more aware of all the tiny details it takes to make something work whereas experienced people are often unconciously doing things. All of this creates a better culture where everyone can focus on improving process and helping the team instead of playing blame games for poor results.
+Documentation is code for humans; its always accessible, easy to review and easy to improve. Being easily accessible means less dependency on people which means it takes less resources to do a task and less variation in results. And when there are issues, documentation can be reviewed and updated to address them. So instead of the process getting worse over time because people naturally forget things, it actually gets better. Imagine if production code improved itself every time it ran! 
 
-Our documentation is available in our [GitBook](https://cadbox1.gitbook.io/glue-stack/).
+New people actually have more to contribute because they are more aware of all the tiny details it takes to make something work whereas experienced people are often unconciously doing things. 
+
+Documenting processes creates a better culture where everyone can focus on improving process and helping the team instead of playing blame games for poor results.
+
+Checkout our [development process](./DevelopmentProcess-Tasks.md).

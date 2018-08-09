@@ -2,13 +2,37 @@
 
 This is the document I believe more teams need to write. How to develop a 'trivial' CRUD screen, in this case its the tasks part of our task management app.
 
-I assum you've followed the [Making Glue Stack Document](./making-glue-stack.md) to build the framework of our app to manage users, signup and authenticate. We're going to apply the same process to build tasks but its a separate document because we're going to use this process repeatedly throughout the life of the app but probably not rebuild the core over and over again in the same way. This is the app you show to new team members so they can smash out an entire section and get it right the first time. Its also the document the team can examine to come up with process improvements.
+This is a demonstration of the process documentation I describe [here](./DevelopingProcessDocumentation.md).
+
+In this document we will be building the entire tasks domain of our app, from database to Java API to React UI to Pull Request and finally Deployment.
+
+I've focused on getting the steps right for now but will be expanding on what we are actually doing in each step in the future.
+
+## Prerequisites
+
+[Setup Development Tools](./SetupDevelopmentTools.md).
 
 ## Design
 
-Process determines design. I will do this after I've established the process.
+Process determines design because it will create a lot of the constraints the design needs to address. I'll work on this in the future when our process has stabilised.
 
-## Database
+## Development
+
+1. Checkout our specially made branch without any tasks.
+
+   ```
+   git checkout no-tasks-do-not-merge
+   ```
+
+2. Open glue-stack in VSCode.
+
+3. Open the terminal using (Control + `).
+
+4. Follow the steps at [Running locally](./RunningLocally.md), using the plus button in VSCode's terminal to create a new tab.
+
+5. Take a look at the app without any tasks.
+
+### Database
 
 1. Open Glue Stack in VSCode.
 
@@ -18,7 +42,7 @@ Process determines design. I will do this after I've established the process.
    docker-compose up
    ```
 
-### Task Table
+#### Task Table
 
 The task table has a Many-To-One relationship to an organisation \(just like the user table\) and a Many-To-One relationship to a user. That means a task can be associated with a user and a user can have tasks associated with them.
 
@@ -148,9 +172,9 @@ The task table has a Many-To-One relationship to an organisation \(just like the
     mvn spring-boot:run
     ```
 
-# API
+### API
 
-### Entity
+#### Entity
 
 1. Create `Task.java` at ``api/src/main/java/org/gluestack/api/domain/entity`.
 
@@ -194,7 +218,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 5. Commit your work.
 
-### Repository
+#### Repository
 
 1. Create the `TaskRepository.java` at ``api/src/main/java/org/gluestack/api/repository`.
 
@@ -209,7 +233,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 2. Commit your work.
 
-### Service
+#### Service
 
 1. Create the `TaskService.java` at ``api/src/main/java/org/gluestack/api/service`.
 
@@ -246,7 +270,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 2. Commit your work.
 
-### Controller
+#### Controller
 
 1. Create the `TaskController.java` at ``api/src/main/java/org/gluestack/api/controller`.
 
@@ -285,7 +309,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 2. Commit your work.
 
-### Tests
+#### Tests
 
 Our current test framework means you make it easy to reuse the test data you use in your tests so there is lest time wasted setting up the same data scenarios over and over again.
 
@@ -352,6 +376,9 @@ Our current test framework means you make it easy to reuse the test data you use
 
 6. Commit your work.
 
-## UI
+### UI
 
 [JavaScript fundamentals before learning React](https://news.ycombinator.com/item?id=17569848) is a good resource to understand Javascript while learning React.
+
+
+
