@@ -1,4 +1,4 @@
-# Glue Stack
+# Read Me
 
 ## What
 
@@ -14,16 +14,16 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 
 ## Table of Contents
 
-* [Glue Stack](./#glue-stack)
-  * [What](./#what)
-  * [Table of Contents](./#table-of-contents)
-  * [Getting Started](./#getting-started)
-  * [Why](./#why)
-  * [Features](./#features)
-    * [Managing Resources](./#managing-resources)
-  * [Architecture](./#architecture)
-    * [Application Tools](./#application-tools)
-    * [Development Tools](./#development-tools)
+* [Glue Stack](readme-1.md#glue-stack)
+  * [What](readme-1.md#what)
+  * [Table of Contents](readme-1.md#table-of-contents)
+  * [Getting Started](readme-1.md#getting-started)
+  * [Why](readme-1.md#why)
+  * [Features](readme-1.md#features)
+    * [Managing Resources](readme-1.md#managing-resources)
+  * [Architecture](readme-1.md#architecture)
+    * [Application Tools](readme-1.md#application-tools)
+    * [Development Tools](readme-1.md#development-tools)
 
 ## Getting Started
 
@@ -34,7 +34,7 @@ If you're reading this on GitHub, then try our [GitBook](https://cadbox1.gitbook
 * [Run it locally](development/runninglocally.md).
 * Check out our [roadmap](https://github.com/cadbox1/glue-stack/projects/3).
 * Check out our [chat](https://spectrum.chat/glue-stack).
-* If you're really keen then [build Glue Stack from an empty folder](https://github.com/cadbox1/glue-stack/tree/12fc1998a672e2ad8d987a9589a12cf37666fdd7/docs/Guides/BuildingGlueStackFromAnEmptyFolder.md).
+* If you're really keen then [build Glue Stack from an empty folder](https://github.com/cadbox1/glue-stack/tree/b697c3f56eb44932d8c889c1ca7d0da7d3da3436/docs/Guides/BuildingGlueStackFromAnEmptyFolder.md).
 
 ## Why
 

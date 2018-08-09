@@ -1,4 +1,4 @@
-# Setup VSCode \(Visual Studio Code\)
+# Setup Visual Studio Code \(vscode\)
 
 1. Download [vscode](https://code.visualstudio.com/)
 2. Download these extensions
