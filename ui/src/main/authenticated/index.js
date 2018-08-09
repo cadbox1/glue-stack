@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import componentQueries from "react-component-queries";
 import { Sidebar } from "./sidebar";
 import { User } from "./user";
+import { Task } from "./task";
 
 class Authenticated extends Component {
 	constructor(props) {
@@ -40,6 +41,16 @@ class Authenticated extends Component {
 						path="/users"
 						render={props => (
 							<User
+								{...props}
+								{...this.props}
+								toggleSideBar={this.toggleSideBar}
+							/>
+						)}
+					/>
+					<Route
+						path="/tasks"
+						render={props => (
+							<Task
 								{...props}
 								{...this.props}
 								toggleSideBar={this.toggleSideBar}

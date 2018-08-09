@@ -59,6 +59,9 @@ class Sidebar extends Component {
 					<ListItem component={Link} to="/users" button>
 						<ListItemText primary="Users" />
 					</ListItem>
+					<ListItem component={Link} to="/tasks" button>
+						<ListItemText primary="Tasks" />
+					</ListItem>
 				</List>
 			</Drawer>
 		);
