@@ -56,12 +56,6 @@ class Sidebar extends Component {
 						</List>
 					</Collapse>
 					<Divider />
-					<ListItem component={Link} to="/me" button>
-						<ListItemText primary="Me" />
-					</ListItem>
-					<ListItem component={Link} to="/tasks" button>
-						<ListItemText primary="Tasks" />
-					</ListItem>
 					<ListItem component={Link} to="/users" button>
 						<ListItemText primary="Users" />
 					</ListItem>
