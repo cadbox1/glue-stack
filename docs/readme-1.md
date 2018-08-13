@@ -1,4 +1,4 @@
-# Glue Stack
+# Read Me
 
 ## What
 
@@ -14,17 +14,17 @@ If you're reading this on GitHub, then be aware that this same documentation is 
 
 ## Table of Contents
 
-* [Glue Stack](./#glue-stack)
-  * [What](./#what)
-  * [Table of Contents](./#table-of-contents)
-  * [Getting Started](./#getting-started)
-  * [Why](./#why)
-  * [Why](./#why)
-  * [Features](./#features)
-    * [Managing Resources](./#managing-resources)
-  * [Architecture](./#architecture)
-    * [Application Tools](./#application-tools)
-    * [Development Tools](./#development-tools)
+* [Glue Stack](readme-1.md#glue-stack)
+  * [What](readme-1.md#what)
+  * [Table of Contents](readme-1.md#table-of-contents)
+  * [Getting Started](readme-1.md#getting-started)
+  * [Why](readme-1.md#why)
+  * [Why](readme-1.md#why)
+  * [Features](readme-1.md#features)
+    * [Managing Resources](readme-1.md#managing-resources)
+  * [Architecture](readme-1.md#architecture)
+    * [Application Tools](readme-1.md#application-tools)
+    * [Development Tools](readme-1.md#development-tools)
 
 ## Getting Started
 
