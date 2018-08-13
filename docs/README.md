@@ -31,12 +31,12 @@ If you're reading this on GitHub, then be aware that this same documentation is 
 * Check out the [live app](https://d1if23x0agu0jj.cloudfront.net/).
 * We have a [pretty website](https://cadbox1.github.io/glue-stack/).
 * Our documentation looks great in our [GitBook](https://cadbox1.gitbook.io/glue-stack/)
-* Check out our [Architecture](architecture.md).
-* Check out our [development process](development/developmentprocess-tasks.md).
+* Check out our [Architecture](Architecture.md).
+* Check out our [development process](Development/DevelopmentProcess-Tasks.md).
 * [Run it locally](development/runninglocally.md).
 * Check out our [roadmap](https://github.com/cadbox1/glue-stack/projects/3).
 * Check out our [chat](https://spectrum.chat/glue-stack).
-* If you're really keen then [build Glue Stack from an empty folder](./Guides/BuildingGlueStackFromAnEmptyFolder.md).
+* If you're really keen then [build Glue Stack from an empty folder](./Development/BuildingGlueStackFromAnEmptyFolder.md).
 
 Please remember to star this project on GitHub if you think it is remotely cool!
 
