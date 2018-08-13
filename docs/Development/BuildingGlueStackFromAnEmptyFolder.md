@@ -1,18 +1,22 @@
 # Building Glue Stack From an Empty Folder
 
-This covers how to create an application that manages users from a blank folder. It won't be kept quite as up to date as the [Development Process Document](developmentprocess-tasks.md) because its a lot longer. It was interesting to go through and rewrite the application I just wrote and clarify some of the stranger parts. I think it would be really cool to show new team members how to build the core framework of the existing application from scratch but the cost might outweigh the benefit.
+This covers how to create an application that manages users from a blank folder. It won't be kept quite as up to date as the [Development Process Document](./DevelopmentProcess-Tasks.md) because its a lot longer. It was interesting to go through and rewrite the application I just wrote and clarify some of the stranger parts. I think it would be really cool to show new team members how to build the core framework of the existing application from scratch but the cost might outweigh the benefit. 
 
 1. Create a file to write down any questions you have or anything that's unclear in this document so that we can improve it to make it easier for the next person.
-2. Run the `setup.sh` as part of the [Running Locally]() process. This will install some of the tools we're going to need.
+
+2. Run the `setup.sh` as part of the [Running Locally](./README.md#running-locally) process. This will install some of the tools we're going to need.
+
 3. Make a development folder in your home folder. This is for all your development stuff.
+
    1. Open terminal. `Command + Space` \(Spotlight\) then type terminal.
-   2. It will open your home folder by default, indicated by the `~` \(tilde\).
+   2. It will open your home folder by default, indicated by the `~` (tilde).
 
       ```text
       cd ~
       mkdir development
       cd development
       ```
+
 4. Create a folder for our app.
 
    ```text
@@ -33,12 +37,13 @@ This covers how to create an application that manages users from a blank folder.
 We're going to download MySQL and run it using a tool called Docker Compose which uses Docker then connect to it using Sequel Pro.
 
 1. Create a docker compose file.
-   1. Use vim to create a `docker-compose.yml` file.
 
+   1. Use vim to create a `docker-compose.yml` file.
+   
       ```text
       vim docker-compose.yml
       ```
-
+      
    2. Hit `i` to insert text.
    3. Paste the following:
 
@@ -59,6 +64,7 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
    5. Save and quit using `:wq` \(colon then w then q, not all at once\).
 
       The standard port for MySQL is 3306 but I've chosen to map it to 3307 so it doesn't clash if you already have a MySQL database running - you can't have two applications listening to the same port.
+   
 2. Start the database.
 
    ```text
@@ -68,6 +74,7 @@ We're going to download MySQL and run it using a tool called Docker Compose whic
    The MySQL database will be open after the line`Starting MySQL 5.7.21-1.1.3`. To close it hit `Control + C`.
 
 3. Commit your changes to git from terminal.
+
    1. Stage all your files \(will just be our docker-compose file\).
 
       ```text
@@ -301,6 +308,7 @@ That's it! Have a play with the content tab on the tables to enter data if you'r
 3. [Setup VSCode](https://github.com/cadbox1/glue-stack/tree/36ae8a12738e97168e5c6552be7b4538c2bcd25a/docs/Setup%20VSCode.md).
 4. Open the glue-stack folder.
 5. Add some configuration to our project.
+
    1. Hit Command+p then start typing `application.properties` then open it.
 
       This is where we configure our Spring Boot application.
@@ -327,6 +335,7 @@ That's it! Have a play with the content tab on the tables to enter data if you'r
       ```
 
    3. Save using `Command + s`.
+   
 6. Hit `Control + ~` to bring up a terminal.
 7. Run the app for the first time!
 
@@ -417,7 +426,7 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
    ```text
    package org.gluestack.api.domain.entity;
-
+   
    import java.util.Date;
    import javax.persistence.Access;
    import javax.persistence.AccessType;
@@ -431,28 +440,28 @@ I'm going to walk you through making the abstractions first becuase it makes thi
    import javax.validation.constraints.NotNull;
    import org.hibernate.annotations.CreationTimestamp;
    import org.hibernate.annotations.UpdateTimestamp;
-
+   
    @MappedSuperclass
    public abstract class BaseEntity {
-
+   
        @Id
        @Access(AccessType.PROPERTY)
        @GeneratedValue(strategy = GenerationType.IDENTITY)
        @Column(unique = true, nullable = false)
        protected Integer id;
-
+   
        @NotNull
        @Column(nullable = false)
        protected Boolean active = true;
-
+   
        @CreationTimestamp
        @Temporal(TemporalType.TIMESTAMP)
        protected Date createdDate;
-
+   
        @UpdateTimestamp
        @Temporal(TemporalType.TIMESTAMP)
        protected Date modifiedDate;
-
+   
    }
    ```
 
@@ -462,31 +471,31 @@ I'm going to walk you through making the abstractions first becuase it makes thi
    public Integer getId() {
        return id;
    }
-
+   
    public void setId(Integer id) {
        this.id = id;
    }
-
+   
    public Boolean getActive() {
        return active;
    }
-
+   
    public void setActive(Boolean active) {
        this.active = active;
    }
-
+   
    public Date getCreatedDate() {
        return createdDate;
    }
-
+   
    public void setCreatedDate(Date createdDate) {
        this.createdDate = createdDate;
    }
-
+   
    public Date getModifiedDate() {
        return modifiedDate;
    }
-
+   
    public void setModifiedDate(Date modifiedDate) {
        this.modifiedDate = modifiedDate;
    }
@@ -496,19 +505,19 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
    ```text
    package org.gluestack.api.domain.entity;
-
+   
    import javax.persistence.FetchType;
    import javax.persistence.JoinColumn;
    import javax.persistence.ManyToOne;
    import javax.persistence.MappedSuperclass;
-
+   
    @MappedSuperclass
    public abstract class BaseOrganisedEntity extends BaseEntity {
-
+   
        @ManyToOne(fetch = FetchType.LAZY)
        @JoinColumn(name = "organisationId", nullable = false)
        protected Organisation organisation;
-
+   
    }
    ```
 
@@ -516,7 +525,7 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
    ```text
    package org.gluestack.api.domain.entity;
-
+   
    import java.util.ArrayList;
    import java.util.List;
    import javax.persistence.Column;
@@ -526,25 +535,25 @@ I'm going to walk you through making the abstractions first becuase it makes thi
    import javax.validation.Valid;
    import org.hibernate.annotations.Cascade;
    import org.hibernate.annotations.CascadeType;
-
+   
    @Entity
    @Table(name = "organisation")
    public class Organisation extends BaseEntity {
-
+   
        @Column(nullable = false, length = 255)
        private String name;
-
+   
        @OneToMany(mappedBy = "organisation")
        private List<Task> tasks = new ArrayList<>();
-
+   
        @Valid
        @Cascade(CascadeType.ALL)
        @OneToMany(mappedBy = "organisation")
        private List<User> users = new ArrayList<>();
-
+   
        public Organisation() {
        }
-
+   
    }
    ```
 
@@ -552,7 +561,7 @@ I'm going to walk you through making the abstractions first becuase it makes thi
 
    ```text
    package org.gluestack.api.domain.entity;
-
+   
    import com.fasterxml.jackson.annotation.JsonProperty;
    import java.util.ArrayList;
    import java.util.Collection;
@@ -564,104 +573,104 @@ I'm going to walk you through making the abstractions first becuase it makes thi
    import javax.validation.constraints.NotBlank;
    import org.springframework.security.core.GrantedAuthority;
    import org.springframework.security.core.userdetails.UserDetails;
-
+   
    @Entity
    @Table(name = "user")
    public class User extends BaseOrganisedEntity implements UserDetails {
-
+   
        @NotBlank
        @Column(nullable = false, unique = true, length = 255)
        private String email;
-
+   
        @NotBlank
        @Column(nullable = false, length = 255)
        private String firstName;
-
+   
        @Column(nullable = false, length = 255)
        private String lastName;
-
+   
        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
        @NotBlank
        @Column(nullable = false, length = 60, columnDefinition = "CHAR(60)")
        private String password;
-
+   
        @OneToMany(mappedBy = "user")
        private List<Task> tasks = new ArrayList<>();
-
+   
        public User() {
        }
-
+   
        public String getEmail() {
            return this.email;
        }
-
+   
        public void setEmail(String email) {
            this.email = email;
        }
-
+   
        public String getFirstName() {
            return this.firstName;
        }
-
+   
        public void setFirstName(String firstName) {
            this.firstName = firstName;
        }
-
+   
        public String getLastName() {
            return this.lastName;
        }
-
+   
        public void setLastName(String lastName) {
            this.lastName = lastName;
        }
-
+   
        @Override
        public String getPassword() {
            return this.password;
        }
-
+   
        public void setPassword(String password) {
            this.password = password;
        }
-
+   
        public List<Task> getTasks() {
            return tasks;
        }
-
+   
        public void setTasks(List<Task> tasks) {
            this.tasks = tasks;
        }
-
+   
        @Override
        public Collection<? extends GrantedAuthority> getAuthorities() {
            return null;
        }
-
+   
        @Override
        public String getUsername() {
            return email;
        }
-
+   
        @Override
        public boolean isAccountNonExpired() {
            return true;
        }
-
+   
        @Override
        public boolean isAccountNonLocked() {
            return true;
        }
-
+   
        @Override
        public boolean isCredentialsNonExpired() {
            return true;
        }
-
+   
        @Override
        public boolean isEnabled() {
            return active;
        }
-
+   
    }
    ```
 
@@ -680,6 +689,7 @@ The repository layer in Spring is a layer dedicated for communicating with data 
 To do this, we'll need to add some `dependencies` to our project. Dependencies are dependencies on `libraries`. A Library is a separate, reusable piece of code that does something and makes your life easier and associated with the concept of `abstraction` which means to reduce complexity. A lot of people write Java Web Applications so its only natural that we deal with the same problems so libraries are an attempt to solve some of those common problems. In Java you used to have to download a compiled library but this is hard to maintain and leads to large project sizes so we use what's called dependency management where you simply specify the library and the version that you want and that will be used to download that library for you. In Java you can use Maven to manage dependencies and it stores the version information in a `pom.xml` file.
 
 1. Add Querydsl JPA as a dependency. Querydsl JPA is a Java library for typesafe JPA queries that also works really well with another one of our cool libraries, Spring-Data-JPA, which is powering our repository layer.
+
    1. Open the pom.xml file \(using command + p\) and add the following line to the properties element.
 
       ```text
@@ -723,6 +733,7 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
           </dependencies>
       </plugin>
       ```
+
 2. Add this plugin so VSCode finds the classes that Querydsl generates.
 
    ```text
@@ -750,15 +761,15 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
 
    ```text
     package org.gluestack.api.repository;
-
+   
     import org.springframework.data.querydsl.QuerydslPredicateExecutor;
     import org.springframework.data.repository.CrudRepository;
     import org.springframework.data.repository.NoRepositoryBean;
-
+   
     @NoRepositoryBean
     public interface BaseRepository<T>
                     extends CrudRepository<T, Integer>, QuerydslPredicateExecutor<T> {
-
+   
     }
    ```
 
@@ -766,9 +777,9 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
 
    ```text
     package org.gluestack.api.repository;
-
+   
     import org.gluestack.api.domain.entity.Organisation;
-
+   
     public interface OrganisationRepository extends BaseRepository<Organisation> {
     }
    ```
@@ -777,18 +788,19 @@ To do this, we'll need to add some `dependencies` to our project. Dependencies a
 
    ```text
     package org.gluestack.api.repository;
-
+   
     import org.gluestack.api.domain.entity.User;
     import org.springframework.data.jpa.repository.EntityGraph;
-
+   
     public interface UserRepository extends BaseRepository<User> {
-
+   
         @EntityGraph(attributePaths = { "organisation" })
         User findOneByEmail(String email);
     }
    ```
 
 6. Restart the application to make sure its all correct.
+
 7. Commit your work; "created repository layer".
 
 ### Create the Service Layer
@@ -806,7 +818,7 @@ The service layer is where most of your API logic lives. Some people choose to s
 
    ```text
    package org.gluestack.api.service;
-
+   
    import org.gluestack.api.domain.entity.Organisation;
    import org.gluestack.api.domain.entity.QOrganisation;
    import org.gluestack.api.domain.entity.User;
@@ -814,20 +826,20 @@ The service layer is where most of your API logic lives. Some people choose to s
    import com.querydsl.core.types.Predicate;
    import org.springframework.beans.factory.annotation.Autowired;
    import org.springframework.stereotype.Service;
-
+   
    @Service
    public class OrganisationService extends BaseService<Organisation> {
-
+   
        @Autowired
        private OrganisationRepository organisationRepository;
        @Autowired
        private UserService userService;
-
+   
        @Override
        public Predicate getReadPermissionPredicate(User principalUser) {
            return QOrganisation.organisation.id.eq(principalUser.getOrganisation().getId());
        }
-
+   
        public Organisation create(Organisation organisation) {
            User user = organisation.getUsers().get(0);
            user.setOrganisation(organisation);
@@ -845,31 +857,31 @@ The service layer is where most of your API logic lives. Some people choose to s
 
    ```text
    package org.gluestack.api.service;
-
+   
    import org.gluestack.api.domain.entity.QUser;
    import org.gluestack.api.domain.entity.User;
    import com.querydsl.core.types.Predicate;
    import org.springframework.beans.factory.annotation.Autowired;
    import org.springframework.security.crypto.password.PasswordEncoder;
    import org.springframework.stereotype.Service;
-
+   
    @Service
    public class UserService extends BaseService<User> {
-
+   
        @Autowired
        private PasswordEncoder passwordEncoder;
-
+   
        @Override
        public Predicate getReadPermissionPredicate(User principalUser) {
            return QUser.user.organisation.id.eq(principalUser.getOrganisation().getId());
        }
-
+   
        @Override
        public void prepareSaveData(User principalUser, User newEntity, User oldEntity) {
            preparePassword(newEntity, oldEntity);
            super.prepareSaveData(principalUser, newEntity, oldEntity);
        }
-
+   
        public void preparePassword(User newUser, User oldUser) {
            if (oldUser == null || !oldUser.getPassword().equals(newUser.getPassword())) {
                newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
@@ -880,6 +892,7 @@ The service layer is where most of your API logic lives. Some people choose to s
 
 4. As always, start the appliation to make sure it works then commit your changes.
 
+
 ### Create the Controller layer
 
 The controller layer is what connects our application to the internet. It defines what URLs the application listens to and what Java objects we're expecting to receive or send. Spring MVC will convert the Java objects to and from JSON which is convenient for the frontend.
@@ -889,7 +902,7 @@ The controller layer is what connects our application to the internet. It define
 
    ```text
    package org.gluestack.api.controller;
-
+   
    import org.gluestack.api.domain.entity.Organisation;
    import org.gluestack.api.service.OrganisationService;
    import javax.validation.Valid;
@@ -899,14 +912,14 @@ The controller layer is what connects our application to the internet. It define
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RequestMethod;
    import org.springframework.web.bind.annotation.RestController;
-
+   
    @RestController
    @RequestMapping("api/organisations")
    public class OrganisationController extends BaseController<Organisation> {
-
+   
        @Autowired
        private OrganisationService organisationService;
-
+   
        @Override
        @RequestMapping(method = RequestMethod.POST)
        public Organisation create(Authentication authentication, @RequestBody @Valid Organisation entity) {
@@ -921,7 +934,7 @@ The controller layer is what connects our application to the internet. It define
 
    ```text
    package org.gluestack.api.controller;
-
+   
    import org.gluestack.api.domain.entity.User;
    import org.gluestack.api.service.UserService;
    import com.querydsl.core.types.Predicate;
@@ -933,21 +946,21 @@ The controller layer is what connects our application to the internet. It define
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RequestMethod;
    import org.springframework.web.bind.annotation.RestController;
-
+   
    @RestController
    @RequestMapping("api/users")
    public class UserController extends BaseController<User> {
-
+   
        @Autowired
        private UserService userService;
-
+   
        @RequestMapping(method = RequestMethod.GET)
        public Page<User> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
                Pageable pageRequest) {
            User principalUser = (User) authentication.getPrincipal();
            return userService.findAll(principalUser, predicate, pageRequest);
        }
-
+   
    }
    ```
 
@@ -955,17 +968,17 @@ The controller layer is what connects our application to the internet. It define
 
    ```text
    package org.gluestack.api.controller;
-
+   
    import org.gluestack.api.domain.entity.User;
    import org.springframework.security.core.Authentication;
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RequestMethod;
    import org.springframework.web.bind.annotation.RestController;
-
+   
    @RestController
    @RequestMapping("api/authenticate")
    public class AuthenticationController {
-
+   
        @RequestMapping(method = RequestMethod.GET)
        public User authenticate(Authentication authentication) {
            return (User) authentication.getPrincipal();
@@ -1126,6 +1139,7 @@ I'm not the best at tests but I think I like this approach.
    ```
 
 3. Delete the `ApiApplication.java` file from `api/src/test/java/org/gluestack/api`.
+
 4. In that same directory, create the `BaseTest.java`.
 
    My current testing strategy is to have a decent amount of test data available so that you don't have to setup a lot of data for new tests. This might not scale in the long run so I may have to break it up a bit but I think the concept of making it really easy to setup data or not having to do it at all is a good.
@@ -1134,7 +1148,7 @@ I'm not the best at tests but I think I like this approach.
 
    ```text
    package org.gluestack.api;
-
+   
    import com.fasterxml.jackson.databind.ObjectMapper;
    import javax.transaction.Transactional;
    import org.gluestack.api.domain.entity.Organisation;
@@ -1152,49 +1166,49 @@ I'm not the best at tests but I think I like this approach.
    import org.springframework.test.context.TestPropertySource;
    import org.springframework.test.context.junit4.SpringRunner;
    import org.springframework.test.web.servlet.MockMvc;
-
+   
    @RunWith(SpringRunner.class)
    @AutoConfigureMockMvc
    @SpringBootTest
    @Transactional
    @TestPropertySource(locations = "classpath:application-test.properties")
    public abstract class BaseTest {
-
-       @Autowired
-       protected MockMvc mvc;
-
-       @Autowired
-       protected ObjectMapper objectMapper;
-
-       @Autowired
-       private TestOrganisationService testOrganisationService;
+   
+   	@Autowired
+   	protected MockMvc mvc;
+   
+   	@Autowired
+   	protected ObjectMapper objectMapper;
+   
+   	@Autowired
+   	private TestOrganisationService testOrganisationService;
    }
    ```
 
 5. In that same folder create `TestOrganisation.java`. This is the object to pass around test data.
 
-   ```text
+   ```
    package org.gluestack.api;
-
+   
    import org.gluestack.api.domain.entity.Organisation;
    import org.gluestack.api.domain.entity.Task;
    import org.gluestack.api.domain.entity.User;
-
+   
    public class TestOrganisation {
-
+   
        public Organisation organisation;
-
+   
        public User actingUser;
        public User otherUser;
-
+   
    }
    ```
 
 6. Create `TestOrganisationService.java`. This creates the test data.
 
-   ```text
+   ```
    package org.gluestack.api;
-
+   
    import org.gluestack.api.domain.entity.Organisation;
    import org.gluestack.api.domain.entity.Task;
    import org.gluestack.api.domain.entity.User;
@@ -1204,27 +1218,27 @@ I'm not the best at tests but I think I like this approach.
    import org.springframework.beans.factory.annotation.Autowired;
    import org.springframework.security.crypto.password.PasswordEncoder;
    import org.springframework.stereotype.Service;
-
+   
    @Service
    public class TestOrganisationService {
-
+   
        @Autowired
        private OrganisationRepository organisationRepository;
-
+   
        @Autowired
        private UserRepository userRepository;
-
+   
        @Autowired
        private PasswordEncoder passwordEncoder;
-
+   
        public TestOrganisation createTestOrganisiation() {
            TestOrganisation testOrganisation = new TestOrganisation();
-
+   
            Organisation organisation = new Organisation();
            organisation.setName("organisation");
            organisationRepository.save(organisation);
            testOrganisation.organisation = organisation;
-
+   
            User actingUser = new User();
            actingUser.setEmail(organisation.getId() + "actingUser");
            actingUser.setPassword(passwordEncoder.encode("password"));
@@ -1233,7 +1247,7 @@ I'm not the best at tests but I think I like this approach.
            actingUser.setOrganisation(organisation);
            userRepository.save(actingUser);
            testOrganisation.actingUser = actingUser;
-
+   
            User otherUser = new User();
            otherUser.setEmail(organisation.getId() + "otherUser");
            otherUser.setPassword(passwordEncoder.encode("password"));
@@ -1242,7 +1256,7 @@ I'm not the best at tests but I think I like this approach.
            otherUser.setOrganisation(organisation);
            userRepository.save(otherUser);
            testOrganisation.otherUser = otherUser;
-
+   
            return testOrganisation;
        }
    }
@@ -1250,10 +1264,10 @@ I'm not the best at tests but I think I like this approach.
 
 7. Open `BaseTest.java` and add the following to the bottom of the class. This will setup two organisations and their data so that we can reference it for our tests.
 
-   ```text
+   ```
    protected TestOrganisation testOrganisation;
    protected TestOrganisation otherTestOrganisation;
-
+   
    @Before
    public void setup() {
        testOrganisation = testOrganisationService.createTestOrganisiation();
@@ -1262,11 +1276,12 @@ I'm not the best at tests but I think I like this approach.
    ```
 
 8. Create a `POJO` for the `PageResponse` the list views return. I'm not 100% sure why we have to do this but its not terribly hard. Copy it from [https://github.com/cadbox1/glue-stack/blob/master/api/src/test/java/com/api/PageResponse.java](https://github.com/cadbox1/glue-stack/blob/master/api/src/test/java/com/api/PageResponse.java)
-9. Create `CreateTest.java` at `api/src/test/java/org/gluestack/api/organisation`
 
-   ```text
+9. Create `CreateTest.java` at  `api/src/test/java/org/gluestack/api/organisation`
+
+   ```
    package org.gluestack.api.organisation;
-
+   
    import org.assertj.core.util.Arrays;
    import org.gluestack.api.BaseTest;
    import org.gluestack.api.domain.entity.Organisation;
@@ -1278,12 +1293,12 @@ I'm not the best at tests but I think I like this approach.
    import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
    import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
    import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
+   
    import java.util.ArrayList;
    import java.util.List;
-
+   
    public class CreateTest extends BaseTest {
-
+   
        @Test
        public void createTest() throws Exception {
            User user = new User();
@@ -1291,44 +1306,44 @@ I'm not the best at tests but I think I like this approach.
            user.setLastName("Test");
            user.setEmail("CreateTest");
            user.setPassword("CreateTest");
-
+   
            Organisation organisation = new Organisation();
            organisation.setName("Create Test Organisation");
            List<User> users = new ArrayList<>();
            users.add(user);
            organisation.setUsers(users);
-
+   
            mvc.perform(post("/api/organisations").contentType(MediaType.APPLICATION_JSON)
                    .content(objectMapper.writeValueAsString(organisation))).andReturn();
-
+   
            mvc.perform(get("/api/authenticate").with(httpBasic(user.getUsername(), user.getPassword()))).andReturn();
-
+   
        }
-
+   
    }
    ```
 
-10. Create `FindAllTest.java` at `api/src/test/java/org/gluestack/api/user`
+10. Create `FindAllTest.java` at  `api/src/test/java/org/gluestack/api/user`
 
-    ```text
-    package org.gluestack.api.user;
-
-    import org.gluestack.api.BaseTest;
-    import org.gluestack.api.PageResponse;
-    import org.gluestack.api.domain.entity.Task;
-    import org.gluestack.api.domain.entity.User;
-
-    import static org.hamcrest.MatcherAssert.assertThat;
-    import static org.hamcrest.Matchers.equalTo;
-    import static org.hamcrest.Matchers.hasSize;
-    import static org.junit.Assert.assertEquals;
-    import org.junit.Test;
-    import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-    import org.springframework.test.web.servlet.MvcResult;
-    import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-    public class FindAllTest extends BaseTest {
-
+   ```
+   package org.gluestack.api.user;
+   
+   import org.gluestack.api.BaseTest;
+   import org.gluestack.api.PageResponse;
+   import org.gluestack.api.domain.entity.Task;
+   import org.gluestack.api.domain.entity.User;
+   
+   import static org.hamcrest.MatcherAssert.assertThat;
+   import static org.hamcrest.Matchers.equalTo;
+   import static org.hamcrest.Matchers.hasSize;
+   import static org.junit.Assert.assertEquals;
+   import org.junit.Test;
+   import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+   import org.springframework.test.web.servlet.MvcResult;
+   import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+   
+   public class FindAllTest extends BaseTest {
+   
        @Test
        public void findAllUsersTest() throws Exception {
            MvcResult mvcResult = mvc
@@ -1336,20 +1351,20 @@ I'm not the best at tests but I think I like this approach.
                    .andReturn();
            PageResponse<User> page = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
                    objectMapper.getTypeFactory().constructParametricType(PageResponse.class, User.class));
-
+   
            int resultSize = 2;
            assertEquals(resultSize, page.getNumberOfElements());
            assertEquals(resultSize, page.getTotalElements());
            assertThat(page.getContent(), hasSize(resultSize));
-
+   
            User result = page.getContent().get(0);
-
+   
            assertThat(result.getFirstName(), equalTo(testOrganisation.actingUser.getFirstName()));
            assertThat(result.getLastName(), equalTo(testOrganisation.actingUser.getLastName()));
            assertThat(result.getEmail(), equalTo(testOrganisation.actingUser.getEmail()));
        }
-    }
-    ```
+   }
+   ```
 
 11. At the command line, inside the api folder, run this command to run all the tests.
 
@@ -1400,7 +1415,7 @@ I'm not the best at tests but I think I like this approach.
    ```text
    yarn
    ```
-
+   
    Yarn is an alternative package manager to npm that uses a lockfile that records the exact version of each dependency that is installed. The lockfile differs from that `package.json` which stores the ranges of versions that are to be installed or updated to. e.g do you want to jump major versions or just minor versions. The lockfile means more consistent results across different environments.
 
 7. Commit your work.
@@ -1700,7 +1715,7 @@ We're going to add some Libraries to our project mainly in the form of dependenc
 
 1. Create the `index.js` file at `ui/src/main/unauthenticated/login`.
 
-   ```text
+    ```
     import React, { Component } from "react"; 
     import { Link, withRouter } from "react-router-dom"; 
     import Card, { CardActions, CardContent } from "material-ui/Card"; 
@@ -1708,103 +1723,103 @@ We're going to add some Libraries to our project mainly in the form of dependenc
     import TextField from "common/components/TextField"; 
     import { CircularProgress } from "material-ui/Progress"; 
     import Button from "material-ui/Button";
-   ```
+    ```
 
-   class Login extends Component { constructor\(props\) { super\(props\); this.state = { email: "", password: "" }; }
-
-   ```text
-    handleInput = evt => {
-        this.setState({text
-            [evt.target.name]: evt.target.value,
-        });
-        const { authenticate } = this.props;
-        if (authenticate.rejected) {
-            authenticate.reset();
+   class Login extends Component { 
+       constructor(props) { 
+           super(props); 
+           this.state = { email: "", password: "" }; 
         }
-    };
 
-    handleSubmit = evt => {
-        evt.preventDefault();
-        const { email, password } = this.state;
-        const { authenticate } = this.props;
-        authenticate.call({ username: email, password });
-    };
-
-    render() {
-        const { email, password } = this.state;
-        const { authenticate } = this.props;
-
-        const invalidLogin =
-            authenticate.rejected &&
-            authenticate.reason &&
-            authenticate.reason.response &&
-            authenticate.reason.response.status === 401;
-
-        return (
-            <div
-                className="d-flex align-items-md-center justify-content-center"
-                style={{ height: "100vh" }}
-            >
-                <div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
-                    <Card>
-                        <form onSubmit={this.handleSubmit}>
-                            <CardContent>
-                                <Typography type="headline" component="h2">
-                                    Login
-                                </Typography>
-                                <Typography type="body1">
-                                    <Link to="/signup">or Signup Here</Link>
-                                </Typography>
-                                <TextField
-                                    label="Email"
-                                    name="email"
-                                    value={email}
-                                    error={authenticate.rejected}
-                                    onChange={this.handleInput}
-                                    required
-                                />
-                                <TextField
-                                    label="Password"
-                                    type="password"
-                                    name="password"
-                                    value={password}
-                                    error={authenticate.rejected}
-                                    helperText={
-                                        (invalidLogin && "Invalid Username or Password") ||
-                                        (authenticate.reason && authenticate.reason.message)
-                                    }
-                                    onChange={this.handleInput}
-                                    required
-                                />
-                            </CardContent>
-                            <CardActions>
-                                <Button raised color="primary" type="submit">
-                                    {authenticate.pending ? (
-                                        <CircularProgress size={15} />
-                                    ) : (
-                                        "Login"
-                                    )}
-                                </Button>
-                            </CardActions>
-                        </form>
-                    </Card>
+        handleInput = evt => {
+            this.setState({text
+                [evt.target.name]: evt.target.value,
+            });
+            const { authenticate } = this.props;
+            if (authenticate.rejected) {
+                authenticate.reset();
+            }
+        };
+    
+        handleSubmit = evt => {
+            evt.preventDefault();
+            const { email, password } = this.state;
+            const { authenticate } = this.props;
+            authenticate.call({ username: email, password });
+        };
+    
+        render() {
+            const { email, password } = this.state;
+            const { authenticate } = this.props;
+    
+            const invalidLogin =
+                authenticate.rejected &&
+                authenticate.reason &&
+                authenticate.reason.response &&
+                authenticate.reason.response.status === 401;
+    
+            return (
+                <div
+                    className="d-flex align-items-md-center justify-content-center"
+                    style={{ height: "100vh" }}
+                >
+                    <div style={{ maxHeight: "100%", maxWidth: "350px" }} className="w-100">
+                        <Card>
+                            <form onSubmit={this.handleSubmit}>
+                                <CardContent>
+                                    <Typography type="headline" component="h2">
+                                        Login
+                                    </Typography>
+                                    <Typography type="body1">
+                                        <Link to="/signup">or Signup Here</Link>
+                                    </Typography>
+                                    <TextField
+                                        label="Email"
+                                        name="email"
+                                        value={email}
+                                        error={authenticate.rejected}
+                                        onChange={this.handleInput}
+                                        required
+                                    />
+                                    <TextField
+                                        label="Password"
+                                        type="password"
+                                        name="password"
+                                        value={password}
+                                        error={authenticate.rejected}
+                                        helperText={
+                                            (invalidLogin && "Invalid Username or Password") ||
+                                            (authenticate.reason && authenticate.reason.message)
+                                        }
+                                        onChange={this.handleInput}
+                                        required
+                                    />
+                                </CardContent>
+                                <CardActions>
+                                    <Button raised color="primary" type="submit">
+                                        {authenticate.pending ? (
+                                            <CircularProgress size={15} />
+                                        ) : (
+                                            "Login"
+                                        )}
+                                    </Button>
+                                </CardActions>
+                            </form>
+                        </Card>
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
-   ```
-
-   }
-
-   Login = withRouter\(Login\);
-
-   export { Login };
-
-   \`\`\`
+    
+    Login = withRouter(Login);
+    
+    export { Login };
+    ```
 
 2. Create the `index.js` at `ui/src/main/unauthenticated`.
 
-   ```text
+    ```text
     import React, { Component } from "react"; 
     import { Route, Switch } from "react-router-dom"; 
     import { Login } from "./login";
@@ -1816,21 +1831,22 @@ We're going to add some Libraries to our project mainly in the form of dependenc
     }
 
     export { Unauthenticated };
-   ```
+    ```
 
 3. Open the `main/index.js` by hitting Command + p then start typing `main` then type `/`.
+
 4. Add this between the start of the render function and the return.
 
-   ```text
+    ```
     const { authenticate } = this.props; 
     if (!authenticate.fulfilled) { 
         return <Unauthenticated authenticate={authenticate} />; 
     }
-   ```
+    ```
 
-   So it looks like this.
+    So it looks like this.
 
-   ```text
+    ```
     render() { 
         const { authenticate } = this.props; 
         if (!authenticate.fulfilled) { 
@@ -1838,9 +1854,10 @@ We're going to add some Libraries to our project mainly in the form of dependenc
         } 
         return <p>Main</p>; 
     }
-   ```
+    ```
 
 5. Put yor cursor at the end of `Unauthenticated` word then hit Control + space to bring up the autocomplete. Select the option to import the Unauthenticated component, it should be the second option.
+
 6. The browser should now be showing a login form.
 
 ### Signup Component
@@ -1849,7 +1866,7 @@ Notice how our Signup Here link doesn't work. Let's fix that.
 
 1. Create the `index.js` file at `ui/src/main/unauthenticated/signup`.
 
-   ```text
+    ```
     import React, { Component } from "react"; 
     import { Link, withRouter } from "react-router-dom"; 
     import { connect } from "common/connector"; 
@@ -1980,38 +1997,43 @@ Notice how our Signup Here link doesn't work. Let's fix that.
     })(withRouter(Signup));
 
     export { Signup };
-   ```
+    ```
 
 2. Open `unauthenticated/index.js` using `Command + p`.
+
 3. Before the `<Route>`, create a route for the signup component.
 
-   ```text
+    ```text
     <Route
         path="/signup"
         render={props => <Signup {...props} {...this.props} />}
     />
-   ```
+    ```
 
 4. Again, use autocomplete to import the signup component. I'm not going to say this anymore you can just do it for new stuff.
+
 5. The signup link should now work as well as the login here link on the signup page.
 
 ### First Signup
 
 1. Start the API and Database if they are not already running.
+
    1. In separate tabs in VSCode.
+
    2. Database.
 
-      ```text
+        ```text
         docker-compose up
-      ```
-2. API.
+        ```
+   
+1. API.
 
-   ```text
+    ```text
     cd api
     mvn spring-boot:run
-   ```
+    ```
 
-3. Fill in the signup form and click signup. You should now see the word "Main" which means you are logged in.
+2. Fill in the signup form and click signup. You should now see the word "Main" which means you are logged in.
 
 ### Sidebar
 
