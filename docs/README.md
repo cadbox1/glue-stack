@@ -38,12 +38,8 @@ If you're reading this on GitHub, then be aware that this same documentation is 
 * Check out our [chat](https://spectrum.chat/glue-stack).
 * If you're really keen then [build Glue Stack from an empty folder](./Development/BuildingGlueStackFromAnEmptyFolder.md).
 
-Please remember to star this project on GitHub if you think it is remotely cool!
 
-## Why
-
-
-Please don't forget to star us on GitHub if you think this is remotely cool!
+Please don't forget to star us on GitHub if you think we're remotely cool!
 
 ## Why
 * Document how I currently build web applications.
