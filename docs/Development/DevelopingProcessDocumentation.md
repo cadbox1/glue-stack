@@ -32,11 +32,10 @@ With documentation:
 
 The alternative path is Teacher writes a brief document then the process continues at step 3 with the teacher asking for review.
 
-Documentation is code for humans; its always accessible, easy to review and easy to improve. Being easily accessible means less dependency on people which means it takes less resources to do a task and less variation in results. And when there are issues, documentation can be reviewed and updated to address them. So instead of the process getting worse over time because people naturally forget things, it actually gets better. Imagine if production code improved itself every time it ran!
+Documentation is code for humans; its always accessible, easy to review and easy to improve. Being easily accessible means less dependency on people which means it takes less resources to do a task and less variation in results. And when there are issues, documentation can be reviewed and updated to address them. So instead of the process getting worse over time because people naturally forget things, it actually gets better. Imagine if production code improved itself every time it ran! 
 
-New people actually have more to contribute because they are more aware of all the tiny details it takes to make something work whereas experienced people are often unconciously doing things.
+New people actually have more to contribute because they are more aware of all the tiny details it takes to make something work whereas experienced people are often unconciously doing things. 
 
 Documenting processes creates a better culture where everyone can focus on improving process and helping the team instead of playing blame games for poor results.
 
-Checkout our [development process](developmentprocess-tasks.md).
-
+Checkout our [development process](./DevelopmentProcess-Tasks.md).

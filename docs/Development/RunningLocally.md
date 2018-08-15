@@ -7,9 +7,10 @@ We support Mac primarily and linux with best-efforts.
 This takes about 30 mins to download ~2gb of tools on a fresh mac on a 12mbps connection.
 
 1. Open Terminal \(CMD + Space, type Terminal\)
+
 2. Install xcode command line tools.
 
-   ```text
+   ```
    xcode-select --install
    ```
 
@@ -36,18 +37,21 @@ This takes about 30 mins to download ~2gb of tools on a fresh mac on a 12mbps co
 
    You can open the bash script to find out but it:
 
-   * installs Homebrew
-   * installs Java
-   * installs Docker
-   * installs Maven
-   * installs Node
-   * installs Yarn
+   - installs Homebrew
+   - installs Java
+   - installs Docker
+   - installs Maven
+   - installs Node
+   - installs Yarn
 
-   Hit Enter when you're prompted. You will need to enter your password for both Homebrew and Docker. Type it in but be aware that password characters aren't displayed in terminal. You'll need to enter your password again when Docker first opens.
+   Hit Enter when you're prompted.
+   You will need to enter your password for both Homebrew and Docker. Type it in but be aware that password characters aren't displayed in terminal.
+   You'll need to enter your password again when Docker first opens.
 
 ## Running
 
 1. Create a new terminal tab \(CMD + t\)
+
 2. Start the MySQL database using
 
    ```text
@@ -55,6 +59,7 @@ This takes about 30 mins to download ~2gb of tools on a fresh mac on a 12mbps co
    ```
 
 3. Create a new terminal tab \(CMD + t\)
+
 4. The next tab will run the api \(backend\).
 
    ```text
@@ -74,8 +79,7 @@ yarn start
 
 This will open a browser window to our application. Make sure both servers are started before your start playing with it.
 
-1. Signup your organisation!
-2. To stop any of the components hit `control + c` in the tab. This is how to stop running terminal programs.
+11. Signup your organisation!
+12. To stop any of the components hit `control + c` in the tab. This is how to stop running terminal programs.
 
-Now that you've got it running perhaps you'd like to try [developing glue-stack](developmentprocess-tasks.md)?
-
+Now that you've got it running perhaps you'd like to try [developing glue-stack](./DevelopmentProcess-Tasks.md)?
