@@ -1,4 +1,4 @@
-# Setup AWS Account
+# Setup your AWS Account
 
 1. Create your account on the [AWS Getting Started Page](https://aws.amazon.com/getting-started/).
 2. From [Getting Started](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started.html), [Create Your First IAM Admin User](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html#getting-started_create-admin-group-console).
@@ -9,5 +9,6 @@
 7. Change your currency preference by going to [My Account](https://console.aws.amazon.com/billing/home), Payment Currency Preference.
 8. Create an [AWS Budget](https://aws.amazon.com/aws-cost-management/aws-budgets/) so you don't get charged too much. 
 
-Now you can follow [Setup AWS Cloud Infrastructure](setupawscloudinfrastructure.md).
 
+
+Now you can follow [Setup AWS Cloud Infrastructure](./SetupAWSCloudInfrastructure.md).
