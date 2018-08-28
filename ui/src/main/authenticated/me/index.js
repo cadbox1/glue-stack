@@ -4,9 +4,9 @@ import { AppBar } from "common/components/AppBar";
 import { MenuButton } from "common/components/MenuButton";
 import { AppBarTitle } from "common/components/AppBarTitle";
 import { RefreshButton } from "common/components/RefreshButton";
-import { urlStateHolder } from "common/stateHolder";
-import { parseURL } from "common/parseURL";
-import { connect } from "common/connector";
+import { URLStateHolder } from "common/components/StateHolder";
+import { parsePaginationParameters } from "common/parsePaginationParameters";
+import { Connect } from "common/components/Connect";
 import { findAll } from "api/task";
 import { List } from "../task/list";
 
@@ -26,16 +26,26 @@ class Me extends Component {
 	}
 }
 
-const ConnectedMe = urlStateHolder(
-	connect({
-		findAll: {
-			params: props => ({
-				...parseURL(props),
-				userId: props.authenticate.value.data.id,
-			}),
-			promise: findAll,
-		},
-	})(Me)
-);
+const ConnectedMe = props => {
+	const { authenticate } = props;
+	return (
+		<URLStateHolder>
+			{({ handleUpdate, params }) => (
+				<Connect
+					findAll={{
+						handleUpdate,
+						params: {
+							...parsePaginationParameters(params),
+							userId: authenticate.value.data.id,
+						},
+						promise: findAll,
+					}}
+				>
+					{({ findAll }) => <Me {...props} findAll={findAll} />}
+				</Connect>
+			)}
+		</URLStateHolder>
+	);
+};
 
 export { ConnectedMe as Me };

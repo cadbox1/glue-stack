@@ -1,14 +1,11 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { history, replaceParams } from "common/history";
 
-export class URLStateHolder extends Component {
-	render() {
-		return this.props.children({
-			handleUpdate: replaceParams,
-			params: history.location.query,
-		});
-	}
-}
+export const URLStateHolder = ({ children }) =>
+	children({
+		handleUpdate: replaceParams,
+		params: history.location.query,
+	});
 
 export class StateHolder extends Component {
 	constructor(props) {

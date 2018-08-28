@@ -10,7 +10,7 @@ import { Form } from "common/components/Form";
 import { TextField } from "common/components/TextField";
 import { SaveButton } from "common/components/SaveButton";
 import { findOne, save } from "api/user";
-import { connect } from "common/connector";
+import { Connect } from "common/components/Connect";
 
 class FormPage extends Component {
 	constructor(props) {
@@ -120,11 +120,19 @@ class FormPage extends Component {
 
 export default FormPage;
 
-export const Create = connect({ save: { promise: save } })(FormPage);
+export const Create = props => (
+	<Connect save={{ promise: save }}>
+		{({ save }) => <FormPage {...props} save={save} />}
+	</Connect>
+);
 
-export const Edit = connect({
-	findOne: {
-		params: props => props.match.params.id,
-		promise: findOne,
-	},
-})(Create);
+export const Edit = props => (
+	<Connect
+		findOne={{
+			params: props.match.params.id,
+			promise: findOne,
+		}}
+	>
+		{({ findOne }) => <Create {...props} findOne={findOne} />}
+	</Connect>
+);

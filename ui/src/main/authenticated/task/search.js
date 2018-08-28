@@ -11,14 +11,10 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import Close from "@material-ui/icons/Close";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Link } from "common/components/Link";
-import { connect } from "common/connector";
-import { stateHolder } from "common/stateHolder";
 import { AppBar } from "common/components/AppBar";
 import { AppBarTitle } from "common/components/AppBarTitle";
 import { TaskStatus } from "api/task";
-import { List as UserList, connectConfig } from "../user/list";
-
-const ConnectedUserList = stateHolder(connect(connectConfig)(UserList));
+import { ConnectedUserList } from "../user/list";
 
 class Search extends Component {
 	handleSelectUser = user => {

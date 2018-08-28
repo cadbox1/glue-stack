@@ -9,11 +9,10 @@ import { MenuButton } from "common/components/MenuButton";
 import { AppBarTitle } from "common/components/AppBarTitle";
 import { RefreshButton } from "common/components/RefreshButton";
 import Add from "@material-ui/icons/Add";
-import { connect } from "common/connector";
-import { urlStateHolder } from "common/stateHolder";
 
-import { connectConfig, List } from "./list";
+import { ListConnect, List } from "./list";
 import { Create, Edit } from "./form";
+import { URLStateHolder } from "common/components/StateHolder";
 
 class User extends Component {
 	render() {
@@ -75,6 +74,16 @@ User = componentQueries({
 		}),
 	],
 	config: { pure: false },
-})(urlStateHolder(connect(connectConfig)(User)));
+})(User);
 
-export { User };
+const ConnectedUser = props => (
+	<URLStateHolder>
+		{({ handleUpdate, params }) => (
+			<ListConnect handleUpdate={handleUpdate} params={params}>
+				{({ findAll }) => <User {...props} findAll={findAll} />}
+			</ListConnect>
+		)}
+	</URLStateHolder>
+);
+
+export { ConnectedUser as User };

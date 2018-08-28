@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StateHolder } from "./stateHolder";
+import { StateHolder } from "./StateHolder";
 
 class PromiseState {
 	constructor(config, setState) {
@@ -86,6 +86,7 @@ class PromiseState {
 				this.rejected = false;
 				this.fulfilled = true;
 				this.value = result;
+				debugger;
 				this.updateState();
 				if (this.callback) {
 					this.callback(result);
@@ -147,7 +148,7 @@ export class Connect extends Component {
 class Users extends Component {
 	handleCreate = () => {
 		this.props.create.call({ name: "new thing" }).then(result => {
-			this.props.findAll.call();
+			this.props.findAll.call(); // refresh the list.
 		});
 	};
 
@@ -170,32 +171,31 @@ class Users extends Component {
 	}
 }
 
-class ConnectedUsers extends Component {
-	render() {
-		return (
-			<StateHolder>
-				{({ handleUpdate, params }) => (
-					<Connect
-						findAll={{
-							params, // compare and automatically run on change
-							handleUpdate,
-							promise: params =>
-								new Promise(resolve =>
-									setTimeout(() => resolve([{ name: params.name }]), 2000)
-								),
-						}}
-						create={{
-							promise: params => Promise.resolve(), // no params -> don't run automatically
-						}}
-					>
-						{({ findAll, create }) => (
-							<Users findAll={findAll} create={create} />
-						)}
-					</Connect>
-				)}
-			</StateHolder>
-		);
-	}
-}
+const ConnectedUsers = props => {
+	return (
+		<StateHolder>
+			{/* // created this abstraction so I can store state in the url or a component and use the same interface */}
+			{({ handleUpdate, params }) => (
+				<Connect
+					findAll={{
+						params, // comes from a parent component. Connect will call the promise if it changes.
+						handleUpdate, // this is attached to the PromiseState object to make updates convenient. see TablePagination.js
+						promise: params =>
+							new Promise(resolve => resolve([{ name: params.name }])), // An example of a promise using params
+					}}
+					create={{
+						// no params -> don't run automatically, promise is lazy, it needs to be called manually.
+						promise: params => Promise.resolve(),
+					}}
+				>
+					{/* // PromiseState objects are passed in. */}
+					{({ findAll, create }) => (
+						<Users {...props} findAll={findAll} create={create} />
+					)}
+				</Connect>
+			)}
+		</StateHolder>
+	);
+};
 
 export { ConnectedUsers as Users };

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { connect } from "common/connector";
+import { Connect } from "common/components/Connect";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -115,10 +115,16 @@ class Signup extends Component {
 	}
 }
 
-Signup = connect({
-	save: {
-		promise: save,
-	},
-})(withRouter(Signup));
+Signup = withRouter(Signup);
 
-export { Signup };
+const ConnectedSignup = props => (
+	<Connect
+		save={{
+			promise: save,
+		}}
+	>
+		{({ save }) => <Signup {...props} save={save} />}
+	</Connect>
+);
+
+export { ConnectedSignup as Signup };
