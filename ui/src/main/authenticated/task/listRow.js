@@ -7,7 +7,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Done from "@material-ui/icons/Done";
 import Undo from "@material-ui/icons/Undo";
 import { Link } from "common/components/Link";
-import { connect } from "common/connector";
+import { Connect } from "common/components/Connect";
 import { patch, TaskStatus } from "api/task";
 
 class ListRow extends Component {
@@ -72,10 +72,14 @@ class ListRow extends Component {
 
 export default ListRow;
 
-const ConnectedListRow = connect({
-	patch: {
-		promise: patch,
-	},
-})(ListRow);
+const ConnectedListRow = props => (
+	<Connect
+		patch={{
+			promise: patch,
+		}}
+	>
+		{({ patch }) => <ListRow {...props} patch={patch} />}
+	</Connect>
+);
 
 export { ConnectedListRow as ListRow };

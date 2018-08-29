@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Connect } from "common/components/Connect";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
@@ -6,7 +7,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import Hidden from "@material-ui/core/Hidden";
 import { TableCell } from "common/components/TableCell";
-import { parseURL } from "common/parseURL";
+import { parsePaginationParameters } from "common/parsePaginationParameters";
 import { TablePagination } from "common/components/TablePagination";
 import { TableSortLabel } from "common/components/TableSortLabel";
 import { findAll } from "api/task";
@@ -86,17 +87,22 @@ class List extends Component {
 
 export { List };
 
-export const connectConfig = {
-	findAll: {
-		params: props => {
-			const { search, statusId, userId } = props.params;
-			return {
-				...parseURL(props),
-				name: search,
-				statusId: statusId != null ? Number(statusId) : statusId,
-				userId: userId != null ? Number(userId) : userId,
-			};
-		},
-		promise: findAll,
-	},
+export const ListConnect = ({ handleUpdate, params, children }) => {
+	const { search, statusId, userId } = params;
+	return (
+		<Connect
+			findAll={{
+				handleUpdate,
+				params: {
+					...parsePaginationParameters(params),
+					name: search,
+					statusId: statusId != null ? Number(statusId) : statusId,
+					userId: userId != null ? Number(userId) : userId,
+				},
+				promise: findAll,
+			}}
+		>
+			{({ findAll }) => children({ findAll })}
+		</Connect>
+	);
 };

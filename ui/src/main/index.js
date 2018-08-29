@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "common/connector";
+import { Connect } from "common/components/Connect";
 import { authenticate, signOut } from "api/authentication";
 import { Unauthenticated } from "./unauthenticated";
 import { Authenticated } from "./authenticated";
@@ -28,10 +28,14 @@ class Main extends Component {
 	}
 }
 
-Main = connect({
-	authenticate: {
-		promise: authenticate,
-	},
-})(Main);
+const ConnectedMain = props => (
+	<Connect
+		authenticate={{
+			promise: authenticate,
+		}}
+	>
+		{({ authenticate }) => <Main {...props} authenticate={authenticate} />}
+	</Connect>
+);
 
-export { Main };
+export { ConnectedMain as Main };

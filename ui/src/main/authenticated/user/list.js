@@ -7,9 +7,11 @@ import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import Checkbox from "@material-ui/core/Checkbox";
 import { TableCell } from "common/components/TableCell";
-import { parseURL } from "common/parseURL";
+import { parsePaginationParameters } from "common/parsePaginationParameters";
 import { TableSortLabel } from "common/components/TableSortLabel";
 import { TablePagination } from "common/components/TablePagination";
+import { Connect } from "common/components/Connect";
+import { StateHolder } from "common/components/StateHolder";
 import { findAll } from "api/user";
 
 export class List extends Component {
@@ -90,9 +92,24 @@ export class List extends Component {
 	}
 }
 
-export const connectConfig = {
-	findAll: {
-		params: props => parseURL(props),
-		promise: findAll,
-	},
-};
+export const ListConnect = ({ handleUpdate, params, children }) => (
+	<Connect
+		findAll={{
+			handleUpdate,
+			params: parsePaginationParameters(params),
+			promise: findAll,
+		}}
+	>
+		{({ findAll }) => children({ findAll })}
+	</Connect>
+);
+
+export const ConnectedUserList = props => (
+	<StateHolder>
+		{({ handleUpdate, params }) => (
+			<ListConnect handleUpdate={handleUpdate} params={params}>
+				{({ findAll }) => <List {...props} findAll={findAll} />}
+			</ListConnect>
+		)}
+	</StateHolder>
+);

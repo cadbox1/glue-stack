@@ -16,10 +16,9 @@ import { MenuButton } from "common/components/MenuButton";
 import { AppBarTitle } from "common/components/AppBarTitle";
 import { RefreshButton } from "common/components/RefreshButton";
 import { Link } from "common/components/Link";
-import { connect } from "common/connector";
-import { urlStateHolder } from "common/stateHolder";
+import { URLStateHolder } from "common/components/StateHolder";
 import { Search } from "./search";
-import { List, connectConfig } from "./list";
+import { List, ListConnect } from "./list";
 import { Create, Edit } from "./form";
 import { TextField } from "common/components/TextField";
 
@@ -187,7 +186,17 @@ Task = withStyles(styles)(
 			}),
 		],
 		config: { pure: false },
-	})(urlStateHolder(connect(connectConfig)(Task)))
+	})(Task)
 );
 
-export { Task };
+const ConnectedTask = props => (
+	<URLStateHolder>
+		{({ handleUpdate, params }) => (
+			<ListConnect handleUpdate={handleUpdate} params={params}>
+				{({ findAll }) => <Task {...props} findAll={findAll} />}
+			</ListConnect>
+		)}
+	</URLStateHolder>
+);
+
+export { ConnectedTask as Task };

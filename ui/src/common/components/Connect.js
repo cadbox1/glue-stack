@@ -1,12 +1,12 @@
 import React, { Component } from "react";
+import { StateHolder } from "./StateHolder";
 
 class PromiseState {
 	constructor(config, setState) {
 		this.name = config.name;
-		this.params = {};
-		this.handleUpdate = config.handleUpdate;
-		this.paramsFunction = config.params;
+		this.params = config.params;
 		this.promiseFunction = config.promise;
+		this.handleUpdate = config.handleUpdate;
 		this.setState = setState;
 
 		this.paramsHash = null;
@@ -41,15 +41,14 @@ class PromiseState {
 		return activeParams;
 	}
 
-	autoRun(props) {
-		if (!this.paramsFunction) {
-			return; // don't auto run if there is no paramsFunction
+	autoRun(newParams) {
+		if (this.params === undefined) {
+			return; // don't auto run if there is no params
 		}
-		const params = this.paramsFunction(props);
-		const newHash = this.createHash(params);
+		const newHash = this.createHash(newParams);
 		if (newHash !== this.paramsHash) {
 			// hash is different -> run
-			this.params = params;
+			this.params = newParams;
 			this.paramsHash = newHash;
 			this.call();
 		}
@@ -106,40 +105,40 @@ class PromiseState {
 	}
 }
 
-export function connect(allConfig) {
-	return function(WrappedComponent) {
-		return class Connect extends Component {
-			constructor(props) {
-				super(props);
-				this.state = {};
-				Object.keys(allConfig).forEach(name => {
-					const config = allConfig[name];
-					config.name = name;
-					config.handleUpdate = props.handleUpdate;
-					this.state[name] = new PromiseState(config, this.setState.bind(this));
-				});
-			}
+export class Connect extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+		const { children, ...config } = props;
+		Object.keys(config).forEach(name => {
+			const singleConfig = config[name];
+			singleConfig.name = name;
+			this.state[name] = new PromiseState(
+				singleConfig,
+				this.setState.bind(this)
+			);
+		});
+	}
 
-			componentDidMount() {
-				this.handleUpdate();
-			}
+	componentDidMount() {
+		this.handleUpdate();
+	}
 
-			componentWillReceiveProps(nextProps) {
-				this.handleUpdate(nextProps);
-			}
+	componentWillReceiveProps(nextProps) {
+		this.handleUpdate(nextProps);
+	}
 
-			handleUpdate = (props = this.props) => {
-				Object.keys(this.state).forEach(key => {
-					const promiseState = this.state[key];
-					promiseState.autoRun(props);
-				});
-			};
-
-			render() {
-				return <WrappedComponent {...this.props} {...this.state} />;
-			}
-		};
+	handleUpdate = (props = this.props) => {
+		Object.keys(this.state).forEach(key => {
+			const params = props[key].params;
+			const promiseState = this.state[key];
+			promiseState.autoRun(params);
+		});
 	};
+
+	render() {
+		return this.props.children({ ...this.state });
+	}
 }
 
 // example
@@ -147,7 +146,7 @@ export function connect(allConfig) {
 class Users extends Component {
 	handleCreate = () => {
 		this.props.create.call({ name: "new thing" }).then(result => {
-			this.props.findAll.call();
+			this.props.findAll.call(); // refresh the list.
 		});
 	};
 
@@ -170,17 +169,31 @@ class Users extends Component {
 	}
 }
 
-Users = connect({
-	findAll: {
-		params: props => ({ name: "cheddar" }), // compare and automatically run on change
-		promise: params =>
-			new Promise(resolve =>
-				setTimeout(() => resolve([{ name: params.name }]), 2000)
-			),
-	},
-	create: {
-		promise: params => Promise.resolve(), // no params -> don't run automatically
-	},
-})(Users);
+const ConnectedUsers = props => {
+	return (
+		<StateHolder>
+			{/* // created this abstraction so I can store state in the url or a component and use the same interface */}
+			{({ handleUpdate, params }) => (
+				<Connect
+					findAll={{
+						params, // comes from a parent component. Connect will call the promise if it changes.
+						handleUpdate, // this is attached to the PromiseState object to make updates convenient. see TablePagination.js
+						promise: params =>
+							new Promise(resolve => resolve([{ name: params.name }])), // An example of a promise using params
+					}}
+					create={{
+						// no params -> don't run automatically, promise is lazy, it needs to be called manually.
+						promise: params => Promise.resolve(),
+					}}
+				>
+					{/* // PromiseState objects are passed in. */}
+					{({ findAll, create }) => (
+						<Users {...props} findAll={findAll} create={create} />
+					)}
+				</Connect>
+			)}
+		</StateHolder>
+	);
+};
 
-export { Users };
+export { ConnectedUsers as Users };
