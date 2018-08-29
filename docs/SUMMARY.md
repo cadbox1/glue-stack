@@ -9,7 +9,7 @@
   - [Setup Database Connection In Sequel Pro](./Development/SetupDatabaseConnectionInSequelPro.md)
   - [Developing Process Documentation](./Development/DevelopingProcessDocumentation.md)
   - [Setup Visual Studio Code (vscode)](./Development/SetupVSCode.md)
-  - [UI Connect Component](./Development/UIConnectComponent.md.md)
+  - [UI Connect Component](./Development/UIConnectComponent.md)
   - [Building Glue Stack From an Empty Folder](./Development/BuildingGlueStackFromAnEmptyFolder.md)
 - Infrastructure
   - [Setup AWS Account](./Infrastructure/SetupAWSAccount.md)
