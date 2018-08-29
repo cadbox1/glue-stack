@@ -15,3 +15,4 @@
   - [Setup AWS Account](./Infrastructure/SetupAWSAccount.md)
   - [Setup AWS Cloud Infrastructure](./Infrastructure/SetupAWSCloudInfrastructure.md)
   - [Continuous Integration (CI): Travis CI](./Infrastructure/ContinuousIntegration-TravisCI.md)
+  - [Performance Testing and Connection Pool Sizes](./Infrastructure/PerformanceTestingAndConnectionPoolSizes.md)
