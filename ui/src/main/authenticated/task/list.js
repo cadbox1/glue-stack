@@ -87,26 +87,22 @@ class List extends Component {
 
 export { List };
 
-export const ListConnect = ({
-	handleUpdate,
-	params,
-	children,
-	search,
-	statusId,
-	userId,
-}) => (
-	<Connect
-		findAll={{
-			handleUpdate,
-			params: {
-				...parsePaginationParameters(params),
-				name: search,
-				statusId: statusId != null ? Number(statusId) : statusId,
-				userId: userId != null ? Number(userId) : userId,
-			},
-			promise: findAll,
-		}}
-	>
-		{({ findAll }) => children({ findAll })}
-	</Connect>
-);
+export const ListConnect = ({ handleUpdate, params, children }) => {
+	const { search, statusId, userId } = params;
+	return (
+		<Connect
+			findAll={{
+				handleUpdate,
+				params: {
+					...parsePaginationParameters(params),
+					name: search,
+					statusId: statusId != null ? Number(statusId) : statusId,
+					userId: userId != null ? Number(userId) : userId,
+				},
+				promise: findAll,
+			}}
+		>
+			{({ findAll }) => children({ findAll })}
+		</Connect>
+	);
+};

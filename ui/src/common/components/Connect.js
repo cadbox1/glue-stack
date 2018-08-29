@@ -86,7 +86,6 @@ class PromiseState {
 				this.rejected = false;
 				this.fulfilled = true;
 				this.value = result;
-				debugger;
 				this.updateState();
 				if (this.callback) {
 					this.callback(result);
@@ -114,7 +113,6 @@ export class Connect extends Component {
 		Object.keys(config).forEach(name => {
 			const singleConfig = config[name];
 			singleConfig.name = name;
-			singleConfig.handleUpdate = props.handleUpdate;
 			this.state[name] = new PromiseState(
 				singleConfig,
 				this.setState.bind(this)

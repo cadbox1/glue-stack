@@ -78,7 +78,7 @@ const ConnectedListRow = props => (
 			promise: patch,
 		}}
 	>
-		({patch}) => <ListRow {...props} patch={patch} />
+		{({ patch }) => <ListRow {...props} patch={patch} />}
 	</Connect>
 );
 
