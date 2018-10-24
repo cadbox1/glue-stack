@@ -70,7 +70,7 @@ SQL, Java, Javascript, HTML and CSS are still the most popular technologies amon
   * [MySQL](https://en.wikipedia.org/wiki/MySQL)
     * An older, common relational database that I have the most experience with.
 * API
-  * [Java](https://en.wikipedia.org/wiki/Java_(programming_language))
+  * [Java](https://en.wikipedia.org/wiki/Java_%28programming_language%29)
   * [Spring Boot](https://spring.io/projects/spring-boot#overview)
     * An easy and opionated way to create Java applications.
   * [Hibernate](http://hibernate.org/orm/)
