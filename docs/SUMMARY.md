@@ -1,8 +1,10 @@
 # Table of contents
 
-- [Glue Stack](README.md)
 - [Read Me](README.md)
-- [Architecture](./Architecture.md)
+- [GitHub](https://github.com/cadbox1/glue-stack/)
+- [Live Demo](https://cadbox1.github.io/glue-stack/)
+- [Architecture](./Architecture/Architecture.md)
+  - [How Web Applications Work](./Architecture/HowWebApplicationsWork.md)
 - Development
   - [Development Process - Tasks](./Development/DevelopmentProcess-Tasks.md)
   - [Running Locally](./Development/RunningLocally.md)
