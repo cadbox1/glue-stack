@@ -1,25 +1,19 @@
 # Glue Stack
 
-If you're reading this on our [GitHub](https://github.com/cadbox1/glue-stack/), then checkout our [GitBook](https://cadbox1.gitbook.io/glue-stack/) for a nicer reading experience.
+If you're reading this on [GitHub](https://github.com/cadbox1/glue-stack/), then checkout our [GitBook](https://cadbox1.gitbook.io/glue-stack/) for a nicer reading experience.
 
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/glue-stack)
 [![Build Status](https://travis-ci.com/cadbox1/glue-stack.svg?branch=master)](https://travis-ci.com/cadbox1/glue-stack)
 
 ![Screeshot](./Screenshot.png)
 
-## Getting Started
+## Quick Start
 
-* Check out the [live app](https://d1if23x0agu0jj.cloudfront.net/).
-* We have a [pretty website](https://cadbox1.github.io/glue-stack/).
-* Our documentation looks great in our [GitBook](https://cadbox1.gitbook.io/glue-stack/)
-* Check out our [Architecture](Architecture/Architecture.md).
-* Check out our [development process](Development/DevelopmentProcess-Tasks.md).
-* [Run it locally](development/runninglocally.md).
-* Check out our [roadmap](https://github.com/cadbox1/glue-stack/projects/3).
-* Check out our [chat](https://spectrum.chat/glue-stack).
-* If you're really keen then [build Glue Stack from an empty folder](./Development/BuildingGlueStackFromAnEmptyFolder.md).
+* Signup for a free account on our [website](https://cadbox1.github.io/glue-stack/).
+* [Chat](https://spectrum.chat/glue-stack) with us.
+* Read on.
 
-Please don't forget to star us on GitHub if you think we're remotely cool!
+Star us on [GitHub](https://github.com/cadbox1/glue-stack/) if you think we're cool!
 
 ## What problem are we solving?
 * We do core features, like storing and finding data, really well. We make it fast, easy and enjoyable to manage your data and we do it with security and scalability.
@@ -33,32 +27,34 @@ Please don't forget to star us on GitHub if you think we're remotely cool!
   - We designed our user interface using Google's Material Design components, with a mobile first mindset, developed a secure, performant and flexbile API and backed that with a relational database.
   - Then we built the whole thing from scratch again and documented the entire process. This allowed us to identify development pain points while refining the process and documentation.
 
-## User Requirements
-  - works in your browser
-  - works on mobile
-  - easy to find data using search, filters and sorting
-  - fast
-  - secure
-  - reliable
-  - consistent user interface patterns
-  - feels good to use
-  - bulk actions
-  - activity log
-  - api for integration
-  - new features are delivered quickly
+## Features
+### User Features
+  - Browser based
+  - Mobile ready
+  - Easy to find data using search, filters and sorting
+  - Fast
+  - Secure
+  - Reliable
+  - Consistent user interface
+  - Feels good to use
+  - Bulk actions
+  - Activity log
+  - API for integrations
+  - New features are delivered quickly
 
-## Developer Requirements
-  - documentation for core basic features including the development process
-  - deployed in the cloud
-  - reusable components with good abstractions
-  - fast to develop
-  - easy to scale
-  - easy to secure
-  - responsive interface - not a spearate mobile app to maintain
-  - efficient testing strategy
-  - continuous integration
-  - multitenancy
-  - API based for separation
+### Developer Features
+  - Documentated Architecture and [Development Process](./Development/DevelopmentProcess-Tasks.md)
+  - Deployed in the cloud
+  - Reusable components with [good abstractions](#featured-abstractions)
+  - Fast to develop
+  - Easy to scale
+  - Easy to secure
+  - Responsive interface - not a speparate mobile app to maintain
+  - Efficient testing strategy
+  - [Continuous Integration](./Infrastructure/ContinuousIntegration-TravisCI.md)
+  - Multitenant
+  - API for separation
+  - [Performance testing](./Infrastructure/PerformanceTestingAndConnectionPoolSizes.md)
 
 
 ## Architecture
@@ -73,6 +69,16 @@ Multitenant, monolithic, 3-tier application with a MySQL database, Spring Boot H
 
 Continued at [Architecture](./Architecture/Architecture.md).
 
-## What Next?
+### Featured Abstractions
 
-[Get Started!](./README.md#getting-started)
+#### API
+[Querydsl](http://www.querydsl.com/) for composing type safe database queries inside the API and bulding queries from request parameters. Querydsl makes it easy to have a secure, performant API whilst supporting the wide range of front end queries we require. Without it, the API would be an error prone, string concatenation mess.
+
+#### UI
+
+[React](https://reactjs.org/) is a really simple but powerful abstraction for the frontend especially when the setup is taken care of by [Create React App](https://github.com/facebook/create-react-app).
+
+
+Our custom [connect component](./Development/UIConnectComponent.md) turned out to be an essential abstraction for this project when handling network requests in React. It allowed us to make our UI simpler and less stateful than other single page applications.
+
+[Material-UI](https://material-ui.com/) for the building blocks of user interfaces. This type of library is essential for efficient front end development and really highlights how useful React can be.
