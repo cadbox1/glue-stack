@@ -4,7 +4,11 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilderFactory;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import org.gluestack.api.domain.entity.BaseEntity;
@@ -33,13 +37,18 @@ abstract public class BaseService<T extends BaseEntity> {
 	}
 
 	public Optional<T> findById(User principalUser, Integer id) {
-		// this is the hack until this is fixed: https://github.com/querydsl/querydsl/issues/2115
+		// this is the hack until this is fixed:
+		// https://github.com/querydsl/querydsl/issues/2115
 		Predicate findOnePredicate = new PathBuilderFactory().create(entityClass).get("id").eq(id);
 		Page<T> result = findAll(principalUser, findOnePredicate, PageRequest.of(0, 1));
 		if (result.hasContent()) {
 			return Optional.of(result.iterator().next());
 		}
 		return Optional.empty();
+	}
+
+	public List<T> saveAll(User principalUser, Collection<T> newEntities) {
+		return newEntities.stream().map(newEntity -> save(principalUser, newEntity)).collect(Collectors.toList());
 	}
 
 	public T save(User principalUser, T newEntity) {

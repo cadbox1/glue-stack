@@ -11,7 +11,14 @@ import { findAll } from "api/task";
 import { List } from "../task/list";
 
 class Me extends Component {
+	state = { selectedIds: [] };
+
+	handleSelectIds = selectedIds => {
+		this.setState({ selectedIds });
+	};
+
 	render() {
+		const { selectedIds } = this.state;
 		const { findAll, toggleSideBar } = this.props;
 		return (
 			<Page>
@@ -20,7 +27,11 @@ class Me extends Component {
 					<AppBarTitle>Me</AppBarTitle>
 					<RefreshButton findAll={findAll} />
 				</AppBar>
-				<List findAll={findAll} />
+				<List
+					findAll={findAll}
+					selectedIds={selectedIds}
+					onSelectIds={this.handleSelectIds}
+				/>
 			</Page>
 		);
 	}

@@ -8,6 +8,7 @@ import Badge from "@material-ui/core/Badge";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import SearchIcon from "@material-ui/icons/Search";
+import CreateIcon from "@material-ui/icons/Create";
 import Add from "@material-ui/icons/Add";
 import { Container } from "common/components/Container";
 import { Page } from "common/components/Page";
@@ -34,6 +35,7 @@ class Task extends Component {
 
 		this.state = {
 			search: props.location.query.search || "",
+			selectedIds: [],
 		};
 
 		this.debouncedSearch = debounce(this.handleSearchUpdate, 300);
@@ -60,9 +62,13 @@ class Task extends Component {
 		findAll.handleUpdate({ search: undefined });
 	};
 
+	handleSelectIds = selectedIds => {
+		this.setState({ selectedIds });
+	};
+
 	render() {
 		const { classes, match, findAll, toggleSideBar, singleView } = this.props;
-		const { search } = this.state;
+		const { search, selectedIds } = this.state;
 
 		const someActiveParams = Object.keys(findAll.getActiveParams()).length > 0;
 		const activeSearch = findAll.params.name !== undefined;
@@ -75,7 +81,18 @@ class Task extends Component {
 					render={props => (
 						<Page>
 							<AppBar>
-								{activeSearch ? (
+								{selectedIds.length > 0 ? (
+									<Fragment>
+										<AppBarTitle>{selectedIds.length} selected</AppBarTitle>
+										<IconButton
+											component={Link}
+											to={`${match.path}/action`}
+											color="inherit"
+										>
+											<CreateIcon />
+										</IconButton>
+									</Fragment>
+								) : activeSearch ? (
 									<Fragment>
 										<IconButton
 											onClick={this.handleSearchClose}
@@ -137,7 +154,13 @@ class Task extends Component {
 									</Fragment>
 								)}
 							</AppBar>
-							<List {...props} listURL={match.path} findAll={findAll} />
+							<List
+								{...props}
+								listURL={match.path}
+								findAll={findAll}
+								selectedIds={selectedIds}
+								onSelectIds={this.handleSelectIds}
+							/>
 						</Page>
 					)}
 				/>
@@ -152,6 +175,17 @@ class Task extends Component {
 					/>
 					<Route
 						path={`${match.path}/create`}
+						render={props => (
+							<Page>
+								<Create
+									{...props}
+									refreshList={singleView ? undefined : findAll.call}
+								/>
+							</Page>
+						)}
+					/>
+					<Route
+						path={`${match.path}/action`}
 						render={props => (
 							<Page>
 								<Create
