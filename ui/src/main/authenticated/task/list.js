@@ -6,6 +6,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import Hidden from "@material-ui/core/Hidden";
+import Checkbox from "@material-ui/core/Checkbox";
 import { TableCell } from "common/components/TableCell";
 import { parsePaginationParameters } from "common/parsePaginationParameters";
 import { TablePagination } from "common/components/TablePagination";
@@ -14,13 +15,52 @@ import { findAll } from "api/task";
 import { ListRow } from "./listRow";
 
 class List extends Component {
+	handleSelectAllClick = event => {
+		let selectedIds = [];
+		if (event.target.checked) {
+			selectedIds = this.props.findAll.value.data.content.map(n => n.id);
+		}
+		this.props.onSelectIds(selectedIds);
+	};
+
+	handleSelect = id => {
+		const { selectedIds } = this.props;
+		const selectedIndex = selectedIds.indexOf(id);
+		let newSelected = [];
+
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selectedIds, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selectedIds.slice(1));
+		} else if (selectedIndex === selectedIds.length - 1) {
+			newSelected = newSelected.concat(selectedIds.slice(0, -1));
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(
+				selectedIds.slice(0, selectedIndex),
+				selectedIds.slice(selectedIndex + 1)
+			);
+		}
+		this.props.onSelectIds(newSelected);
+	};
+
 	render() {
-		const { findAll, listURL } = this.props;
+		const { findAll, listURL, selectedIds } = this.props;
+
+		const numSelected = selectedIds.length;
+		const rowCount = findAll.fulfilled ? findAll.value.data.content.length : 1;
+
 		return (
 			<div style={{ width: "100%", overflow: "auto" }}>
 				<Table>
 					<TableHead>
 						<TableRow>
+							<TableCell padding="checkbox">
+								<Checkbox
+									indeterminate={numSelected > 0 && numSelected < rowCount}
+									checked={numSelected === rowCount}
+									onChange={this.handleSelectAllClick}
+								/>
+							</TableCell>
 							<TableCell>
 								<TableSortLabel findAll={findAll} property="name">
 									Name
@@ -69,6 +109,8 @@ class List extends Component {
 									data={row}
 									findAll={findAll}
 									listURL={listURL}
+									isSelected={selectedIds.includes(row.id)}
+									onSelect={this.handleSelect}
 								/>
 							))}
 					</TableBody>

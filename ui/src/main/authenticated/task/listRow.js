@@ -4,6 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
 import Hidden from "@material-ui/core/Hidden";
+import Checkbox from "@material-ui/core/Checkbox";
 import Done from "@material-ui/icons/Done";
 import Undo from "@material-ui/icons/Undo";
 import { Link } from "common/components/Link";
@@ -25,10 +26,18 @@ class ListRow extends Component {
 			.then(() => findAll.call());
 	};
 
+	handleCheckboxClick = () => {
+		const { data, onSelect } = this.props;
+		onSelect(data.id);
+	};
+
 	render() {
-		const { data, listURL, patch } = this.props;
+		const { data, listURL, patch, isSelected } = this.props;
 		return (
 			<TableRow key={data.id}>
+				<TableCell padding="checkbox">
+					<Checkbox onClick={this.handleCheckboxClick} checked={isSelected} />
+				</TableCell>
 				<TableCell>
 					{listURL ? (
 						<Link to={`${listURL}/${data.id}`}>{data.name}</Link>
