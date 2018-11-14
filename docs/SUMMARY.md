@@ -1,8 +1,6 @@
 # Table of contents
 
 - [Read Me](README.md)
-- [GitHub](https://github.com/cadbox1/glue-stack/)
-- [Live Demo](https://cadbox1.github.io/glue-stack/)
 - [Architecture](./Architecture/Architecture.md)
   - [How Web Applications Work](./Architecture/HowWebApplicationsWork.md)
 - Development
