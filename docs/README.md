@@ -9,23 +9,29 @@ If you're reading this on [GitHub](https://github.com/cadbox1/glue-stack/), then
 
 ## Quick Start
 
-* Signup for a free account on our [website](https://cadbox1.github.io/glue-stack/).
+* Signup for a free account with out [Live App](https://cadbox1.github.io/glue-stack/).
 * [Chat](https://spectrum.chat/glue-stack) with us.
-* Read on.
+* Explore this documentation.
 
 Star us on [GitHub](https://github.com/cadbox1/glue-stack/) if you think we're cool!
 
 ## What problem are we solving?
 * We do core features, like storing and finding data, really well. We make it fast, easy and enjoyable to manage your data and we do it with security and scalability.
-* We believe the foundation of a good user experience is a good developer experience. If we optimise the developer experience we can deliver the quality users expect in less time, leaving more time to focus on core business problems that make your application unique.
-* This is contrasted to usual development teams with existing architectures, siloed teams, drip fed features and pressure to develop features that make the product unique. This makes it hard to even identify the core features let alone solve them well and leads to a compromised developer experience.
+* We believe the foundation of a good user experience is a good developer experience. If we optimise the developer experience we can deliver quality features fast, leaving more time to focus on what makes your application unique.
 
 ## How do we do it?
   - Glue Stack is designed from the ground up to deliver core features that users expect without comprimising developer experience.
-  - We scoped out the requirements and glued some of the best developer tools together to create glue stack.
-  - To keep the domain simple but relevant, glue stack's domain is multiuser task management, inspired by [TodoMVC](http://todomvc.com/).
-  - We designed our user interface using Google's Material Design components, with a mobile first mindset, developed a secure, performant and flexbile API and backed that with a relational database.
-  - Then we built the whole thing from scratch again and documented the entire process. This allowed us to identify development pain points while refining the process and documentation.
+  - To achieve that developer experience we glued some of the best open source tools together to create Glue Stack.
+  - To keep the domain simple but relevant, Glue Stack is a multiuser task management app, inspired by [TodoMVC](http://todomvc.com/), but with more backend.
+  - We designed our user interface using a selection of Google's Material Design components optimised for mobile, developed a secure, performant and flexbile API backed by a relational database. A little bit of new tech combined with a lot of tried and tested.
+  - Then we built the whole thing from scratch again and documented the entire process. This allowed us to identify development pain points and refine the process and documentation.
+
+## Hasn't this been done this before?
+I've seen application frameworks optimised for development speed before, along the lines of [Firebase](https://firebase.google.com/), that can get you an application incredibly fast. I think these types of tools are optimised for an [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) or greenfield project and less suited for the long term. A NoSQL database is a big jump coming from a relational database and often a hard sell for good reason.
+
+That brings us to the other end of the spectrum with more flexible tools like [React](https://reactjs.org/). You'll have to choose all the tools yourself and glue them all together. Compared to the framework approach, this option often leads to a poor developer experience due to a lack of documentation about how your glue actually works. Not to mention your unique combination of tools will have unique problems that will require unique solutions. Siloed teams and drip-fed features only make this harder.
+
+Glue Stack is an experiment to find the middleground between the two. We try to achieve a good developer experience by documenting the glue that holds our tools together. We try not to write too much custom code requiring documentation and prefer tried and tested tools like Java and MySQL mixed with a bit of new stuff with React. By open sourcing and sharing Glue Stack we hope to give you some ideas on how you might improve your own glue stack and give you the opportunity to improve ours.
 
 ## Features
 ### User Features
@@ -56,7 +62,6 @@ Star us on [GitHub](https://github.com/cadbox1/glue-stack/) if you think we're c
   - API for separation
   - [Performance testing](./Infrastructure/PerformanceTestingAndConnectionPoolSizes.md)
 
-
 ## Architecture
 
 Multitenant, monolithic, 3-tier application with a MySQL database, Spring Boot HTTP API and React Single Page Application.
@@ -69,7 +74,10 @@ Multitenant, monolithic, 3-tier application with a MySQL database, Spring Boot H
 
 Continued at [Architecture](./Architecture/Architecture.md).
 
-### Featured Abstractions
+### Featured Tools
+
+#### Custom Tools
+The [Glue Stack Connect Component](./Development/UIConnectComponent.md) turned out to be an essential abstraction for this project when handling network requests in React. It allowed us to make our UI simpler and less stateful than other single page applications.
 
 #### API
 [Querydsl](http://www.querydsl.com/) for composing type safe database queries inside the API and bulding queries from request parameters. Querydsl makes it easy to have a secure, performant API whilst supporting the wide range of front end queries we require. Without it, the API would be an error prone, string concatenation mess.
@@ -78,7 +86,4 @@ Continued at [Architecture](./Architecture/Architecture.md).
 
 [React](https://reactjs.org/) is a really simple but powerful abstraction for the frontend especially when the setup is taken care of by [Create React App](https://github.com/facebook/create-react-app).
 
-
-Our custom [connect component](./Development/UIConnectComponent.md) turned out to be an essential abstraction for this project when handling network requests in React. It allowed us to make our UI simpler and less stateful than other single page applications.
-
-[Material-UI](https://material-ui.com/) for the building blocks of user interfaces. This type of library is essential for efficient front end development and really highlights how useful React can be.
+[Material-UI](https://material-ui.com/) for the building blocks of user interfaces. This type of library is essential for efficient front end development and really highlights how useful React can be. This highlights one of the reasons Glue Stack exists because even with an excellent library like this we still need to choose the components that will work best for our app and its requirements.
