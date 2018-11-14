@@ -38,9 +38,3 @@ In this article we are preparing for the [development process for tasks](./Devel
 
 1. [Basic Installation](https://github.com/robbyrussell/oh-my-zsh#basic-installation)
 
-2. Add the following to your VSCode settings.
-
-   ```
-   "terminal.integrated.shell.osx": "zsh"
-   ```
-
