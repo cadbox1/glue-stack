@@ -244,3 +244,5 @@ I might try and make it easy to cache responses based on their params to get a s
 ## Glue Stack
 
 If you like any of the patterns you see here make sure to give us a star and be sure to checkout the rest of Glue Stack for more!
+
+Accepted
