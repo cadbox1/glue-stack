@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert --out deploy
+    kompose.service.type: LoadBalancer
+    kompose.version: 1.18.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+    spec:
+      containers:
+      - env:
+        - name: RDS_DB_NAME
+          value: glue
+        - name: RDS_HOSTNAME
+          value: database
+        - name: RDS_PORT
+          value: "3306"
+        - name: RDS_USERNAME
+          value: root
+        image: asia.gcr.io/glue-stack-251212/app
+        name: app
+        ports:
+        - containerPort: 8080
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -10,6 +10,7 @@ services:
       MYSQL_ROOT_HOST: "%"
   app:
     build: .
+    image: asia.gcr.io/glue-stack-251212/app
     depends_on:
       - database
     ports:
@@ -19,4 +20,6 @@ services:
       RDS_PORT: 3306
       RDS_DB_NAME: glue
       RDS_USERNAME: root
-      RDS_PASSWORD: 
+      RDS_PASSWORD:
+    labels:
+      kompose.service.type: LoadBalancer
