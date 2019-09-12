@@ -1,0 +1,23 @@
+name: Pull Request
+on:
+  pull_request:
+    branches:
+    - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/gcloud/auth@master
+      env:
+        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+    - name: build
+      run: echo Hello, world!
+    - name: build
+      run: |
+        cd devops
+        sh ./1-build.sh
+    - name: deploy-staging
+      run: |
+        cd devops
+        sh ./2-deploy-staging.sh

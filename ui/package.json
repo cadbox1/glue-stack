@@ -28,7 +28,6 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test --env=jsdom",
-		"precommit": "lint-staged",
 		"update": "yarn upgrade-interactive --latest"
 	}
 }
