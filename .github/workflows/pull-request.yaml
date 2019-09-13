@@ -14,14 +14,9 @@ jobs:
         GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
     - name: build
       uses: actions/gcloud/cli@master
-      with:
-        entrypoint: sh
-        args: |
-          cd devops
-          sh ./1-build.sh
+      working-directory: devops
+      run: sh ./1-build.sh
     - name: deploy-staging
-      with:
-        entrypoint: sh
-        args: |
-          cd devops
-          sh ./2-deploy-staging.sh
+      uses: actions/gcloud/cli@master
+      working-directory: devops
+      run: sh ./2-deploy-staging.sh
