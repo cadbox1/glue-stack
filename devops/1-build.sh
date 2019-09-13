@@ -2,7 +2,7 @@
 
 set -e
 
-gcloud auth configure-docker
+gcloud auth configure-docker --quiet
 
 APP_IMAGE_TAG="asia.gcr.io/glue-stack-251212/app"
 

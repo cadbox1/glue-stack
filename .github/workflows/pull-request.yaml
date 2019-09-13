@@ -15,8 +15,13 @@ jobs:
     - name: build
       uses: actions/gcloud/cli@master
       with:
-        entrypoint: ./devops/1-build.sh
+        entrypoint: sh
+        args: |
+          cd devops
+          sh ./1-build.sh
     - name: deploy-staging
-      uses: actions/gcloud/cli@master
       with:
-        entrypoint: ./devops/2-deploy-staging.sh
+        entrypoint: sh
+        args: |
+          cd devops
+          sh ./2-deploy-staging.sh
