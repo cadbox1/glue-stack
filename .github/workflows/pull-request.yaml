@@ -13,10 +13,10 @@ jobs:
       env:
         GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
     - name: build
-      run: |
-        cd devops
-        sh ./1-build.sh
+      uses: actions/gcloud/cli@master
+      with:
+        entrypoint: ./devops/1-build.sh
     - name: deploy-staging
-      run: |
-        cd devops
-        sh ./2-deploy-staging.sh
+      uses: actions/gcloud/cli@master
+      with:
+        entrypoint: ./devops/2-deploy-staging.sh
