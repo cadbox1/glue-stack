@@ -2,6 +2,8 @@
 
 set -e
 
+gcloud auth configure-docker
+
 APP_IMAGE_TAG="asia.gcr.io/glue-stack-251212/app"
 
 docker pull $APP_IMAGE_TAG:api-compile || true
