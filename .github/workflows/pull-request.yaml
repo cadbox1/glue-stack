@@ -13,8 +13,6 @@ jobs:
       env:
         GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
     - name: build
-      run: echo Hello, world!
-    - name: build
       run: |
         cd devops
         sh ./1-build.sh
