@@ -2,7 +2,7 @@
 
 set -e
 
-cd "${BASH_SOURCE%/*}/"
+# cd "${BASH_SOURCE%/*}/"
 
 gcloud auth configure-docker --quiet
 
