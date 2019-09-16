@@ -1,8 +1,6 @@
 #!/bin/bash
 
-set -e
-
-cd "${BASH_SOURCE%/*}/"
+set -euxo pipefail
 
 gcloud config set project glue-stack-251212
 gcloud config set compute/zone australia-southeast1-a
