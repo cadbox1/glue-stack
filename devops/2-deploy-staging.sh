@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -e
 
 gcloud config set project glue-stack-251212
 gcloud config set compute/zone australia-southeast1-a

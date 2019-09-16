@@ -1,5 +1,5 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -e
 
 gcloud container clusters delete staging-cluster --quiet
