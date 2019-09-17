@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 gcloud auth configure-docker --quiet
 
