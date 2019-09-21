@@ -18,7 +18,7 @@ if [ -z ${GITHUB_WORKSPACE+x} ];
 	else PROJECT_ROOT=$GITHUB_WORKSPACE; 
 fi
 
-docker run --rm -v $GITHUB_WORKSPACE/api:/api -w /api -v /var/run/docker.sock:/var/run/docker.sock $APP_IMAGE_TAG:api-compile mvn test
+docker run --rm -v /home/runner/work/glue-stack/glue-stack/api:/api -w /api -v /var/run/docker.sock:/var/run/docker.sock $APP_IMAGE_TAG:api-compile mvn test
 
 docker build --cache-from $APP_IMAGE_TAG:api-compile -t $APP_IMAGE_TAG:latest ../
 docker push $APP_IMAGE_TAG:latest
