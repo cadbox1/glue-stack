@@ -1,10 +1,12 @@
-FROM node:10.16.1-alpine as ui-build-stage
+FROM node:10.16.1-alpine as dependencies
 WORKDIR /app
 COPY ui/package.json ui/yarn.lock ./
 RUN yarn
+
+FROM dependencies as compiled
 COPY ui ./
 RUN yarn build
 
 FROM nginx:1.17.2-alpine
-COPY deployment/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=ui-build-stage /app/build/ /usr/share/nginx/html
+COPY devops/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=compiled /app/build/ /usr/share/nginx/html
