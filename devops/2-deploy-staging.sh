@@ -12,5 +12,7 @@ gcloud container clusters get-credentials staging-cluster
 
 gcloud compute addresses create staging-ip-address --global || true
 
+gcloud components install kubectl
+
 kubectl apply -f ./deployment/common/
 kubectl apply -f ./deployment/staging/

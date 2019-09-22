@@ -12,5 +12,7 @@ gcloud container clusters get-credentials prod-cluster
 
 gcloud compute addresses create prod-ip-address --global || true
 
+gcloud components install kubectl
+
 kubectl apply -f ./deployment/common/
 kubectl apply -f ./deployment/prod/
