@@ -1,10 +1,10 @@
 FROM node:10.16.1-alpine as dependencies
 WORKDIR /app
-COPY ui/package.json ui/yarn.lock ./
+COPY package.json yarn.lock ./
 RUN yarn
 
 FROM dependencies as compiled
-COPY ui ./
+COPY ./ ./
 RUN yarn build
 
 FROM nginx:1.17.2-alpine

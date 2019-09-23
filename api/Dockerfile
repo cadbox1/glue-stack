@@ -1,11 +1,11 @@
 FROM maven:3.6.1-jdk-8-alpine as dependencies
 WORKDIR /app
-COPY api/pom.xml ./
+COPY pom.xml ./
 RUN mvn dependency:go-offline
 
 FROM dependencies as compiled
 WORKDIR /app
-COPY api ./
+COPY ./ ./
 RUN mvn compile
 
 FROM openjdk:8-jre-alpine
