@@ -3,10 +3,10 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn
 
-FROM dependencies as compiled
+FROM dependencies as package
 COPY ./ ./
 RUN yarn build
 
 FROM nginx:1.17.2-alpine
 COPY devops/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=compiled /app/build/ /usr/share/nginx/html
+COPY --from=package /app/build/ /usr/share/nginx/html
