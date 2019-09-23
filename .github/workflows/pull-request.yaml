@@ -10,16 +10,16 @@ jobs:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - name: Setup Google Cloud
+    - name: Authenticate with Google Cloud
       uses: actions/gcloud/auth@master
       env:
         GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
-    - name: build
+    - name: Build
       uses: actions/gcloud/cli@master
       with:
         entrypoint: sh
         args: -c "cd ./devops && sh ./1-build.sh"
-    - name: deploy-staging
+    - name: Deploy to Staging
       uses: actions/gcloud/cli@master
       with:
         entrypoint: sh
