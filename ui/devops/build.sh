@@ -5,8 +5,8 @@ set -ex
 gcloud auth configure-docker --quiet
 
 REPO="asia.gcr.io/glue-stack-251212"
-UI_DEPENDENCIES_IMAGE_NAME="$REPO/ui-dependencies"
-UI_IMAGE_NAME="$REPO/ui"
+UI_DEPENDENCIES_IMAGE_NAME="$REPO/nginx-dependencies"
+UI_IMAGE_NAME="$REPO/nginx"
 
 if [ -z ${GITHUB_SHA+x} ]
 	then TAG="local"
