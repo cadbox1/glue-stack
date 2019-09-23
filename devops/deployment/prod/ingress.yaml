@@ -7,5 +7,5 @@ metadata:
     networking.gke.io/managed-certificates: prod-certificate
 spec:
   backend:
-    serviceName: app
+    serviceName: nginx
     servicePort: 80
