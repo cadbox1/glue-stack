@@ -27,7 +27,7 @@ spec:
           value: "3306"
         - name: RDS_USERNAME
           value: root
-        image: asia.gcr.io/glue-stack-251212/api
+        image: asia.gcr.io/glue-stack-251212/api:$TAG
         name: api
         ports:
         - containerPort: 8080

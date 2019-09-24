@@ -19,7 +19,7 @@ spec:
         io.kompose.service: nginx
     spec:
       containers:
-      - image: asia.gcr.io/glue-stack-251212/nginx
+      - image: asia.gcr.io/glue-stack-251212/nginx:$TAG
         name: nginx
         ports:
         - containerPort: 80
