@@ -9,7 +9,7 @@ If you're reading this on [GitHub](https://github.com/cadbox1/glue-stack/), then
 
 ## Quick Start
 
-* Signup for a free account with out [Live App](https://cadbox1.github.io/glue-stack/).
+* Signup for a free account with our [Live App](https://cadbox1.github.io/glue-stack/).
 * [Chat](https://spectrum.chat/glue-stack) with us.
 * Explore this documentation.
 

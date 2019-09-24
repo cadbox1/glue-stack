@@ -1,0 +1,11 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: prod-ip-address
+    networking.gke.io/managed-certificates: prod-certificate
+spec:
+  backend:
+    serviceName: nginx
+    servicePort: 80

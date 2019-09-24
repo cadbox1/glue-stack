@@ -3,8 +3,30 @@ services:
   database:
     image: mysql/mysql-server:5.7.21
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
       MYSQL_DATABASE: "glue"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
+  api:
+    build: ./api/
+    image: asia.gcr.io/glue-stack-251212/api
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    environment:
+      RDS_HOSTNAME: database
+      RDS_PORT: 3306
+      RDS_DB_NAME: glue
+      RDS_USERNAME: root
+      RDS_PASSWORD:
+  nginx:
+    build: ./ui/
+    image: asia.gcr.io/glue-stack-251212/nginx
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+    labels:
+      kompose.service.type: nodeport
