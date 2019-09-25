@@ -3,7 +3,9 @@
 If you're reading this on [GitHub](https://github.com/cadbox1/glue-stack/), then checkout our [GitBook](https://cadbox1.gitbook.io/glue-stack/) for a nicer reading experience.
 
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/glue-stack)
-[![Build Status](https://travis-ci.com/cadbox1/glue-stack.svg?branch=master)](https://travis-ci.com/cadbox1/glue-stack)
+![](https://github.com/cadbox1/glue-stack/workflows/Pull%20Request/badge.svg)
+![](https://github.com/cadbox1/glue-stack/workflows/Push/badge.svg)
+
 
 ![Screeshot](./Screenshot.png)
 

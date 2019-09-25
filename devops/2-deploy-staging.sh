@@ -14,5 +14,12 @@ gcloud compute addresses create staging-ip-address --global || true
 
 gcloud components install kubectl
 
+if [ -z ${GITHUB_SHA+x} ]
+	then TAG="local"
+	else TAG=$GITHUB_SHA
+fi
+
+find ./deployment/common -type f -exec sed -i.bak 's/$TAG/'"$TAG"'/g' {} \;
+
 kubectl apply -f ./deployment/common/
 kubectl apply -f ./deployment/staging/
