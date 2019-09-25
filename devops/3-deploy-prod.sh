@@ -19,7 +19,7 @@ if [ -z ${GITHUB_SHA+x} ]
 	else TAG=$GITHUB_SHA
 fi
 
-find ./deployment/common -type f -exec sed -i '' -e 's/$TAG/${TAG}/g' {} \;
+find ./deployment/common -type f -exec sed -i.bak 's/$TAG/${TAG}/g' {} \;
 
 kubectl apply -f ./deployment/common/
 kubectl apply -f ./deployment/prod/
