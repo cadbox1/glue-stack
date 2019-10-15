@@ -6,7 +6,14 @@
     "version": "2.0.0-rc.41",
     "repository": "https://github.com/cadbox1/glue-stack",
     "native": false,
-    "themeConfig": {},
+    "themeConfig": {
+      "colors": {
+        "primary": "tomato",
+        "header": {
+          "bg": "white"
+        }
+      }
+    },
     "separator": "-",
     "src": "./src/"
   },
@@ -27,6 +34,17 @@
     }
   ],
   "props": [
+    {
+      "key": "src/components/ButtonLink.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "ButtonLink",
+          "methods": [],
+          "actualName": "ButtonLink"
+        }
+      ]
+    },
     {
       "key": "src/components/Features.js",
       "value": [
@@ -111,17 +129,6 @@
           "displayName": "ShowcaseImage",
           "methods": [],
           "actualName": "ShowcaseImage"
-        }
-      ]
-    },
-    {
-      "key": "src/components/ButtonLink.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "ButtonLink",
-          "methods": [],
-          "actualName": "ButtonLink"
         }
       ]
     }

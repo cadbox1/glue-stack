@@ -1,31 +1,29 @@
-import React from "react";
-import styled from "@emotion/styled";
+/** @jsx jsx */
+import { jsx } from "theme-ui";
 import { ButtonLink } from "./ButtonLink";
 
-const HeroStyled = styled("section")`
-	padding-top: 6rem;
-`;
-
 export const Hero = ({ children }) => (
-	<HeroStyled>
-		<div className="container">
-			<div className="row">
-				<div className="col-12 col-md-9">{children}</div>
-			</div>
-		</div>
-	</HeroStyled>
+	<section sx={{ paddingTop: 8 }}>
+		<div sx={{ width: ["100%", "75%"] }}>{children}</div>
+	</section>
 );
 
 export const HeroHeading = ({ children }) => (
-	<h1 className="display-4">{children}</h1>
+	<h1
+		sx={{
+			fontSize: "3rem",
+			fontWeight: "normal",
+			lineHeight: 1.2,
+			mt: 0,
+			mb: 2,
+		}}
+	>
+		{children}
+	</h1>
 );
 
-const HeroLeadStyled = styled("p")`
-	margin-bottom: 2rem;
-`;
-
 export const HeroLead = ({ children }) => (
-	<HeroLeadStyled>{children}</HeroLeadStyled>
+	<p sx={{ mt: 0, mb: 2 }}>{children}</p>
 );
 
 export const HeroButtons = ({ children }) => <div>{children}</div>;
