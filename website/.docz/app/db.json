@@ -26,7 +26,7 @@
         "id": "522b7407e210088f3588b943aec44115",
         "filepath": "src/src/pages/index.mdx",
         "fullpath": "/Users/cadellchristo/dev/personal/glue-stack/website/src/pages/index.mdx",
-        "link": "https://github.com/pedronauck/docz/edit/master/website/src/src/src/pages/index.mdx",
+        "link": "https://github.com/cadbox1/glue-stack/edit/master/website/src/src/src/pages/index.mdx",
         "slug": "src-src-pages-index",
         "menu": "",
         "headings": []
@@ -34,17 +34,6 @@
     }
   ],
   "props": [
-    {
-      "key": "src/components/ButtonLink.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "ButtonLink",
-          "methods": [],
-          "actualName": "ButtonLink"
-        }
-      ]
-    },
     {
       "key": "src/components/Features.js",
       "value": [
@@ -129,6 +118,33 @@
           "displayName": "ShowcaseImage",
           "methods": [],
           "actualName": "ShowcaseImage"
+        }
+      ]
+    },
+    {
+      "key": "src/components/ButtonLink.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "ButtonLink",
+          "methods": [],
+          "actualName": "ButtonLink",
+          "props": {
+            "sx": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "variant": {
+              "defaultValue": {
+                "value": "\"secondary\"",
+                "computed": false
+              },
+              "required": false
+            }
+          }
         }
       ]
     }

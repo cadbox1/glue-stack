@@ -4,7 +4,7 @@ import { ButtonLink } from "./ButtonLink";
 
 export const Hero = ({ children }) => (
 	<section sx={{ paddingTop: 8 }}>
-		<div sx={{ width: ["100%", "75%"] }}>{children}</div>
+		<div sx={{ width: ["100%", "70%"] }}>{children}</div>
 	</section>
 );
 
@@ -26,8 +26,14 @@ export const HeroLead = ({ children }) => (
 	<p sx={{ mt: 0, mb: 2 }}>{children}</p>
 );
 
-export const HeroButtons = ({ children }) => <div>{children}</div>;
+const heroButtonMargin = 2;
 
-export const HeroButton = ({ href, children }) => (
-	<ButtonLink href={href}>{children}</ButtonLink>
+export const HeroButtons = ({ children }) => (
+	<div sx={{ mx: -heroButtonMargin }}>{children}</div>
+);
+
+export const HeroButton = ({ href, children, ...props }) => (
+	<ButtonLink href={href} sx={{ mx: heroButtonMargin }} {...props}>
+		{children}
+	</ButtonLink>
 );
