@@ -4,3 +4,6 @@ public
 
 # dependencies
 node_modules
+
+# docz files
+.docz
