@@ -1,9 +1,2 @@
-# gatsby files
-.cache/
-public
-
-# dependencies
-node_modules
-
-# docz files
 .docz
+node_modules
