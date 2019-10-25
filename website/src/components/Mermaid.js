@@ -10,16 +10,17 @@ export class Mermaid extends Component {
 	}
 
 	componentDidMount() {
-		mermaidAPI.render(this.props.name, this.props.children.toString(), html =>
+		const { name = "mermaid-diagram", children } = this.props;
+		mermaidAPI.render(name, children, html => {
 			this.setState({ mermaidHtml: html })
-		);
+		});
 	}
 
 	render() {
 		const { mermaidHtml } = this.state;
 		return (
 			<div
-				className="mermaid"
+				style={{overflow: "auto"}}
 				dangerouslySetInnerHTML={{ __html: mermaidHtml }}
 			></div>
 		);

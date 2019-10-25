@@ -3892,6 +3892,13 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
+crypto-random-string@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-3.0.1.tgz#29d7dc759d577a768afb3b7b2765dd9bd7ffe36a"
+  integrity sha512-dUL0cJ4PBLanJGJQBHQUkvZ3C4q13MXzl54oRqAIiJGiNkOZ4JDwkg/SBo7daGghzlJv16yW1p/4lIQukmbedA==
+  dependencies:
+    type-fest "^0.5.2"
+
 css-b64-images@~0.2.5:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/css-b64-images/-/css-b64-images-0.2.5.tgz#42005d83204b2b4a5d93b6b1a5644133b5927a02"
@@ -9381,12 +9388,13 @@ merge2@^1.2.3:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.3.0.tgz#5b366ee83b2f1582c48f87e47cf1a9352103ca81"
   integrity sha512-2j4DAdlBOkiSZIsaXk4mTE3sRS02yBHAtfy127xRV3bQUFqXkjHCHLW6Scv7DwNRbIWNHH8zpnz9zMaKXIdvYw==
 
-mermaid@8.3:
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.3.1.tgz#dbcc677e2077ce503f2b83aa13d33734a62d12bc"
-  integrity sha512-s3+IQJqpd++hplyz1DVmA68d1ZTUqr1R21EeQldPNtSpRwLuODqI0BxQAt0bI5oiet07lelqfs3FW4ewtIhfKQ==
+mermaid@8.4:
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.4.0.tgz#07052d143d43d36e76d7fe13dcc424852663dbed"
+  integrity sha512-YnFq/RhPZfheDlE7OuhbBx8VbPLyhfx5MsiXFPTsUW1K/C2zMnA9Tkljbrb0ABLPJAIhjijQgvBYn556CGWewg==
   dependencies:
     "@braintree/sanitize-url" "^3.1.0"
+    crypto-random-string "^3.0.1"
     d3 "^5.7.0"
     dagre-d3-renderer "^0.5.8"
     dagre-layout "^0.8.8"
@@ -13983,6 +13991,11 @@ type-fest@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.3.1.tgz#63d00d204e059474fe5e1b7c011112bbd1dc29e1"
   integrity sha512-cUGJnCdr4STbePCgqNFbpVNCepa+kAVohJs1sLhxzdH+gnEoOd8VhbYa7pD3zZYGiURWM2xzEII3fQcRizDkYQ==
+
+type-fest@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.5.2.tgz#d6ef42a0356c6cd45f49485c3b6281fc148e48a2"
+  integrity sha512-DWkS49EQKVX//Tbupb9TFa19c7+MK1XmzkrZUR8TAktmE/DizXoaoJV6TZ/tSIPXipqNiRI6CyAe7x69Jb6RSw==
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"
