@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { mermaidAPI } from "mermaid";
+
+let mermaidAPI;
+if (typeof window !== `undefined`) {
+	mermaidAPI = require("mermaid").mermaidAPI;
+}
 
 export class Mermaid extends Component {
 	constructor(props) {
