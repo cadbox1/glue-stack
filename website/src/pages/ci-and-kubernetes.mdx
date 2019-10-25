@@ -1,0 +1,180 @@
+---
+name: Kubernetes and CI
+route: kubernetes-and-ci
+---
+import { Mermaid } from "src/components/Mermaid";
+
+# Kubernetes and CI
+
+<Mermaid>
+graph LR;
+pr(Pull Request)-->test(Run Tests);
+test-->staging(Deploy to Staging);
+staging-->manual(Manual Exploratory Testing);
+manual-->merge(Merge Pull Request);
+merge-->prod(Deploy to Prod);
+</Mermaid>
+
+## Docker
+
+- Standard way of shipping services
+  - Can easily get a database or prometheus service as a container
+- Can deploy the full stack locally with docker-compose
+- Infrastructure as code is nice
+- We use testcontainers which need to run using docker run, [not docker build](https://github.com/testcontainers/testcontainers-java/issues/1112)
+  - Solution is to stop the build after compilation then run the tests then complete the build while skipping those tests
+- Multi stage builds
+  - Use multi stage builds to reduce container sizes by excluding the dependencies required for building
+    - Previously people used a builder image for this which is what older blog posts reference
+  - [How to do it in Java](https://whitfin.io/speeding-up-maven-docker-builds/)
+  - Use Alpine images because they're smaller
+  - Caching multi stage builds
+	- Speeds up build time dramatically
+	- It's tricky
+    	- https://github.com/moby/moby/issues/34715
+    	- https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds
+    	- https://andrewlock.net/caching-docker-layers-on-serverless-build-hosts-with-multi-stage-builds---target,-and---cache-from/
+
+## Kubernetes
+
+- 3 services
+  - DB: MySQL database
+  - API: Spring Boot API
+  - NGINX: Serving frontend assets and proxying the api
+
+Static Assets
+<Mermaid>
+sequenceDiagram;
+client->>Ingress: https request;
+Ingress->>NGINX: http request;
+NGINX->>Ingress: static frontend assets;
+Ingress->>client: https static frontend assets;
+</Mermaid>
+
+API requests
+<Mermaid>
+sequenceDiagram;
+client->>Ingress: https api request;
+Ingress->>NGINX: http api request;
+NGINX->>API: http api request;
+API->>DB: query;
+DB->>API: table results;
+API->>NGINX: json response;
+NGINX->>Ingress: gzip json response;
+Ingress->>client: https gzip json response;
+</Mermaid>
+
+- It's nice to have a platform where you can focus on services instead of servers
+  - Easy to deploy another service like a redis cache or prometheus for monitoring
+  - Deploying locally is pretty close to the production environment so it's easier to reproduce issues
+- Use [docker-compose](https://docs.docker.com/compose/) for local development.
+- Docker for Mac has kubernetes now so there's no need for minikube
+  - You just need to enable it
+  - Integrated with your existing docker credentials
+- I used [Kompose](https://kompose.io/) to convert our docker-compose file to Kubernetes resources
+  - ```brew install kompose```
+  - ```docker-compose build```
+  - ```kompose up --build none```
+  - ```kompose convert```
+  - Kompose can also create Helm files too
+  - docker-compose is also [available in Kubernetes](https://github.com/docker/compose-on-kubernetes) now but that's a whole other thing
+- Deploying with Helm vs kubectl vs other
+  - Chose kubectl because it was easy and is ready our of the box.
+  - [kubectl](https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/)
+  - [Helm](https://helm.sh)
+    - Have to install it on your cluster
+    - Helm 3 is on the way
+    - Potential [security implications](https://medium.com/virtuslab/think-twice-before-using-helm-25fbb18bc822) I didn't want to deal with
+  - There's heaps of other [Kubernetes Configuration tools](https://blog.argoproj.io/the-state-of-kubernetes-configuration-management-d8b06c1205) too
+- Ingress: [GCE](https://github.com/kubernetes/ingress-gce) vs [NGINX](https://github.com/kubernetes/ingress-nginx)
+  - GCE
+    - Benefits
+      - Easy certificates
+    - Drawbacks
+      - More vendor lockin
+      - Can't redirect from http to https
+        - [Used NGINX for this](https://serverfault.com/questions/502733/rewrite-http-to-https-with-ngnix-behind-load-balancer)
+  - NGINX
+    - Benefits
+      - Less vendor lockin
+      - Can redirect to https
+	  - Can be used across namespaces
+    - Drawbacks
+      - Requires [cert-manager](https://github.com/jetstack/cert-manager) for https
+        - Way more complicated than GCE
+
+## GCP
+- Best kubernetes support
+- Don't charge you for master nodes
+- Quite expnsive in the end: ~60 usd/month
+  - Free credits will only last a couple months
+  - Costs about the same as Elastic Beanstalk in AWS
+  - Breakdown
+    - (all in Sydney)
+    - ~$25 usd/month for load balancer
+    - $18.24 usd/month for 1 g1-small node
+    - ~$8 usd/month for storage, probably docker images
+    - $8 usd/month for unused static ip address for staging environment
+- I like their focus on projects
+- Their documentation has a focus on the CLI which made CI slightly easier
+- [Install the CLI](https://cloud.google.com/sdk/docs/quickstart-macos)
+- [Staging Cluster vs Staging Namespace](https://stackoverflow.com/questions/43212836/multiple-environments-staging-qa-production-etc-with-kubernetes)
+  - Chose a seperate staging cluster
+  - Easier
+  - More isolation
+    - Good for load testing
+    - Good for testing new Kubernetes versions
+  - I wanted to do a staging namespace so I could reuse the existing loadbalancer and save on costs but I couldn't work out how to do it
+    - Not so sure now, [might be per rule](https://cloud.google.com/compute/all-pricing#lb)
+    - [Reuse existing load balancer GitHub issue](https://github.com/kubernetes/ingress-gce/issues/369)
+  - I turn it off after merging to save money at the cost of deploy time (~15 mins)
+    - They charge you ~$8 usd/month for unused static ip addresses though
+    - It is very cool to spin up clusters as required though - infrastructure as code
+  - I had to contact support to get a 2nd static ip address though
+
+## Github Actions
+
+- I setup bash scripts to get CI working locally first
+  - Less vendor lockin
+  - Faster turnaround times
+  - Turns out bash isn't exactly portable
+    - GitHub Actions don't support [Bash_Source](https://mywiki.wooledge.org/BashFAQ/028)
+    - GitHub Actions don't support [pipefail](https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/)
+    - [Sed is different on Mac](https://stackoverflow.com/questions/5694228/sed-in-place-flag-that-works-both-on-mac-bsd-and-linux)
+- Not many blog posts about it since it's still beta
+  - you can search for existing open source actions but a lot of them are wrong
+- It took me ages to work out how to run the bash scripts inside the [gcloud action](https://github.com/actions/gcloud)
+  - you can pull other actions and debug locally since they're just docker files which is nice
+- Docker commands behave diffently when run them inside a docker container
+  - GitHub Actions use bind mounts so you have to [consider that when dealing with relative paths](https://stackoverflow.com/questions/55845723/volume-bind-mounting-from-docker-in-docker)
+- Was cool to submit a PR and have it deploy a staging cluster - infrastructure as code
+- Pretty fast - builds in about 7mins
+
+## Outstanding issues
+
+- Github Actions build all services in the monorepo for any change
+  - Supports paths they're a [bit](https://help.github.com/en/articles/workflow-syntax-for-github-actions#example-matching-paths-in-nested-directories) [dodgy](https://github.community/t5/GitHub-Actions/GitHub-Actions-workflow-not-triggered-with-path/m-p/30321#M400)
+- Going to run out of GCP credits in ~5 months. Hopefully Azure is cheaper!
+
+## Conclusion
+
+- This was a fair bit of work.
+	- Started in July and finished in September
+	- Only have a few hours a week for my side projects
+- Had to make a lot of uneducated decisions
+- Really rewarding to finish it off and see it working
+- Knowing my credits will expire in a couple months makes me sad. Hopefully it doesn't come around
+- This whole thing really goes to show how terrible programming can be sometimes
+
+## Honerable Mentions
+
+- [GitLab auto devops](https://docs.gitlab.com/ee/topics/autodevops/)
+  - Would need to customise it a lot for a monorepo and testcontainers
+  - Expects a single container
+  - would have to leave Github or setup a mirror
+- [Pulumi](https://www.pulumi.com/kubernetes/)
+  - Infrastructure as code across platforms.
+  - Can provision services inside and outside of Kubernetes
+
+
+
