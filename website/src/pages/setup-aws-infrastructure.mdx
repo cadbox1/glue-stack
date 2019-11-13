@@ -1,4 +1,9 @@
-# Setup AWS Cloud Infrastructure 
+---
+name: Setup AWS Infrastructure
+menu: Archive
+---
+
+# Setup AWS Infrastructure
 
 This document assumes you have followed [Setup AWS Account](./SetupAWSAccount.md).
 
@@ -52,9 +57,9 @@ This document assumes you have followed [Setup AWS Account](./SetupAWSAccount.md
 
 10. Select Add Rule.
 
-   Port: 3306
+Port: 3306
 
-   Security Group: sg-xxxxxxxx rds-launch-wizard
+Security Group: sg-xxxxxxxx rds-launch-wizard
 
 11. Select Save.
 
@@ -137,7 +142,7 @@ This document assumes you have followed [Setup AWS Account](./SetupAWSAccount.md
 8. Select Permissions.
 9. Select Bucket Policy.
 10. Paste the following.
-    
+
     ```
     {
         "Id": "Policy1532945968718",
@@ -169,7 +174,7 @@ This document assumes you have followed [Setup AWS Account](./SetupAWSAccount.md
 
 14. Select Next.
 
-   Manage public permissions: Grant public read access to this bucket
+Manage public permissions: Grant public read access to this bucket
 
 12. Select Next.
 
@@ -213,11 +218,11 @@ This document assumes you have followed [Setup AWS Account](./SetupAWSAccount.md
 
 28. Select Create Behaviours.
 
-    Path pattern api/*
+    Path pattern api/\*
 
     Origin: Custom-gluestack-env
 
-    Viewer Protocol Policy: Redirect HTTP to HTTPS 
+    Viewer Protocol Policy: Redirect HTTP to HTTPS
 
     Allowed HTTP Methods: GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE
 
