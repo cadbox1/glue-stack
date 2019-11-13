@@ -19,5 +19,5 @@ export default {
 			},
 		},
 	},
-	menu: ["Home"],
+	menu: ["Home", "Design", "Guides", "Articles", "Archive"],
 };

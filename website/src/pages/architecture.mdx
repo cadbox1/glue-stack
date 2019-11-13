@@ -1,0 +1,86 @@
+---
+name: Architecture
+menu: Design
+---
+
+import { Mermaid } from "src/components/Mermaid";
+
+# Architecture
+
+<!-- prettier-ignore -->
+<Mermaid>
+	sequenceDiagram; 
+  Browser->>API: HTTP Request;
+	API->>Database: SQL Query; 
+  Database->>API: Rows of Results; 
+  API->>Browser: JSON Response;
+</Mermaid>
+
+## The Stack
+
+Multitenant, monolithic, 3-tier application with a MySQL database, Spring Boot HTTP API and React Single Page Application.
+
+| Component                                 | Type                            | Language   | Implementation                   |
+| ----------------------------------------- | ------------------------------- | ---------- | -------------------------------- |
+| DB \(Database\)                           | Relational                      | SQL        | MySQL \(pronounced "my sequel"\) |
+| API \(Application Programming Interface\) | JSON over HTTP                  | Java       | Spring Boot                      |
+| UI \(User Interface\)                     | SPA \(Single Page Application\) | Javascript | React                            |
+
+## Responsibilities
+
+| Component | Where it runs                                    | Storage & Retrieval | Security | Navigation |
+| --------- | ------------------------------------------------ | ------------------- | -------- | ---------- |
+| DB        | Private server \(cloud\)                         | yes                 |          |            |
+| API       | Public server \(internet facing\) \(cloud\)      | yes                 | yes      |            |
+| UI        | Internet browsers \(desktop and mobile devices\) | yes                 |          | yes        |
+
+You can see the separation in responsbility here but I also want to highlighting the sharing of responsbility with storing and retrieving data.
+
+## Tools and Libraries
+
+SQL, Java, Javascript, HTML and CSS are still the most popular technologies among developers in 2018. [Most Popular Technologies, Developer Survey Results - Stack Overflow](https://insights.stackoverflow.com/survey/2018/#most-popular-technologies) and I know them pretty well.
+
+- Database
+  - [MySQL](https://en.wikipedia.org/wiki/MySQL)
+    - An older, common relational database that I have the most experience with.
+- API
+  - [Java](https://en.wikipedia.org/wiki/Java_%28programming_language%29)
+  - [Spring Boot](https://spring.io/projects/spring-boot#overview)
+    - An easy and opionated way to create Java applications.
+  - [Hibernate](http://hibernate.org/orm/)
+    - A popular [ORM](https://stackoverflow.com/questions/1279613/what-is-an-orm-and-where-can-i-learn-more-about-it) for Java that maps objects to and from the database.
+  - [Spring Security](https://spring.io/projects/spring-security)
+    - To authenticate users.
+  - [Spring Data JPA](https://projects.spring.io/spring-data-jpa/)
+    - Helpful abstraction for doing CRUD.
+  - [Querydsl](http://www.querydsl.com/)
+    - Creating typesafe and composable database queries even directly from http requests.
+- UI
+  - [React](https://reactjs.org/)
+    - Simple, powerful and popular.
+  - [Create React App](https://github.com/facebook/create-react-app)
+    - For an opionated, zero-configuration build process.
+  - [Material-UI](https://material-ui.com/)
+    - Implementation of the popular [Google Material Design System](https://material.io/) in React.
+  - [React Router V4](https://reacttraining.com/react-router/)
+    - URL management.
+
+## Development Tools
+
+- [Version Control](https://www.atlassian.com/git/tutorials/what-is-version-control)
+  - [Git](https://git-scm.com/)
+    - Popular and works well.
+  - [Monorepo](https://danluu.com/monorepo/)
+    - For simplicity and synced changes across the application.
+  - [Git Town](http://www.git-town.com/)
+    - An abstraction over git to make it easier to do common things.
+- Editors
+  - [Visual Studio Code \(vscode\)](https://code.visualstudio.com/)
+    - Fast and popular editor.
+  - [Sequel Pro](https://www.sequelpro.com/)
+    - The best Mac app to manage MySQL databases.
+- Deployment
+  - [Kubernetes](kubernetes-and-ci)
+  - [GitHub Actions](https://github.com/features/actions)
+  - [Flyway](https://flywaydb.org/)
+    - for automated database migrations.

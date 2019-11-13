@@ -1,4 +1,9 @@
-# Performance Testing and Connection Pool Sizes
+---
+name: Performance Testing and Connection Pools
+menu: Articles
+---
+
+# Performance Testing and Connection Pools
 
 [HikariCP](https://github.com/brettwooldridge/HikariCP) [became the JDBC default connection pool in Spring Boot 2.0](https://github.com/spring-projects/spring-boot/issues/6013), offering better performance by default. They also have an extremely interesting article on [connection pool sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing). I'm also interested in testing the maximum performance of the API so its the perfect time to play with both!
 
@@ -31,29 +36,29 @@ I configured the thread group to 50 threads, ramp up period at 120 seconds and t
 ### Day 1
 
 50 Connections
-![50 Connections](../../.gitbook/assets/day-1-50-connections.png)
+![50 Connections](../assets/day-1-50-connections.png)
 
 12 Connections
-![12 Connections](../../.gitbook/assets/day-1-12-connections.png)
+![12 Connections](../assets/day-1-12-connections.png)
 
 24 Connections
-![24 Connections](../../.gitbook/assets/day-1-24-connections.png)
+![24 Connections](../assets/day-1-24-connections.png)
 
 6 Connections
-![6 Connections](../../.gitbook/assets/day-1-6-connections.png)
+![6 Connections](../assets/day-1-6-connections.png)
 
 The results suggest the opposite to the HikariCP article, more connections meant more throughpought. I thought I would try again
 
 ### Day 2
 
 6 Connections
-![6 Connections](../../.gitbook/assets/day-2-6-connections.png)
+![6 Connections](../assets/day-2-6-connections.png)
 
 50 Connections
-![50 Connections](../../.gitbook/assets/day-2-50-connections.png)
+![50 Connections](../assets/day-2-50-connections.png)
 
 50 Connections Run 2
-![50 Connections Run 2](../../.gitbook/assets/day-2-50-connections-run-2.png)
+![50 Connections Run 2](../assets/day-2-50-connections-run-2.png)
 
 Today less connections meant more performance.
 

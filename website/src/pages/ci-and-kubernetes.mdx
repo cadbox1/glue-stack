@@ -1,18 +1,17 @@
 ---
 name: Kubernetes and CI
 route: kubernetes-and-ci
+menu: Design
 ---
+
 import { Mermaid } from "src/components/Mermaid";
 
 # Kubernetes and CI
 
 <Mermaid>
-graph LR;
-pr(Pull Request)-->test(Run Tests);
-test-->staging(Deploy to Staging);
-staging-->manual(Manual Exploratory Testing);
-manual-->merge(Merge Pull Request);
-merge-->prod(Deploy to Prod);
+	graph LR; pr(Pull Request)-->test(Run Tests); test-->staging(Deploy to
+	Staging); staging-->manual(Manual Exploratory Testing); manual-->merge(Merge
+	Pull Request); merge-->prod(Deploy to Prod);
 </Mermaid>
 
 ## Docker
@@ -28,12 +27,7 @@ merge-->prod(Deploy to Prod);
     - Previously people used a builder image for this which is what older blog posts reference
   - [How to do it in Java](https://whitfin.io/speeding-up-maven-docker-builds/)
   - Use Alpine images because they're smaller
-  - Caching multi stage builds
-	- Speeds up build time dramatically
-	- It's tricky
-    	- https://github.com/moby/moby/issues/34715
-    	- https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds
-    	- https://andrewlock.net/caching-docker-layers-on-serverless-build-hosts-with-multi-stage-builds---target,-and---cache-from/
+  - Caching multi stage builds - Speeds up build time dramatically - It's tricky - https://github.com/moby/moby/issues/34715 - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds - https://andrewlock.net/caching-docker-layers-on-serverless-build-hosts-with-multi-stage-builds---target,-and---cache-from/
 
 ## Kubernetes
 
@@ -43,25 +37,20 @@ merge-->prod(Deploy to Prod);
   - NGINX: Serving frontend assets and proxying the api
 
 Static Assets
+
 <Mermaid>
-sequenceDiagram;
-client->>Ingress: https request;
-Ingress->>NGINX: http request;
-NGINX->>Ingress: static frontend assets;
-Ingress->>client: https static frontend assets;
+	sequenceDiagram; client->>Ingress: https request; Ingress->>NGINX: http
+	request; NGINX->>Ingress: static frontend assets; Ingress->>client: https
+	static frontend assets;
 </Mermaid>
 
 API requests
+
 <Mermaid>
-sequenceDiagram;
-client->>Ingress: https api request;
-Ingress->>NGINX: http api request;
-NGINX->>API: http api request;
-API->>DB: query;
-DB->>API: table results;
-API->>NGINX: json response;
-NGINX->>Ingress: gzip json response;
-Ingress->>client: https gzip json response;
+	sequenceDiagram; client->>Ingress: https api request; Ingress->>NGINX: http
+	api request; NGINX->>API: http api request; API->>DB: query; DB->>API: table
+	results; API->>NGINX: json response; NGINX->>Ingress: gzip json response;
+	Ingress->>client: https gzip json response;
 </Mermaid>
 
 - It's nice to have a platform where you can focus on services instead of servers
@@ -72,10 +61,10 @@ Ingress->>client: https gzip json response;
   - You just need to enable it
   - Integrated with your existing docker credentials
 - I used [Kompose](https://kompose.io/) to convert our docker-compose file to Kubernetes resources
-  - ```brew install kompose```
-  - ```docker-compose build```
-  - ```kompose up --build none```
-  - ```kompose convert```
+  - `brew install kompose`
+  - `docker-compose build`
+  - `kompose up --build none`
+  - `kompose convert`
   - Kompose can also create Helm files too
   - docker-compose is also [available in Kubernetes](https://github.com/docker/compose-on-kubernetes) now but that's a whole other thing
 - Deploying with Helm vs kubectl vs other
@@ -97,13 +86,13 @@ Ingress->>client: https gzip json response;
   - NGINX
     - Benefits
       - Less vendor lockin
-      - Can redirect to https
-	  - Can be used across namespaces
+      - Can redirect to https - Can be used across namespaces
     - Drawbacks
       - Requires [cert-manager](https://github.com/jetstack/cert-manager) for https
         - Way more complicated than GCE
 
 ## GCP
+
 - Best kubernetes support
 - Don't charge you for master nodes
 - Quite expnsive in the end: ~60 usd/month
@@ -111,10 +100,10 @@ Ingress->>client: https gzip json response;
   - Costs about the same as Elastic Beanstalk in AWS
   - Breakdown
     - (all in Sydney)
-    - ~$25 usd/month for load balancer
-    - $18.24 usd/month for 1 g1-small node
-    - ~$8 usd/month for storage, probably docker images
-    - $8 usd/month for unused static ip address for staging environment
+    - ~\$25 usd/month for load balancer
+    - \$18.24 usd/month for 1 g1-small node
+    - ~\$8 usd/month for storage, probably docker images
+    - \$8 usd/month for unused static ip address for staging environment
 - I like their focus on projects
 - Their documentation has a focus on the CLI which made CI slightly easier
 - [Install the CLI](https://cloud.google.com/sdk/docs/quickstart-macos)
@@ -128,7 +117,7 @@ Ingress->>client: https gzip json response;
     - Not so sure now, [might be per rule](https://cloud.google.com/compute/all-pricing#lb)
     - [Reuse existing load balancer GitHub issue](https://github.com/kubernetes/ingress-gce/issues/369)
   - I turn it off after merging to save money at the cost of deploy time (~15 mins)
-    - They charge you ~$8 usd/month for unused static ip addresses though
+    - They charge you ~\$8 usd/month for unused static ip addresses though
     - It is very cool to spin up clusters as required though - infrastructure as code
   - I had to contact support to get a 2nd static ip address though
 
@@ -158,9 +147,7 @@ Ingress->>client: https gzip json response;
 
 ## Conclusion
 
-- This was a fair bit of work.
-	- Started in July and finished in September
-	- Only have a few hours a week for my side projects
+- This was a fair bit of work. - Started in July and finished in September - Only have a few hours a week for my side projects
 - Had to make a lot of uneducated decisions
 - Really rewarding to finish it off and see it working
 - Knowing my credits will expire in a couple months makes me sad. Hopefully it doesn't come around
@@ -175,6 +162,3 @@ Ingress->>client: https gzip json response;
 - [Pulumi](https://www.pulumi.com/kubernetes/)
   - Infrastructure as code across platforms.
   - Can provision services inside and outside of Kubernetes
-
-
-

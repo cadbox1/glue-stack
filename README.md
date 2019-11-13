@@ -1,34 +1,34 @@
 # Glue Stack
 
-If you're reading this on [GitHub](https://github.com/cadbox1/glue-stack/), then checkout our [GitBook](https://cadbox1.gitbook.io/glue-stack/) for a nicer reading experience.
-
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/glue-stack)
 ![](https://github.com/cadbox1/glue-stack/workflows/Pull%20Request/badge.svg)
 ![](https://github.com/cadbox1/glue-stack/workflows/Push/badge.svg)
 
-
-![Screeshot](./Screenshot.png)
+![Screeshot](./website/src/assets/screenshot.png)
 
 ## Quick Start
 
-* Signup for a free account with our [Live App](https://cadbox1.github.io/glue-stack/).
-* [Chat](https://spectrum.chat/glue-stack) with us.
-* Explore this documentation.
+- Signup for free from our [Website](https://glue.cadell.dev)
+- [Chat](https://spectrum.chat/glue-stack) with us.
+- Explore this documentation.
 
 Star us on [GitHub](https://github.com/cadbox1/glue-stack/) if you think we're cool!
 
 ## What problem are we solving?
-* We do core features, like storing and finding data, really well. We make it fast, easy and enjoyable to manage your data and we do it with security and scalability.
-* We believe the foundation of a good user experience is a good developer experience. If we optimise the developer experience we can deliver quality features fast, leaving more time to focus on what makes your application unique.
+
+- We do core features, like storing and finding data, really well. We make it fast, easy and enjoyable to manage your data and we do it with security and scalability.
+- We believe the foundation of a good user experience is a good developer experience. If we optimise the developer experience we can deliver quality features fast, leaving more time to focus on what makes your application unique.
 
 ## How do we do it?
-  - Glue Stack is designed from the ground up to deliver core features that users expect without comprimising developer experience.
-  - To achieve that developer experience we glued some of the best open source tools together to create Glue Stack.
-  - To keep the domain simple but relevant, Glue Stack is a multiuser task management app, inspired by [TodoMVC](http://todomvc.com/), but with more backend.
-  - We designed our user interface using a selection of Google's Material Design components optimised for mobile, developed a secure, performant and flexbile API backed by a relational database. A little bit of new tech combined with a lot of tried and tested.
-  - Then we built the whole thing from scratch again and documented the entire process. This allowed us to identify development pain points and refine the process and documentation.
+
+- Glue Stack is designed from the ground up to deliver core features that users expect without comprimising developer experience.
+- To achieve that developer experience we glued some of the best open source tools together to create Glue Stack.
+- To keep the domain simple but relevant, Glue Stack is a multiuser task management app, inspired by [TodoMVC](http://todomvc.com/), but with more backend.
+- We designed our user interface using a selection of Google's Material Design components optimised for mobile, developed a secure, performant and flexbile API backed by a relational database. A little bit of new tech combined with a lot of tried and tested.
+- Then we built the whole thing from scratch again and documented the entire process. This allowed us to identify development pain points and refine the process and documentation.
 
 ## Hasn't this been done this before?
+
 I've seen application frameworks optimised for development speed before, along the lines of [Firebase](https://firebase.google.com/), that can get you an application incredibly fast. I think these types of tools are optimised for an [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) or greenfield project and less suited for the long term. A NoSQL database is a big jump coming from a relational database and often a hard sell for good reason.
 
 That brings us to the other end of the spectrum with more flexible tools like [React](https://reactjs.org/). You'll have to choose all the tools yourself and glue them all together. Compared to the framework approach, this option often leads to a poor developer experience due to a lack of documentation about how your glue actually works. Not to mention your unique combination of tools will have unique problems that will require unique solutions. Siloed teams and drip-fed features only make this harder.
@@ -36,33 +36,36 @@ That brings us to the other end of the spectrum with more flexible tools like [R
 Glue Stack is an experiment to find the middleground between the two. We try to achieve a good developer experience by documenting the glue that holds our tools together. We try not to write too much custom code requiring documentation and prefer tried and tested tools like Java and MySQL mixed with a bit of new stuff with React. By open sourcing and sharing Glue Stack we hope to give you some ideas on how you might improve your own glue stack and give you the opportunity to improve ours.
 
 ## Features
+
 ### User Features
-  - Browser based
-  - Mobile ready
-  - Easy to find data using search, filters and sorting
-  - Fast
-  - Secure
-  - Reliable
-  - Consistent user interface
-  - Feels good to use
-  - Bulk actions
-  - Activity log
-  - API for integrations
-  - New features are delivered quickly
+
+- Browser based
+- Mobile ready
+- Easy to find data using search, filters and sorting
+- Fast
+- Secure
+- Reliable
+- Consistent user interface
+- Feels good to use
+- Bulk actions
+- Activity log
+- API for integrations
+- New features are delivered quickly
 
 ### Developer Features
-  - Documentated Architecture and [Development Process](./Development/DevelopmentProcess-Tasks.md)
-  - Deployed in the cloud
-  - Reusable components with [good abstractions](#featured-abstractions)
-  - Fast to develop
-  - Easy to scale
-  - Easy to secure
-  - Responsive interface - not a speparate mobile app to maintain
-  - Efficient testing strategy
-  - [Continuous Integration](./Infrastructure/ContinuousIntegration-TravisCI.md)
-  - Multitenant
-  - API for separation
-  - [Performance testing](./Infrastructure/PerformanceTestingAndConnectionPoolSizes.md)
+
+- Documentated Architecture and [Development Process](./Development/DevelopmentProcess-Tasks.md)
+- Deployed in the cloud
+- Reusable components with [good abstractions](#featured-abstractions)
+- Fast to develop
+- Easy to scale
+- Easy to secure
+- Responsive interface - not a speparate mobile app to maintain
+- Efficient testing strategy
+- [Continuous Integration](./Infrastructure/ContinuousIntegration-TravisCI.md)
+- Multitenant
+- API for separation
+- [Performance testing](./Infrastructure/PerformanceTestingAndConnectionPoolSizes.md)
 
 ## Architecture
 
@@ -79,9 +82,11 @@ Continued at [Architecture](./Architecture/Architecture.md).
 ### Featured Tools
 
 #### Custom Tools
+
 The [Glue Stack Connect Component](./Development/UIConnectComponent.md) turned out to be an essential abstraction for this project when handling network requests in React. It allowed us to make our UI simpler and less stateful than other single page applications.
 
 #### API
+
 [Querydsl](http://www.querydsl.com/) for composing type safe database queries inside the API and bulding queries from request parameters. Querydsl makes it easy to have a secure, performant API whilst supporting the wide range of front end queries we require. Without it, the API would be an error prone, string concatenation mess.
 
 #### UI

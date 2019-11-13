@@ -1,4 +1,9 @@
-# Development Process: Tasks
+---
+name: Development Process
+menu: Guides
+---
+
+# Development Process
 
 This is the document I believe more teams need to write. How to develop a 'trivial' CRUD screen, in this case its the tasks part of our task management app.
 
@@ -180,31 +185,31 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
    ```text
    package org.gluestack.api.domain.entity;
-   
+
    import javax.persistence.Column;
    import javax.persistence.Entity;
    import javax.persistence.FetchType;
    import javax.persistence.JoinColumn;
    import javax.persistence.ManyToOne;
    import javax.persistence.Table;
-   
+
    @Entity
    @Table(name = "task")
    public class Task extends BaseOrganisedEntity {
-   
+
        @Column(nullable = false, length = 255)
        private String name;
-   
+
        @Column(length = 255)
        private String notes;
-   
+
        @ManyToOne(fetch = FetchType.LAZY)
        @JoinColumn(name = "userId")
        private User user;
-   
+
        @Column(nullable = false)
        private Integer statusId;
-   
+
        public Task() {
        }
    }
@@ -224,9 +229,9 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
    ```text
     package org.gluestack.api.repository;
-   
+
     import org.gluestack.api.domain.entity.Task;
-   
+
     public interface TaskRepository extends BaseRepository<Task> {
     }
    ```
@@ -237,11 +242,11 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
 1. Create the `TaskService.java` at ``api/src/main/java/org/gluestack/api/service`.
 
-   In this case the TaskService wants to return related entities to the user \(the user details of the assigned user\) so we use hibernate to load those details and the `jackson-datatype-hibernate5`  module will automatically serialise it (convert to JSON).
+   In this case the TaskService wants to return related entities to the user \(the user details of the assigned user\) so we use hibernate to load those details and the `jackson-datatype-hibernate5` module will automatically serialise it (convert to JSON).
 
    ```text
    package org.gluestack.api.service;
-   
+
    import org.gluestack.api.domain.entity.QTask;
    import org.gluestack.api.domain.entity.Task;
    import org.gluestack.api.domain.entity.User;
@@ -250,15 +255,15 @@ The task table has a Many-To-One relationship to an organisation \(just like the
    import org.springframework.data.domain.Page;
    import org.springframework.data.domain.Pageable;
    import org.springframework.stereotype.Service;
-   
+
    @Service
    public class TaskService extends BaseService<Task> {
-   
+
        @Override
        public Predicate getReadPermissionPredicate(User principalUser) {
            return QTask.task.organisation.id.eq(principalUser.getOrganisation().getId());
        }
-   
+
        @Override
        public Page<Task> findAll(User principalUser, Predicate predicate, Pageable pageRequest) {
            Page<Task> tasks = super.findAll(principalUser, predicate, pageRequest);
@@ -276,7 +281,7 @@ The task table has a Many-To-One relationship to an organisation \(just like the
 
    ```text
    package org.gluestack.api.controller;
-   
+
    import org.gluestack.api.domain.entity.Task;
    import org.gluestack.api.domain.entity.User;
    import org.gluestack.api.service.TaskService;
@@ -289,21 +294,21 @@ The task table has a Many-To-One relationship to an organisation \(just like the
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RequestMethod;
    import org.springframework.web.bind.annotation.RestController;
-   
+
    @RestController
    @RequestMapping("api/tasks")
    public class TaskController extends BaseController<Task> {
-   
+
        @Autowired
        private TaskService taskService;
-   
+
        @RequestMapping(method = RequestMethod.GET)
        public Page<Task> findAll(Authentication authentication, @QuerydslPredicate Predicate predicate,
                Pageable pageRequest) {
            User principalUser = (User) authentication.getPrincipal();
            return taskService.findAll(principalUser, predicate, pageRequest);
        }
-   
+
    }
    ```
 
@@ -330,11 +335,11 @@ Our current test framework means you make it easy to reuse the test data you use
    testOrganisation.taskAssignedToActingUser = taskAssignedToActingUser;
    ```
 
-4. Create `FindAllTest.java` at  `api/src/test/java/org/gluestack/api/task`.
+4. Create `FindAllTest.java` at `api/src/test/java/org/gluestack/api/task`.
 
    ```
    package org.gluestack.api.task;
-   
+
    import org.gluestack.api.BaseTest;
    import org.gluestack.api.PageResponse;
    import org.gluestack.api.domain.entity.Task;
@@ -346,9 +351,9 @@ Our current test framework means you make it easy to reuse the test data you use
    import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
    import org.springframework.test.web.servlet.MvcResult;
    import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-   
+
    public class FindAllTest extends BaseTest {
-   
+
    	@Test
    	public void findAllUsersTest() throws Exception {
    		MvcResult mvcResult = mvc
@@ -356,14 +361,14 @@ Our current test framework means you make it easy to reuse the test data you use
    				.andReturn();
    		PageResponse<Task> page = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
    				objectMapper.getTypeFactory().constructParametricType(PageResponse.class, Task.class));
-   
+
    		int resultSize = 1;
    		assertEquals(resultSize, page.getNumberOfElements());
    		assertEquals(resultSize, page.getTotalElements());
    		assertThat(page.getContent(), hasSize(resultSize));
-   
+
    		Task result = page.getContent().get(0);
-   
+
    		assertThat(result.getName(), equalTo(testOrganisation.taskAssignedToActingUser.getName()));
    		assertThat(result.getNotes(), equalTo(testOrganisation.taskAssignedToActingUser.getNotes()));
    		assertThat(result.getStatusId(), equalTo(testOrganisation.taskAssignedToActingUser.getStatusId()));
@@ -386,7 +391,7 @@ Our current test framework means you make it easy to reuse the test data you use
 
    ```
    import React, { Component } from 'react';
-   
+
    class Task extends Component {
        render() {
            return (
@@ -394,7 +399,7 @@ Our current test framework means you make it easy to reuse the test data you use
            );
        }
    }
-   
+
    export { Task};
    ```
 
@@ -443,23 +448,23 @@ Our current test framework means you make it easy to reuse the test data you use
 
     ```
     import axios from "axios";
-    
+
     const path = "tasks";
-    
+
     export function findAll({ name, userId, statusId, page, size, sort } = {}) {
     	return axios.get(path, {
     		params: { name, "user.id": userId, statusId, page, size, sort },
     	});
     }
-    
+
     export function findOne(id) {
     	return axios.get(`${path}/${id}`);
     }
-    
+
     export function patch(id, body) {
     	return axios.patch(`${path}/${id}`, body);
     }
-    
+
     export function save(body) {
     	if (body.id) {
     		return patch(body.id, body);
@@ -467,7 +472,7 @@ Our current test framework means you make it easy to reuse the test data you use
     		return axios.post(path, body);
     	}
     }
-    
+
     export const TaskStatus = {
     	TODO: 0,
     	IN_PROGRESS: 1,
@@ -490,7 +495,7 @@ Our current test framework means you make it easy to reuse the test data you use
     import { TablePagination } from "common/components/TablePagination";
     import { TableSortLabel } from "common/components/TableSortLabel";
     import { findAll } from "api/task";
-    
+
     class List extends Component {
     	render() {
     		const { findAll } = this.props;
@@ -555,9 +560,9 @@ Our current test framework means you make it easy to reuse the test data you use
     		);
     	}
     }
-    
+
     export { List };
-    
+
     export const connectConfig = {
     	findAll: {
     		params: props => {
@@ -593,17 +598,17 @@ Our current test framework means you make it easy to reuse the test data you use
     import { connect } from "common/connector";
     import { urlStateHolder } from "common/stateHolder";
     import { List, connectConfig } from "./list";
-    
+
     const styles = theme => ({
     	inputRoot: {
     		color: "inherit",
     	},
     });
-    
+
     class Task extends Component {
     	render() {
     		const { match, findAll, toggleSideBar, singleView } = this.props;
-    
+
     		return (
     			<Container>
     				<Route
@@ -615,7 +620,7 @@ Our current test framework means you make it easy to reuse the test data you use
     								<Fragment>
     									<MenuButton toggleSideBar={toggleSideBar} />
     									<AppBarTitle>Tasks</AppBarTitle>
-    
+
     									<RefreshButton findAll={findAll} />
     									<IconButton
     										component={Link}
@@ -634,7 +639,7 @@ Our current test framework means you make it easy to reuse the test data you use
     		);
     	}
     }
-    
+
     Task = withStyles(styles)(
     	componentQueries({
     		queries: [
@@ -645,11 +650,10 @@ Our current test framework means you make it easy to reuse the test data you use
     		config: { pure: false },
     	})(urlStateHolder(connect(connectConfig)(Task)))
     );
-    
+
     export { Task };
     ```
 
 15. The tasks page should now be starting to look more like the users page.
 
 16. Next we will work on Adding a task.
-
