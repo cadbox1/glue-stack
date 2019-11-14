@@ -75,6 +75,7 @@ API requests
     - Helm 3 is on the way
     - Potential [security implications](https://medium.com/virtuslab/think-twice-before-using-helm-25fbb18bc822) I didn't want to deal with
   - There's heaps of other [Kubernetes Configuration tools](https://blog.argoproj.io/the-state-of-kubernetes-configuration-management-d8b06c1205) too
+- Used sed to specify the docker image to deploy based on the commit hash
 - Ingress: [GCE](https://github.com/kubernetes/ingress-gce) vs [NGINX](https://github.com/kubernetes/ingress-nginx)
   - GCE
     - Benefits
@@ -138,11 +139,11 @@ API requests
   - GitHub Actions use bind mounts so you have to [consider that when dealing with relative paths](https://stackoverflow.com/questions/55845723/volume-bind-mounting-from-docker-in-docker)
 - Was cool to submit a PR and have it deploy a staging cluster - infrastructure as code
 - Pretty fast - builds in about 7mins
+- Initially didn't support nested file filters but [now they do](https://github.blog/changelog/2019-09-30-github-actions-event-filtering-updates/)
+- Squashing commits means the commit hash won't match from the PR and after you've merged so you have to build again after merging
 
 ## Outstanding issues
 
-- Github Actions build all services in the monorepo for any change
-  - Supports paths they're a [bit](https://help.github.com/en/articles/workflow-syntax-for-github-actions#example-matching-paths-in-nested-directories) [dodgy](https://github.community/t5/GitHub-Actions/GitHub-Actions-workflow-not-triggered-with-path/m-p/30321#M400)
 - Going to run out of GCP credits in ~5 months. Hopefully Azure is cheaper!
 
 ## Conclusion

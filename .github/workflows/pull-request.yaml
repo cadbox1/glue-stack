@@ -2,25 +2,30 @@ name: Pull Request
 on:
   pull_request:
     branches:
-    - master
+      - master
+    paths:
+      - "api/**"
+      - "ui/**"
+      - "devops/**"
+      - ".github/**"
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Authenticate with Google Cloud
-      uses: actions/gcloud/auth@master
-      env:
-        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
-    - name: Build
-      uses: actions/gcloud/cli@master
-      with:
-        entrypoint: sh
-        args: -c "cd ./devops && sh ./1-build.sh"
-    - name: Deploy to Staging
-      uses: actions/gcloud/cli@master
-      with:
-        entrypoint: sh
-        args: -c "cd ./devops && sh ./2-deploy-staging.sh"
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Authenticate with Google Cloud
+        uses: actions/gcloud/auth@master
+        env:
+          GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+      - name: Build
+        uses: actions/gcloud/cli@master
+        with:
+          entrypoint: sh
+          args: -c "cd ./devops && sh ./1-build.sh"
+      - name: Deploy to Staging
+        uses: actions/gcloud/cli@master
+        with:
+          entrypoint: sh
+          args: -c "cd ./devops && sh ./2-deploy-staging.sh"

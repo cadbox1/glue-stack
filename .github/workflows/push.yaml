@@ -2,25 +2,35 @@ name: Push
 on:
   push:
     branches:
-    - master
+      - master
+    paths:
+      - "api/**"
+      - "ui/**"
+      - "devops/**"
+      - ".github/**"
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Authenticate with Google Cloud
-      uses: actions/gcloud/auth@master
-      env:
-        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
-    - name: Deploy to Prod
-      uses: actions/gcloud/cli@master
-      with:
-        entrypoint: sh
-        args: -c "cd ./devops && sh ./3-deploy-prod.sh"
-    - name: Delete Staging Cluster
-      uses: actions/gcloud/cli@master
-      with:
-        entrypoint: sh
-        args: -c "cd ./devops && sh ./4-delete-staging-cluster.sh"
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Authenticate with Google Cloud
+        uses: actions/gcloud/auth@master
+        env:
+          GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+      - name: Build
+        uses: actions/gcloud/cli@master
+        with:
+          entrypoint: sh
+          args: -c "cd ./devops && sh ./1-build.sh"
+      - name: Deploy to Prod
+        uses: actions/gcloud/cli@master
+        with:
+          entrypoint: sh
+          args: -c "cd ./devops && sh ./3-deploy-prod.sh"
+      - name: Delete Staging Cluster
+        uses: actions/gcloud/cli@master
+        with:
+          entrypoint: sh
+          args: -c "cd ./devops && sh ./4-delete-staging-cluster.sh"
