@@ -12,7 +12,7 @@
 - [Chat](https://spectrum.chat/glue-stack) with us.
 - Explore this documentation.
 
-Star us on [GitHub](https://github.com/cadbox1/glue-stack/) if you think we're cool!
+Star us if you think we're cool!
 
 ## What problem are we solving?
 
